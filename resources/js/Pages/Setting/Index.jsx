@@ -7,6 +7,7 @@ import Card from '@/Components/DaisyUI/Card'
 import TextInput from '@/Components/DaisyUI/TextInput'
 import Button from '@/Components/DaisyUI/Button'
 import FormFile from '@/Components/DaisyUI/FormFile'
+import TextareaInput from '@/Components/DaisyUI/TextareaInput'
 
 const extractValue = (set, key) => {
     const find = set.find((s) => s.key === key)
@@ -26,6 +27,8 @@ export default function Setting(props) {
     const { data, setData, post, processing, errors } = useForm({
         app_name: extractValue(setting, 'app_name'),
         app_logo: '',
+        company_name: extractValue(setting, 'company_name'),
+        company_address: extractValue(setting, 'company_address'),
     })
 
     const handleOnChange = (event) => {
@@ -56,7 +59,7 @@ export default function Setting(props) {
                         name="app_name"
                         value={data.app_name}
                         onChange={handleOnChange}
-                        label="App Name"
+                        label="App Title"
                         error={errors.app_name}
                     />
                     <FormFile
@@ -65,6 +68,20 @@ export default function Setting(props) {
                         error={errors.app_logo}
                         url={app_logo_url}
                         filemimes="image/jpg,image/jpeg,image/png"
+                    />
+                    <TextInput
+                        name="company_name"
+                        value={data.company_name}
+                        onChange={handleOnChange}
+                        label="Perusahaan"
+                        error={errors.company_name}
+                    />
+                    <TextareaInput
+                        name="company_address"
+                        value={data.company_address}
+                        onChange={handleOnChange}
+                        label="Alamat"
+                        error={errors.company_address}
                     />
                     <div className="mt-4">
                         <Button

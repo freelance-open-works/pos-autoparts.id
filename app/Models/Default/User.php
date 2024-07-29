@@ -5,6 +5,7 @@ namespace App\Models\Default;
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 
 use App\Models\Traits\UserTrackable;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
@@ -25,6 +26,7 @@ class User extends Authenticatable
         'password',
         'role_id',
         'reset_token',
+        'additonal_fields',
     ];
 
     /**
@@ -45,6 +47,8 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+    protected $appends = ['fields'];
 
     public function role()
     {
@@ -70,5 +74,10 @@ class User extends Authenticatable
         }
 
         return false;
+    }
+
+    public function fields(): Attribute
+    {
+        return Attribute::make(get: fn () =>  json_decode($this->additonal_fields != null ? $this->additonal_fields : '[]'));
     }
 }

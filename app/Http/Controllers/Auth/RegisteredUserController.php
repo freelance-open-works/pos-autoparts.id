@@ -34,11 +34,11 @@ class RegisteredUserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|string|email|max:255|unique:'.User::class,
+            'email' => 'required|string|email|max:255|unique:' . User::class,
             'password' => ['required', 'confirmed', Rules\Password::defaults()],
         ]);
 
-        $guest = Role::firstOrCreate(['name' => Role::GUEST]);
+        $guest = Role::firstOrCreate(['name' => Role::SALES]);
 
         $user = User::create([
             'name' => $request->name,

@@ -1,5 +1,8 @@
 <?php
 
+use App\Http\Controllers\SupplierController;
+use App\Http\Controllers\CustomerController;
+use App\Http\Controllers\ExpeditionController;
 use App\Http\Controllers\Default\FileController;
 use App\Http\Controllers\Default\GeneralController;
 use App\Http\Controllers\Default\PermissionController;
@@ -46,6 +49,18 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // #Admin
+Route::delete('suppliers/{supplier}', [SupplierController::class,'destroy'])->name('suppliers.destroy');
+Route::put('suppliers/{supplier}', [SupplierController::class,'update'])->name('suppliers.update');
+Route::post('suppliers', [SupplierController::class,'store'])->name('suppliers.store');
+Route::get('suppliers', [SupplierController::class,'index'])->name('suppliers.index');
+Route::delete('customers/{customer}', [CustomerController::class,'destroy'])->name('customers.destroy');
+Route::put('customers/{customer}', [CustomerController::class,'update'])->name('customers.update');
+Route::post('customers', [CustomerController::class,'store'])->name('customers.store');
+Route::get('customers', [CustomerController::class,'index'])->name('customers.index');
+Route::delete('expeditions/{expedition}', [ExpeditionController::class,'destroy'])->name('expeditions.destroy');
+Route::put('expeditions/{expedition}', [ExpeditionController::class,'update'])->name('expeditions.update');
+Route::post('expeditions', [ExpeditionController::class,'store'])->name('expeditions.store');
+Route::get('expeditions', [ExpeditionController::class,'index'])->name('expeditions.index');
 });
 
 // #Guest

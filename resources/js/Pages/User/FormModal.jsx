@@ -6,16 +6,19 @@ import Modal from '@/Components/DaisyUI/Modal'
 import Button from '@/Components/DaisyUI/Button'
 import TextInput from '@/Components/DaisyUI/TextInput'
 import SelectModalInput from '@/Components/DaisyUI/SelectModalInput'
+import TextareaInput from '@/Components/DaisyUI/TextareaInput'
 
 export default function FormModal(props) {
     const { modalState } = props
     const { data, setData, post, put, processing, errors, reset, clearErrors } =
         useForm({
+            code: '',
             name: '',
             email: '',
             password: '',
             role_id: null,
             role: '',
+            address: '',
         })
 
     const handleOnChange = (event) => {
@@ -57,11 +60,13 @@ export default function FormModal(props) {
         const user = modalState.data
         if (isEmpty(user) === false) {
             setData({
+                code: user.fields?.code,
                 name: user.name,
                 email: user.email,
                 role_id: user.role_id,
                 role: user.role,
                 password: '',
+                address: user.fields?.address,
             })
             return
         }
@@ -70,6 +75,13 @@ export default function FormModal(props) {
     return (
         <Modal isOpen={modalState.isOpen} onClose={handleClose} title={'User'}>
             <div className="form-control space-y-2.5">
+                <TextInput
+                    name="code"
+                    value={data.code}
+                    onChange={handleOnChange}
+                    label="Kode"
+                    error={errors.code}
+                />
                 <TextInput
                     name="name"
                     value={data.name}
@@ -92,6 +104,13 @@ export default function FormModal(props) {
                     onChange={handleOnChange}
                     label="Password"
                     error={errors.password}
+                />
+                <TextareaInput
+                    name="address"
+                    value={data.address}
+                    onChange={handleOnChange}
+                    label="Alamat"
+                    error={errors.address}
                 />
                 {data.role !== null && (
                     <>

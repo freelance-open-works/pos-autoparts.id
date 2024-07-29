@@ -4,6 +4,7 @@ import {
     HiCog,
     HiGlobeAlt,
     HiInformationCircle,
+    HiListBullet,
 } from 'react-icons/hi2'
 
 export default [
@@ -37,27 +38,35 @@ export default [
         ],
     },
     {
+        name: 'Ekspedisi',
+        show: true,
+        icon: HiListBullet,
+        route: route('expeditions.index'),
+        active: 'expeditions.index',
+        permission: 'view-expedition',
+    },
+    {
+        name: 'Customer',
+        show: true,
+        icon: HiListBullet,
+        route: route('customers.index'),
+        active: 'customers.index',
+        permission: 'view-customer',
+    },
+    {
+        name: 'Supplier',
+        show: true,
+        icon: HiListBullet,
+        route: route('suppliers.index'),
+        active: 'suppliers.index',
+        permission: 'view-supplier',
+    },
+    {
         name: 'Setting',
         show: true,
         icon: HiCog,
         route: route('setting.index'),
         active: 'setting.index',
         permission: 'view-setting',
-    },
-    {
-        name: 'Shortlink',
-        show: true,
-        icon: HiGlobeAlt,
-        route: route('shortlink.link.index'),
-        active: 'shortlink.link.*',
-        permission: 'view-shortlink',
-    },
-    {
-        name: 'Custom Form',
-        show: true,
-        icon: HiInformationCircle,
-        route: route('custom-form.forms.index'),
-        active: 'custom-form.forms.*',
-        permission: 'view-custom-form',
     },
 ]

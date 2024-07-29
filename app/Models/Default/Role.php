@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\HasManyThrough;
 
 class Role extends Model
 {
-    const GUEST = 'guest';
+    const SALES = 'sales';
 
     public $cascadeDeletes = ['rolePermissions', 'users'];
 

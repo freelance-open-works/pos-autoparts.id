@@ -25,19 +25,19 @@ export default function Index(props) {
     const confirmModal = useModalState()
     const formModal = useModalState()
 
-    const toggleFormModal = (user = null) => {
-        formModal.setData(user)
+    const toggleFormModal = (customer = null) => {
+        formModal.setData(customer)
         formModal.toggle()
     }
 
-    const handleDeleteClick = (user) => {
-        confirmModal.setData(user)
+    const handleDeleteClick = (customer) => {
+        confirmModal.setData(customer)
         confirmModal.toggle()
     }
 
     const onDelete = () => {
         if (confirmModal.data !== null) {
-            router.delete(route('user.destroy', confirmModal.data.id))
+            router.delete(route('customers.destroy', confirmModal.data.id))
         }
     }
 
@@ -56,13 +56,13 @@ export default function Index(props) {
     }, [search])
 
     return (
-        <AuthenticatedLayout page={'System'} action={'User'}>
-            <Head title="User" />
+        <AuthenticatedLayout page={'System'} action={'Customer'}>
+            <Head title=" Customer" />
 
             <div>
                 <Card>
                     <div className="flex justify-between mb-4">
-                        <HasPermission p="create-user">
+                        <HasPermission p="create-customer">
                             <Button
                                 size="sm"
                                 onClick={() => toggleFormModal()}
@@ -84,32 +84,25 @@ export default function Index(props) {
                                 <tr>
                                     <th>Kode</th>
                                     <th>Nama</th>
-                                    <th>Role</th>
+                                    <th>Alamat</th>
+                                    <th>Tipe</th>
                                     <th />
                                 </tr>
                             </thead>
                             <tbody>
-                                {data.map((user, index) => (
-                                    <tr key={user.id}>
-                                        <td>{user.fields?.code}</td>
-                                        <td>{user.name}</td>
-                                        <td>
-                                            {user.role === null
-                                                ? 'System'
-                                                : user.role?.name}
-                                        </td>
+                                {data.map((customer, index) => (
+                                    <tr key={customer.id}>
+                                        <td>{customer.code}</td>
+                                        <td>{customer.name}</td>
+                                        <td>{customer.address}</td>
+                                        <td>{customer.type}</td>
                                         <td className="text-end">
-                                            <Dropdown
-                                                label={'Opsi'}
-                                                last={
-                                                    index + 1 === +data.length
-                                                }
-                                            >
-                                                <HasPermission p="update-user">
+                                            <Dropdown label={'Opsi'}>
+                                                <HasPermission p="update-customer">
                                                     <Dropdown.Item
                                                         onClick={() =>
                                                             toggleFormModal(
-                                                                user
+                                                                customer
                                                             )
                                                         }
                                                     >
@@ -119,11 +112,11 @@ export default function Index(props) {
                                                         </div>
                                                     </Dropdown.Item>
                                                 </HasPermission>
-                                                <HasPermission p="delete-user">
+                                                <HasPermission p="delete-customer">
                                                     <Dropdown.Item
                                                         onClick={() =>
                                                             handleDeleteClick(
-                                                                user
+                                                                customer
                                                             )
                                                         }
                                                     >

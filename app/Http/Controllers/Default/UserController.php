@@ -34,6 +34,7 @@ class UserController extends Controller
             'email' => 'required|email|unique:users,email',
             'password' => 'required|string|max:255',
             'role_id' => 'required|ulid|exists:roles,id',
+            'code' => 'nullable|string',
         ]);
 
         User::create([
@@ -41,6 +42,10 @@ class UserController extends Controller
             'email' => $request->email,
             'password' => bcrypt($request->password),
             'role_id' => $request->role_id,
+            'additonal_fields' => json_encode([
+                'code' => $request->code,
+                'address' => $request->address,
+            ]),
         ]);
 
         return redirect()->route('user.index')
@@ -51,8 +56,9 @@ class UserController extends Controller
     {
         $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:users,email,'.$user->id,
+            'email' => 'required|email|unique:users,email,' . $user->id,
             'password' => 'nullable|string|max:255',
+            'code' => 'nullable|string',
         ]);
 
         if ($user->role != null) {
@@ -65,6 +71,10 @@ class UserController extends Controller
             'email' => $request->email,
             'name' => $request->name,
             'role_id' => $request->role_id,
+            'additonal_fields' => json_encode([
+                'code' => $request->code,
+                'address' => $request->address,
+            ]),
         ]);
 
         if ($request->password != '') {
