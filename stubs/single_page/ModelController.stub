@@ -1,0 +1,32 @@
+<?php
+
+namespace App\Http\Controllers;
+
+use App\Models\{{ Model }};
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+
+class {{ Model }}Controller extends Controller
+{
+    public function index()
+    {
+        return inertia('{{ Model }}/Index', [
+            '{{ model }}' => {{ Model }}::first(),
+        ]);
+    }
+
+    public function update(Request $request)
+    {
+        $request->validate([
+            'name' => 'required|string',
+        ]);
+
+        {{ Model }}::updateOrCreate(
+            ['name' => $request->name],
+            ['name' => $request->name],
+        );
+
+        return redirect()->route('{{ models }}.index')
+            ->with('message', ['type' => 'success', 'message' => 'Item has beed updated']);
+    }
+}

@@ -1,0 +1,100 @@
+services:
+  app:
+      image: dunglas/frankenphp
+      container_name: template-app
+      volumes:
+        - ./:/app
+        - /etc/timezone:/etc/timezone:ro
+        - /etc/localtime:/etc/localtime:ro
+      mem_limit: 512m
+      mem_reservation: 128M
+      cpus: 0.5
+      ports:
+        - 8000:8000
+      tty: true
+      environment:
+        - SERVER_NAME=:8000
+      networks:
+        - template
+  mariadb:
+    image: mariadb:latest
+    container_name: template-mariadb
+    ports:
+      - 3306:3306
+    volumes:
+      - mariadb:/var/lib/mysql
+      - ./database:/database
+    environment:
+      MARIADB_DATABASE: app
+      MARIADB_USER: app
+      MARIADB_PASSWORD: password
+      MARIADB_ROOT_PASSWORD: password
+    mem_limit: 512m
+    mem_reservation: 128M
+    cpus: 0.5
+    networks:
+      template:
+        ipv4_address: 10.255.255.99
+  phpmyadmin:
+    container_name: template-phpmyadmin
+    depends_on:
+      - mariadb
+    image: phpmyadmin
+    ports:
+      - "8090:80"
+    environment:
+      PMA_HOST: mariadb
+      MYSQL_ROOT_PASSWORD: password
+      UPLOAD_LIMIT: '2048M'
+    networks:
+      - template
+  postgresql:
+    # image: postgres:latest
+    image: postgres:14-alpine3.17
+    container_name: template-postgres
+    restart: always
+    ports:
+      - 5432:5432
+    volumes:
+      - postgres:/var/lib/postgresql/data
+      - ./database:/database
+    environment:
+      POSTGRES_DB: app
+      POSTGRES_USER: app
+      POSTGRES_PASSWORD: password
+    mem_limit: 512m
+    mem_reservation: 128M
+    cpus: 0.5
+    networks:
+      template:
+        ipv4_address: 10.255.255.96
+
+  build:
+    image: node:20-alpine
+    container_name: template-build
+    ports:
+      - 5173:5173
+    volumes:
+      - ./:/var/www
+    working_dir: /var/www
+    entrypoint: ["npm","run", "dev"]
+    mem_limit: 1024m
+    mem_reservation: 128M
+    cpus: 1
+    networks:
+      - template
+
+volumes:
+  mariadb: 
+    driver: local
+  postgres:
+    driver: local
+
+networks:
+  template:
+    driver: bridge
+    ipam:
+      driver: default
+      config:
+          - subnet: 10.255.255.0/24
+            gateway: 10.255.255.1
