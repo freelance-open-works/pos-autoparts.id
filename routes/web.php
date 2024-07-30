@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\PurchaseOrderController;
 use App\Http\Controllers\ProductStockController;
 use App\Http\Controllers\ProductController;
@@ -50,6 +51,10 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // #Admin
+    Route::get('purchases/{purchase}/print', [PurchaseController::class, 'print'])->name('purchases.print');
+    Route::patch('purchases/{purchase}/patch', [PurchaseController::class, 'patch'])->name('purchases.patch');
+    Route::resource('purchases', PurchaseController::class);
+
     Route::get('purchase-orders/{purchaseOrder}/print', [PurchaseOrderController::class, 'print'])->name('purchase-orders.print');
     Route::patch('purchase-orders/{purchaseOrder}/patch', [PurchaseOrderController::class, 'patch'])->name('purchase-orders.patch');
     Route::resource('purchase-orders', PurchaseOrderController::class);

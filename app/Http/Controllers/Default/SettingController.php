@@ -21,6 +21,7 @@ class SettingController extends Controller
         $request->validate([
             'app_name' => 'required|string',
             'app_logo' => 'nullable|string',
+            'ppn_percent' => 'required|numeric',
         ]);
 
         DB::beginTransaction();

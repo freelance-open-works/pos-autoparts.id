@@ -31,14 +31,14 @@ claim (pengembalian) -> berdasarkan invoice penjualan nanti bisa di filter pakai
     -   [x] daftar pemesanan
     -   [x] submit pemesanan
     -   [x] cetak pdf pemesanan -> sesuai form excel;
--   [ ] pembelian
-        -> data diambil dari pemesanan , dapat input diskon dan harga beli
-    -   [ ] tambah
-    -   [ ] edit
-    -   [ ] hapus
-    -   [ ] daftar
-    -   [ ] submit (setelah submit stok masuk ke stock, stock fifo dan stock history)
-    -   [ ] cetak pembelian
+-   [x] pembelian
+        x -> data diambil dari pemesanan , dapat input diskon dan harga beli
+    -   [x] tambah
+    -   [x] edit
+    -   [x] hapus
+    -   [x] daftar
+    -   [x] submit (setelah submit stok masuk ke stock, stock fifo dan stock history)
+    -   [x] cetak pembelian
 -   [ ] penjualan
         -> data dari pembelian
     -   [ ] tambah
@@ -46,7 +46,9 @@ claim (pengembalian) -> berdasarkan invoice penjualan nanti bisa di filter pakai
     -   [ ] hapus
     -   [ ] daftar
     -   [ ] submit (setelah submit stok masuk ke stock, stock fifo dan stock history)
-    -   [ ] cetak pembelian
+    -   [ ] cetak pembelian / invoice
+    -   [ ] cetak surat jalan
+    -   [ ] cetak label
 -   [ ] pengembalian
         -> ambil data dari penjualan [filter by customer]
     -   [ ] tambah

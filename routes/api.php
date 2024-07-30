@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\ProductContoller;
+use App\Http\Controllers\Api\PurchaseOrderController;
 use App\Http\Controllers\Default\Api\SelectTableController;
 use App\Http\Controllers\Default\FileController;
 use App\Http\Middleware\JwtCustomApiVerification;
@@ -29,4 +30,5 @@ Route::middleware([JwtCustomApiVerification::class])
         Route::post('files', [FileController::class, 'store'])->name('api.file.store');
 
         Route::get('/products', [ProductContoller::class, 'index'])->name('api.products.index');
+        Route::get('/purchase-orders', [PurchaseOrderController::class, 'index'])->name('api.purchase-orders.index');
     });

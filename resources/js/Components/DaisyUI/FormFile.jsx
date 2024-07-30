@@ -117,6 +117,7 @@ export default function FormFile({
                             className="label-text-alt link"
                             href={link}
                             target="_blank"
+                            download={link}
                         >
                             Download File
                         </a>

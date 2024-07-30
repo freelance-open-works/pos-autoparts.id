@@ -45,7 +45,7 @@ class SelectTableController extends Controller
         }
 
         if ($request->pagination != '') {
-            return $query->paginate($request->limit ?? 20);
+            return $query->paginate($request->limit ?? 15);
         }
 
         return $query->limit($request->limit ?? 100)->get();

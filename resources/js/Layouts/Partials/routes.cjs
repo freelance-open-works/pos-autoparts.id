@@ -27,6 +27,14 @@ export default [
         permission: 'view-purchase-order',
     },
     {
+        name: 'Pembelian',
+        show: true,
+        icon: HiOutlineArchiveBox,
+        route: route('purchases.index'),
+        active: 'purchases.*',
+        permission: 'view-purchase',
+    },
+    {
         name: 'Data',
         show: true,
         icon: HiListBullet,

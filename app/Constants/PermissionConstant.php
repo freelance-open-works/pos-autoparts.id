@@ -20,6 +20,11 @@ class PermissionConstant
         ['label' => 'View Setting', 'name' => 'view-setting'],
 
         // #Add New Permission Below!
+        ['label' => 'Delete Purchase', 'name' => 'delete-purchase'],
+        ['label' => 'Update Purchase', 'name' => 'update-purchase'],
+        ['label' => 'Create Purchase', 'name' => 'create-purchase'],
+        ['label' => 'View Purchase', 'name' => 'view-purchase'],
+
         ['label' => 'Delete Purchase Order', 'name' => 'delete-purchase-order'],
         ['label' => 'Update Purchase Order', 'name' => 'update-purchase-order'],
         ['label' => 'Create Purchase Order', 'name' => 'create-purchase-order'],

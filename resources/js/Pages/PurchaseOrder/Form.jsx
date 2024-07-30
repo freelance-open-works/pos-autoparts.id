@@ -194,10 +194,6 @@ export default function Form(props) {
                                 placeholder="Pilih Part"
                                 onChange={handleAddItem}
                                 error={errors.items}
-                                params={{
-                                    columns:
-                                        'id|part_code|name|type|brand.name|cost',
-                                }}
                             />
                             <div className="overflow-x-auto">
                                 <table className="table">

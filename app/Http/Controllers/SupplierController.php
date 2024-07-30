@@ -23,7 +23,7 @@ class SupplierController extends Controller
         $query->orderBy('created_at', 'desc');
 
         return inertia('Supplier/Index', [
-            'data' => $query->paginate(10),
+            'data' => $query->paginate(),
         ]);
     }
 

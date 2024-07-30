@@ -33,3 +33,17 @@ if (!function_exists('formatDate')) {
         return \Illuminate\Support\Carbon::parse($date)->format('d-m-Y');
     }
 }
+
+if (!function_exists('formatNumZero')) {
+    function formatNumZero($n)
+    {
+        $max = 4; // 1000
+
+        $number = '';
+        foreach (range(0, $max - strlen($n)) as $_) {
+            $number .= '0';
+        }
+
+        return $number . $n;
+    }
+}

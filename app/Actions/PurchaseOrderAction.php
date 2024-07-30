@@ -6,11 +6,11 @@ use App\Models\PurchaseOrder;
 use Exception;
 use Illuminate\Support\Facades\DB;
 
-class PurchaseCodeAction
+class PurchaseOrderAction
 {
     const PREFIX = '/PO-ASI/';
 
-    public static function run($date)
+    public static function generate_code($date)
     {
         $fallback = 99999;
         $purchase = PurchaseOrder::where(DB::raw("DATE(po_date)"), $date)
@@ -27,19 +27,7 @@ class PurchaseCodeAction
             }
         }
 
-        $code = self::format($num) . self::PREFIX . now()->format('m/Y');
+        $code = formatNumZero($num) . self::PREFIX . now()->format('m/Y');
         return $code;
-    }
-
-    private static function format($n)
-    {
-        $max = 4; // 1000
-
-        $number = '';
-        foreach (range(0, $max - strlen($n)) as $zero) {
-            $number .= '0';
-        }
-
-        return $number . $n;
     }
 }

@@ -14,6 +14,8 @@ return new class extends Migration
         Schema::create('product_stock_fifos', function (Blueprint $table) {
             $table->ulid('id')->primary();
             //
+            $table->string('model')->nullable();
+            $table->ulid('model_id')->nullable();
             $table->ulid('product_id');
             $table->ulid('product_stock_id');
             $table->decimal('stock', 20, 2)->default(0);

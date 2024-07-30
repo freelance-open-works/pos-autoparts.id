@@ -11,8 +11,8 @@ class ProductStock extends Model
         'stock'
     ];
 
-    public function fifo()
+    public function fifos()
     {
-        return $this->belongsTo(ProductStockFifo::class, 'product_stock_id');
+        return $this->hasMany(ProductStockFifo::class, 'product_stock_id');
     }
 }

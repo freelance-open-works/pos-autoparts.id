@@ -18,13 +18,16 @@ class PurchaseOrderController extends Controller
         $query = PurchaseOrder::with(['supplier']);
 
         if ($request->q) {
-            $query->where('name', 'like', "%{$request->q}%");
+            $query->where(function ($query) use ($request) {
+                $query->where('po_code', 'like', "%{$request->q}%")
+                    ->orWhere('status', 'like', "%{$request->q}%");
+            });
         }
 
         $query->orderBy('created_at', 'desc');
 
         return inertia('PurchaseOrder/Index', [
-            'data' => $query->paginate(10),
+            'data' => $query->paginate(),
         ]);
     }
 
@@ -136,7 +139,7 @@ class PurchaseOrderController extends Controller
             'purchase_order' => $purchaseOrder->load(['creator']),
             'items' => $purchaseOrder->items()->with(['product.brand'])->get(),
             'setting' => new Setting(),
-        ]);
+        ])->setPaper('a4', 'landscape');
 
         return $pdf->stream();
     }

@@ -3,6 +3,7 @@ import { router } from '@inertiajs/react'
 import { usePrevious } from 'react-use'
 import { Head, Link } from '@inertiajs/react'
 import { HiPencil, HiTrash } from 'react-icons/hi'
+import { HiPaperAirplane } from 'react-icons/hi2'
 import { useModalState } from '@/hooks'
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
@@ -14,7 +15,6 @@ import Dropdown from '@/Components/DaisyUI/Dropdown'
 import Button from '@/Components/DaisyUI/Button'
 import Card from '@/Components/DaisyUI/Card'
 import { formatIDR } from '@/utils'
-import { HiPaperAirplane } from 'react-icons/hi2'
 import { purchase_order_status_submit } from '@/consts'
 
 export default function Index(props) {
@@ -27,16 +27,14 @@ export default function Index(props) {
 
     const confirmModal = useModalState()
 
-    const handleDeleteClick = (purchaseOrder) => {
-        confirmModal.setData(purchaseOrder)
+    const handleDeleteClick = (purchase) => {
+        confirmModal.setData(purchase)
         confirmModal.toggle()
     }
 
     const onDelete = () => {
         if (confirmModal.data !== null) {
-            router.delete(
-                route('purchase-orders.destroy', confirmModal.data.id)
-            )
+            router.delete(route('purchases.destroy', confirmModal.data.id))
         }
     }
 
@@ -55,14 +53,14 @@ export default function Index(props) {
     }, [search])
 
     return (
-        <AuthenticatedLayout page={'System'} action={'Purchase Order'}>
-            <Head title="Purchase Order" />
+        <AuthenticatedLayout page={'System'} action={'Purchase'}>
+            <Head title="Purchase" />
 
             <div>
                 <Card>
                     <div className="flex justify-between">
-                        <HasPermission p="create-purchase-order">
-                            <Link href={route('purchase-orders.create')}>
+                        <HasPermission p="create-purchase">
+                            <Link href={route('purchases.create')}>
                                 <Button size="sm" type="primary">
                                     Tambah
                                 </Button>
@@ -82,9 +80,8 @@ export default function Index(props) {
                                 <tr>
                                     <th>No PO</th>
                                     <th>Tanggal</th>
-                                    <th>Kode Cust</th>
-                                    <th>Customer</th>
-                                    <th>Total</th>
+                                    <th>Supplier</th>
+                                    <th>Total (Net)</th>
                                     <th>Status</th>
                                     <th />
                                 </tr>
@@ -92,17 +89,16 @@ export default function Index(props) {
                             <tbody>
                                 {data.map((item, index) => (
                                     <tr key={item.id}>
-                                        <td>{item.po_code}</td>
-                                        <td>{item.po_date}</td>
-                                        <td>{item.supplier.code}</td>
+                                        <td>{item.purchase_order?.po_code}</td>
+                                        <td>{item.p_date}</td>
                                         <td>{item.supplier.name}</td>
-                                        <td>{formatIDR(item.amount_cost)}</td>
+                                        <td>{formatIDR(item.amount_net)}</td>
                                         <td>{item.status}</td>
                                         <td className="text-right">
                                             <div className="w-full flex flex-row gap-2">
                                                 <a
                                                     href={route(
-                                                        'purchase-orders.print',
+                                                        'purchases.print',
                                                         item
                                                     )}
                                                     target="_blank"
@@ -110,12 +106,12 @@ export default function Index(props) {
                                                     <Button>Cetak</Button>
                                                 </a>
                                                 <Dropdown label={'Opsi'}>
-                                                    <HasPermission p="update-purchase-order">
+                                                    <HasPermission p="update-purchase">
                                                         <>
                                                             <Dropdown.Item>
                                                                 <Link
                                                                     href={route(
-                                                                        'purchase-orders.patch',
+                                                                        'purchases.patch',
                                                                         item
                                                                     )}
                                                                     method="patch"
@@ -135,7 +131,7 @@ export default function Index(props) {
                                                                 onClick={() =>
                                                                     router.visit(
                                                                         route(
-                                                                            'purchase-orders.edit',
+                                                                            'purchases.edit',
                                                                             item
                                                                         )
                                                                     )
@@ -150,7 +146,7 @@ export default function Index(props) {
                                                             </Dropdown.Item>
                                                         </>
                                                     </HasPermission>
-                                                    <HasPermission p="delete-purchase-order">
+                                                    <HasPermission p="delete-purchase">
                                                         <Dropdown.Item
                                                             onClick={() =>
                                                                 handleDeleteClick(

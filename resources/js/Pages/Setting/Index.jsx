@@ -29,6 +29,7 @@ export default function Setting(props) {
         app_logo: '',
         company_name: extractValue(setting, 'company_name'),
         company_address: extractValue(setting, 'company_address'),
+        ppn_percent: extractValue(setting, 'ppn_percent'),
     })
 
     const handleOnChange = (event) => {
@@ -82,6 +83,13 @@ export default function Setting(props) {
                         onChange={handleOnChange}
                         label="Alamat"
                         error={errors.company_address}
+                    />
+                    <TextInput
+                        name="ppn_percent"
+                        value={data.ppn_percent}
+                        onChange={handleOnChange}
+                        label="PPN (%)"
+                        error={errors.ppn_percent}
                     />
                     <div className="mt-4">
                         <Button
