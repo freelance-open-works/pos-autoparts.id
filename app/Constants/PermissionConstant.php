@@ -33,18 +33,28 @@ class PermissionConstant
         ['label' => 'Delete Custom Form Record', 'name' => 'delete-custom-form-record'],
 
         // #Add New Permission Below!
-		['label' => 'Delete Supplier', 'name' => 'delete-supplier'],
-		['label' => 'Update Supplier', 'name' => 'update-supplier'],
-		['label' => 'Create Supplier', 'name' => 'create-supplier'],
-		['label' => 'View Supplier', 'name' => 'view-supplier'],
-		['label' => 'Delete Customer', 'name' => 'delete-customer'],
-		['label' => 'Update Customer', 'name' => 'update-customer'],
-		['label' => 'Create Customer', 'name' => 'create-customer'],
-		['label' => 'View Customer', 'name' => 'view-customer'],
-		['label' => 'Delete Expedition', 'name' => 'delete-expedition'],
-		['label' => 'Update Expedition', 'name' => 'update-expedition'],
-		['label' => 'Create Expedition', 'name' => 'create-expedition'],
-		['label' => 'View Expedition', 'name' => 'view-expedition'],
+
+        ['label' => 'View Product Stock', 'name' => 'view-product-stock'],
+
+        ['label' => 'Delete Product', 'name' => 'delete-product'],
+        ['label' => 'Update Product', 'name' => 'update-product'],
+        ['label' => 'Create Product', 'name' => 'create-product'],
+        ['label' => 'View Product', 'name' => 'view-product'],
+
+        ['label' => 'Delete Supplier', 'name' => 'delete-supplier'],
+        ['label' => 'Update Supplier', 'name' => 'update-supplier'],
+        ['label' => 'Create Supplier', 'name' => 'create-supplier'],
+        ['label' => 'View Supplier', 'name' => 'view-supplier'],
+
+        ['label' => 'Delete Customer', 'name' => 'delete-customer'],
+        ['label' => 'Update Customer', 'name' => 'update-customer'],
+        ['label' => 'Create Customer', 'name' => 'create-customer'],
+        ['label' => 'View Customer', 'name' => 'view-customer'],
+
+        ['label' => 'Delete Expedition', 'name' => 'delete-expedition'],
+        ['label' => 'Update Expedition', 'name' => 'update-expedition'],
+        ['label' => 'Create Expedition', 'name' => 'create-expedition'],
+        ['label' => 'View Expedition', 'name' => 'view-expedition'],
 
     ];
 }

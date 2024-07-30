@@ -20,7 +20,7 @@ claim (pengembalian) -> berdasarkan invoice penjualan nanti bisa di filter pakai
 -   [x] crud expedisi - normal
 -   [x] crud customer - normal
 -   [x] crud supplier - normal
--   [ ] crud product/barang/part - normal (pakai table brands)
+-   [x] crud product/barang/part - normal (pakai table brands)
 -   [ ] halaman stock
 
 -   [ ] pemesanan po ( tidak berpengaruh ke stock )

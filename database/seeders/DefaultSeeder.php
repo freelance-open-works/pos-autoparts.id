@@ -3,14 +3,19 @@
 namespace Database\Seeders;
 
 use App\Constants\PermissionConstant;
+use App\Models\Brand;
 use App\Models\Customer;
 use App\Models\Default\Permission;
 use App\Models\Default\Role;
 use App\Models\Default\Setting;
 use App\Models\Default\User;
 use App\Models\Expedition;
+use App\Models\Product;
 use Illuminate\Database\Seeder;
+use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Support\Str;
+use Rap2hpoutre\FastExcel\FastExcel;
+use Spatie\Async\Pool;
 
 class DefaultSeeder extends Seeder
 {
@@ -87,6 +92,8 @@ class DefaultSeeder extends Seeder
 
         $this->expeditions();
         $this->customers();
+        $this->brands();
+        $this->products();
     }
 
     public function expeditions()
@@ -143,5 +150,74 @@ class DefaultSeeder extends Seeder
         foreach ($customers as $c) {
             Customer::create($c);
         }
+    }
+
+    public function brands()
+    {
+        $brands = [
+            ['name' => 'DAIHATSU'],
+            ['name' => 'ISUZU'],
+            ['name' => 'TOYOTA'],
+            ['name' => 'SUZUKI'],
+            ['name' => 'DENSO'],
+            ['name' => 'TDW'],
+            ['name' => 'MITSUBISHI'],
+        ];
+
+        foreach ($brands as $b) {
+            Brand::create($b);
+        }
+    }
+
+    public function products()
+    {
+        $startTime = now();
+        info(self::class, ['start import products', $startTime]);
+        $brands = Brand::all()->mapWithKeys(function ($b) {
+            return [$b->name => $b->id];
+        });
+
+        $path = storage_path('app/default/DATABASE SPAREPART.xlsx');
+        $pool = Pool::create();
+        foreach (range(1, 7) as $n) { //50 * 7 = 350,
+            $config = config('database.connections.sqlite');
+            $pool->add(function () use ($n, $path, $brands, $config) {
+                syslog(LOG_INFO, 'Chunk = ' . $n . ' Start');
+                // recreate eloquent connection on every threads created
+                $capsule = new Capsule;
+                $capsule->addConnection($config);
+                $capsule->setAsGlobal();
+                $capsule->bootEloquent();
+
+                $sheet = (new FastExcel())->sheet($n)->import($path);
+
+                $ulid = fn () => Str::ulid();
+                $products = [];
+                foreach ($sheet as $r) {
+                    $products[] = [
+                        'id' => $ulid(),
+                        'name' => $r['Nama Barang'],
+                        'part_code' => $r['Part No'],
+                        'type' => $r['Type Barang'],
+                        'discount' => $r['Discount'],
+                        'cost' => $r['Harga Beli'],
+                        'price' => $r['Harga Jual'],
+                        'brand_id' => $brands[$r['Merk']],
+                    ];
+                }
+
+                foreach (array_chunk($products, 1000) as $ps) {
+                    Product::insert($ps);
+                }
+
+                syslog(LOG_INFO, 'Chunk = ' . $n . ' Done');
+            },)->catch(function ($exception) {
+                info(self::class, [$exception]);
+            });
+        }
+
+        $pool->wait();
+
+        info(self::class, ['done import products', now(), $startTime->diffInSeconds(now())]);
     }
 }

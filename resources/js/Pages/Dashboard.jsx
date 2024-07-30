@@ -3,6 +3,7 @@ import { Head } from '@inertiajs/react'
 
 import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import DummyDashbord from '@/Components/Dummy/Dashboard'
+import { formatIDR } from '@/utils'
 
 export default function Dashboard(props) {
     return (
@@ -15,7 +16,7 @@ export default function Dashboard(props) {
                         <div className="stat">
                             <div className="stat-title">Roles</div>
                             <div className="stat-value text-primary">
-                                {props.role_count}{' '}
+                                {formatIDR(props.role_count)}{' '}
                             </div>
                         </div>
                     </div>
@@ -23,24 +24,35 @@ export default function Dashboard(props) {
                         <div className="stat">
                             <div className="stat-title">Users</div>
                             <div className="stat-value text-primary">
-                                {props.user_count}
+                                {formatIDR(props.user_count)}
                             </div>
                         </div>
                     </div>
                     <div className="stats shadow flex-1">
                         <div className="stat">
-                            <div className="stat-title">Empty</div>
-                            <div className="stat-value text-primary">0</div>
+                            <div className="stat-title">Customer</div>
+                            <div className="stat-value text-primary">
+                                {formatIDR(props.customer_count)}
+                            </div>
                         </div>
                     </div>
                     <div className="stats shadow flex-1">
                         <div className="stat">
-                            <div className="stat-title">Empty</div>
-                            <div className="stat-value text-primary">0</div>
+                            <div className="stat-title">Supplier</div>
+                            <div className="stat-value text-primary">
+                                {formatIDR(props.supplier_count)}
+                            </div>
+                        </div>
+                    </div>
+                    <div className="stats shadow flex-1">
+                        <div className="stat">
+                            <div className="stat-title">Product</div>
+                            <div className="stat-value text-primary">
+                                {formatIDR(props.product_count)}
+                            </div>
                         </div>
                     </div>
                 </div>
-                <DummyDashbord />
             </div>
         </AuthenticatedLayout>
     )
