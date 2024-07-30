@@ -10,7 +10,6 @@ use Illuminate\View\Component;
 class PrintShared extends Component
 {
 
-    protected $useVite = false;
     protected $css = '';
     /**
      * Create a new component instance.
@@ -18,16 +17,10 @@ class PrintShared extends Component
     public function __construct()
     {
         // read hot in public return vite
-        if (File::exists(public_path('hot'))) {
-            $this->useVite = true;
-        }
-
-        if ($this->useVite == false) {
-            $manifests = File::json(public_path('build/manifest.json'));
-            foreach ($manifests as $man) {
-                if (strpos($man['file'], '.css') !== false) {
-                    $this->css = File::get(public_path('build/' . $man['file']));
-                }
+        $manifests = File::json(public_path('build/manifest.json'));
+        foreach ($manifests as $man) {
+            if (strpos($man['file'], '.css') !== false) {
+                $this->css = File::get(public_path('build/' . $man['file']));
             }
         }
     }
@@ -38,7 +31,6 @@ class PrintShared extends Component
     public function render(): View|Closure|string
     {
         return view('components.print.shared', [
-            'use_vite' => $this->useVite,
             'css' => $this->css,
         ]);
     }
