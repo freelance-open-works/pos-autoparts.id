@@ -69,7 +69,10 @@ class DefaultSeeder extends Seeder
         ]);
 
         $sales = Role::create(['name' => Role::SALES]);
-        // later...
+        $permissions = Permission::where('name', 'like', '%sale')->orWhere('name', 'like', '%purchase%')->get();
+        foreach ($permissions as $permission) {
+            $sales->rolePermissions()->create(['permission_id' => $permission->id]);
+        }
 
         User::create([
             'name' => 'ANDI MUHAMMAD SYUKUR YUSUF',

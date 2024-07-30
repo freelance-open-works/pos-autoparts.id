@@ -82,8 +82,8 @@ export default function Index(props) {
                                 <tr>
                                     <th>No PO</th>
                                     <th>Tanggal</th>
-                                    <th>Kode Cust</th>
-                                    <th>Customer</th>
+                                    <th>Kode Supplier</th>
+                                    <th>Supplier</th>
                                     <th>Total</th>
                                     <th>Status</th>
                                     <th />

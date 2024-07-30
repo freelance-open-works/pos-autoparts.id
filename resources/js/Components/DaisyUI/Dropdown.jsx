@@ -24,10 +24,7 @@ const Dropdown = ({ children, label }) => {
             ref={ref}
             onClick={() => setOpen(true)}
         >
-            <summary
-                role="button"
-                className="btn flex flex-row w-[80px] px-2.5"
-            >
+            <summary role="button" className="btn flex flex-row w-[80px] px-1">
                 <div>{label}</div>
                 <div>
                     <svg

@@ -15,7 +15,7 @@
             <td>
                 <img src="{{ storage_path('/app/public/'.$setting->getValueByKey('app_logo')) }}" style="width: 200px;" />
             </td>
-            <td class="font-bold text-2xl text-right">PURCHASE</td>
+            <td class="font-bold text-2xl text-right">SALE INVOICE</td>
         </tr>
         <tr>
             <td>
@@ -25,26 +25,22 @@
         </tr>
     </table>
     <hr />
-    <table class="mb-4">
+    <table class="w-full mb-4">
         <tr>
-            <td class="font-bold capitalize">NO PO</td>
+            <td class="font-bold capitalize">To</td>
             <td class="px-2">:</td>
-            <td> {{ $purchase->purchaseOrder->po_code }}</td>
+            <td> {{ $sale->customer->name }}</td>
+            <td class="font-bold capitalize">Invoice Number</td>
+            <td class="px-2">:</td>
+            <td> {{ $sale->s_code }}</td>
         </tr>
         <tr>
-            <td class="font-bold capitalize">Tanggal PO</td>
+            <td class="font-bold capitalize">Address</td>
             <td class="px-2">:</td>
-            <td> {{ formatDate($purchase->p_date) }}</td>
-        </tr>
-        <tr>
-            <td class="font-bold capitalize">Nama Supplier</td>
+            <td> {{ $sale->address }}</td>
+            <td class="font-bold capitalize">Invoice Date</td>
             <td class="px-2">:</td>
-            <td> {{ $purchase->supplier->name }}</td>
-        </tr>
-        <tr>
-            <td class="font-bold capitalize">Alamat Supplier</td>
-            <td class="px-2">:</td>
-            <td> {{ $purchase->address }}</td>
+            <td> {{ formatDate($sale->s_date) }}</td>
         </tr>
     </table>
     <table class="border-collapse border border-black w-full">
@@ -101,7 +97,7 @@
                     {{ formatIDR($item->qty) }}
                 </td>
                 <td class="border border-black p-1 text-right">
-                    {{ formatIDR($item->cost) }}
+                    {{ formatIDR($item->price) }}
                 </td>
                 <td class="border border-black p-1 text-right">
                     {{ formatIDR($item->discount_amount) }}
@@ -118,11 +114,11 @@
             </tr>
             @endforeach
             @foreach ([
-            'Harga Jual' => $purchase->amount_cost + $purchase->amount_discount,
-            'Diskon' => $purchase->amount_discount,
-            'Grand Total' => $purchase->amount_cost,
-            'DPP' => $purchase->amount_net,
-            'PPN' => $purchase->amount_ppn,
+            'Harga Jual' => $sale->amount_cost + $sale->amount_discount,
+            'Diskon' => $sale->amount_discount,
+            'Grand Total' => $sale->amount_cost,
+            'DPP' => $sale->amount_net,
+            'PPN' => $sale->amount_ppn,
             ] as $key => $value)
             <tr class="border border-black">
                 <td class="border border-black p-1 max-w-sm" colspan="7">
@@ -137,36 +133,30 @@
             @endforeach
         </tbody>
     </table>
-    <table class="w-full pt-4 text-center">
-        <tbody>
-            <tr>
-                <td class="text-left text-sm">Keterangan : </td>
-            </tr>
-            <tr>
-                <td class="text-left" style="width: 200px;">
-                    <pre class="font-sans text-sm" style="width: 200px;">{{ $purchase->note }}</pre>
-                </td>
-            </tr>
-        </tbody>
-    </table>
     <table class="w-full pt-4 text-center mt-4">
         <tbody>
             <tr>
-                <td class="text-left ">
-                    <pre class="font-sans text-xs">- Semua pengiriman barang harus disertakan Nota/Faktur
-- Barang akan kami kembalikan jika tidak sesuai PO
-                </pre>
-                </td>
+                <td class="text-center">Yang Menerima</td>
                 <td class="text-center font-bold">Originator</td>
             </tr>
             <tr>
-                <td class="text-left text-xs"> </td>
-                <td class="text-center font-bold">Autopart Sales Indonesia</td>
+                <td class="text-center text-xs"> </td>
+                <td class="text-center font-bold">Makasar, {{ formatDate($sale->s_date) }}</td>
             </tr>
             <tr>
-                <td class=""></td>
-                <td class="pt-10">{{ $purchase->creator->name }}</td>
+                <td class="text-center">
+                    <pre>(         )</pre>
+                </td>
+                <td class="pt-10">{{ $sale->creator->name }}</td>
             </tr>
+        </tbody>
+    </table>
+    <table class="w-full pt-4 text-center">
+        <tbody>
+            <tr>
+                <td class="text-left text-sm font-bold">Harga Grand Total sudah termasuk PPN 11%</td>
+            </tr>
+
         </tbody>
     </table>
 </body>

@@ -6,58 +6,57 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import TextInput from '@/Components/DaisyUI/TextInput'
 import Button from '@/Components/DaisyUI/Button'
 import Card from '@/Components/DaisyUI/Card'
-import TextareaInput from '@/Components/DaisyUI/TextareaInput'
 import FormInputDate from '@/Components/DaisyUI/FormInputDate'
 import { SelectOptionArray } from '@/Components/DaisyUI/SelectInput'
 import SelectModalInput from '@/Components/DaisyUI/SelectModalInput'
+import { sale_status } from '@/consts'
+import TextareaInput from '@/Components/DaisyUI/TextareaInput'
 import SelectModalProduct from '../Product/SelectModal'
-import { purchase_order_status, purchase_order_types } from '@/consts'
-import { formatIDR } from '@/utils'
-import SelectModalPurchaseOrder from '../PurchaseOrder/SelectModal'
 import { HiXMark } from 'react-icons/hi2'
+import { formatIDR } from '@/utils'
+import SelectModalPurchase from '../Purchase/SelectModal'
 
 export default function Form(props) {
     const {
         props: { errors },
     } = usePage()
-    const { purchase, ppn_percent } = props
+    const { sale, ppn_percent } = props
 
     const [processing, setProcessing] = useState(false)
 
-    const [purchase_order, set_purchase_order] = useState('')
-    const [p_date, set_p_date] = useState(new Date())
+    const [purchase, set_purchase] = useState('')
+    const [s_date, set_s_date] = useState(new Date())
     const [status, set_status] = useState('')
     const [address, set_address] = useState('')
     const [note, set_note] = useState('')
-    const [supplier, set_supplier] = useState(null)
+    const [customer, set_customer] = useState(null)
     const [items, set_items] = useState([])
 
-    const handleSetPurchaseOrder = (po) => {
-        set_purchase_order(po)
-        handleSetSupplier(po.supplier)
+    const handleSetPurchase = (p) => {
+        set_purchase(p)
         set_items(
-            po.items.map((item) => {
+            p.items.map((item) => {
                 return {
                     ...item.product,
                     product_id: item.product.id,
                     qty: item.qty,
-                    subtotal: item.product.cost,
+                    subtotal: item.product.price,
                     discount_percent: 0,
                     discount_amount: 0,
                     discount_total: 0,
-                    subtotal_discount: item.product.cost,
+                    subtotal_discount: item.product.price,
                     subtotal_net:
-                        item.product.cost -
-                        item.product.cost * (ppn_percent / 100),
-                    subtotal_ppn: item.product.cost * (ppn_percent / 100),
+                        item.product.price -
+                        item.product.price * (ppn_percent / 100),
+                    subtotal_ppn: item.product.price * (ppn_percent / 100),
                 }
             })
         )
     }
 
-    const handleSetSupplier = (supplier) => {
-        set_supplier(supplier)
-        set_address(supplier.address)
+    const handleSetCustomer = (customer) => {
+        set_customer(customer)
+        set_address(customer.address)
     }
 
     const handleAddItem = (item) => {
@@ -71,13 +70,13 @@ export default function Form(props) {
                 ...item,
                 product_id: item.id,
                 qty: 1,
-                subtotal: item.cost,
+                subtotal: item.price,
                 discount_percent: 0,
                 discount_amount: 0,
                 discount_total: 0,
-                subtotal_discount: item.cost,
-                subtotal_net: item.cost - item.cost * (ppn_percent / 100),
-                subtotal_ppn: item.cost * (ppn_percent / 100),
+                subtotal_discount: item.price,
+                subtotal_net: item.price - item.price * (ppn_percent / 100),
+                subtotal_ppn: item.price * (ppn_percent / 100),
             })
         )
     }
@@ -104,7 +103,7 @@ export default function Form(props) {
 
                     i[name] = value
 
-                    i['subtotal'] = Number(i['qty'] * i['cost'])
+                    i['subtotal'] = Number(i['qty'] * i['price'])
                     i['discount_total'] =
                         Number(i['discount_amount']) +
                         Number(i['subtotal'] * (i['discount_percent'] / 100))
@@ -130,13 +129,13 @@ export default function Form(props) {
     const total_ppn = items.reduce((p, item) => p + item.subtotal_ppn, 0)
 
     const payload = {
-        purchase_order_id: purchase_order?.id,
+        purchase_id: purchase?.id,
         ppn_percent_applied: ppn_percent,
-        p_date,
+        s_date: s_date,
         status,
         address,
         note,
-        supplier_id: supplier?.id,
+        customer_id: customer?.id,
         items,
         amount_cost: total_cost,
         amount_discount: discount,
@@ -145,8 +144,8 @@ export default function Form(props) {
     }
 
     const handleSubmit = () => {
-        if (isEmpty(purchase) === false) {
-            router.put(route('purchases.update', purchase), payload, {
+        if (isEmpty(sale) === false) {
+            router.put(route('sales.update', sale), payload, {
                 onStart: () => setProcessing(true),
                 onFinish: (e) => {
                     setProcessing(false)
@@ -154,7 +153,7 @@ export default function Form(props) {
             })
             return
         }
-        router.post(route('purchases.store'), payload, {
+        router.post(route('sales.store'), payload, {
             onStart: () => setProcessing(true),
             onFinish: (e) => {
                 setProcessing(false)
@@ -163,61 +162,61 @@ export default function Form(props) {
     }
 
     useEffect(() => {
-        if (!isEmpty(purchase)) {
-            set_purchase_order(purchase.purchase_order)
-            set_p_date(purchase.p_date)
-            set_status(purchase.status)
-            set_address(purchase.address ?? '')
-            set_note(purchase.note ?? '')
-            set_supplier(purchase.supplier)
+        if (!isEmpty(sale)) {
+            set_purchase(sale.purchase)
+            set_s_date(sale.s_date)
+            set_status(sale.status)
+            set_address(sale.address ?? '')
+            set_note(sale.note ?? '')
+            set_customer(sale.customer)
             set_items(
-                purchase.items.map((item) => {
+                sale.items.map((item) => {
                     return {
                         ...item,
                         ...item['product'],
-                        subtotal: item['qty'] * item['cost'],
-                        cost: item['cost'],
+                        subtotal: item['qty'] * item['price'],
+                        price: item['price'],
                     }
                 })
             )
         }
-    }, [purchase])
+    }, [sale])
 
     return (
-        <AuthenticatedLayout page={'System'} action={'Purchase'}>
-            <Head title="Purchase" />
+        <AuthenticatedLayout page={'System'} action={'Sale'}>
+            <Head title="Sale" />
 
             <div>
                 <Card>
                     <div className="flex flex-col gap-2 justify-between">
-                        <SelectModalPurchaseOrder
-                            label="Pemesanan (PO)"
-                            placeholder="Pilih Pemesanan (PO)"
-                            onChange={handleSetPurchaseOrder}
-                            error={errors.purchase_order_id}
-                            value={purchase_order?.po_code}
+                        <SelectModalPurchase
+                            label="Pembelian"
+                            placeholder="Pilih Pembelian"
+                            onChange={handleSetPurchase}
+                            error={errors.purchase_id}
+                            value={purchase?.p_code}
                         />
                         <div className="w-full grid grid-cols-1 md:grid-cols-2 gap-2 border border-gray-400 rounded-xl px-2 py-4">
                             <FormInputDate
-                                value={p_date}
+                                value={s_date}
                                 label={'Tanggal'}
-                                onChange={(date) => set_p_date(date)}
+                                onChange={(date) => set_s_date(date)}
                                 error={errors.po_date}
                             />
                             <SelectOptionArray
                                 value={status}
                                 label={'Status'}
-                                options={purchase_order_status}
+                                options={sale_status}
                                 onChange={(e) => set_status(e.target.value)}
                                 error={errors.status}
                             />
                             <SelectModalInput
-                                label="Nama Supplier"
-                                value={supplier}
-                                onChange={handleSetSupplier}
-                                error={errors.supplier_id}
+                                label="Nama Customer"
+                                value={customer}
+                                onChange={handleSetCustomer}
+                                error={errors.customer_id}
                                 params={{
-                                    table: 'suppliers',
+                                    table: 'customers',
                                     columns: 'id|code|name|address',
                                     display_name: 'name',
                                     orderby: 'created_at.asc',
@@ -277,7 +276,7 @@ export default function Form(props) {
                                                 <td>{item.name}</td>
                                                 <td>{item?.brand?.name}</td>
                                                 <td className="text-right p-[5px]">
-                                                    <div className="w-full min-w-[100px]">
+                                                    <div className="w-full">
                                                         <TextInput
                                                             type="number"
                                                             value={item.qty}
@@ -299,7 +298,7 @@ export default function Form(props) {
                                                     <div className="w-full min-w-[100px]">
                                                         <TextInput
                                                             type="number"
-                                                            value={item.cost}
+                                                            value={item.price}
                                                             onChange={({
                                                                 target: {
                                                                     value,
@@ -307,14 +306,14 @@ export default function Form(props) {
                                                             }) =>
                                                                 handleChangeItem(
                                                                     item,
-                                                                    'cost',
+                                                                    'price',
                                                                     value
                                                                 )
                                                             }
                                                         />
                                                     </div>
                                                 </td>
-                                                <td className="text-right p-[5px]">
+                                                <td className="text-right  p-[5px]">
                                                     <div className="w-full min-w-[100px]">
                                                         <TextInput
                                                             type="number"
@@ -335,7 +334,7 @@ export default function Form(props) {
                                                         />
                                                     </div>
                                                 </td>
-                                                <td className="text-right p-[5px]">
+                                                <td className="text-right  p-[5px]">
                                                     <div className="w-full min-w-[100px]">
                                                         <TextInput
                                                             type="number"
@@ -424,7 +423,7 @@ export default function Form(props) {
                                 >
                                     Simpan
                                 </Button>
-                                <Link href={route('purchases.index')}>
+                                <Link href={route('sales.index')}>
                                     <Button type="secondary">Kembali</Button>
                                 </Link>
                             </div>

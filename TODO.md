@@ -41,13 +41,13 @@ claim (pengembalian) -> berdasarkan invoice penjualan nanti bisa di filter pakai
     -   [x] cetak pembelian
 -   [ ] penjualan
         -> data dari pembelian
-    -   [ ] tambah
-    -   [ ] edit
-    -   [ ] hapus
-    -   [ ] daftar
+    -   [x] tambah
+    -   [x] edit
+    -   [x] hapus
+    -   [x] daftar
     -   [ ] submit (setelah submit stok masuk ke stock, stock fifo dan stock history)
-    -   [ ] cetak pembelian / invoice
-    -   [ ] cetak surat jalan
+    -   [x] cetak pembelian / invoice
+    -   [ ] cetak surat jalan -> modal , isi data -> print
     -   [ ] cetak label
 -   [ ] pengembalian
         -> ambil data dari penjualan [filter by customer]

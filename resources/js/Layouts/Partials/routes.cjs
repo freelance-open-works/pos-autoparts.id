@@ -35,6 +35,14 @@ export default [
         permission: 'view-purchase',
     },
     {
+        name: 'Penjualan',
+        show: true,
+        icon: HiOutlineArchiveBox,
+        route: route('sales.index'),
+        active: 'sales.*',
+        permission: 'view-sale',
+    },
+    {
         name: 'Data',
         show: true,
         icon: HiListBullet,

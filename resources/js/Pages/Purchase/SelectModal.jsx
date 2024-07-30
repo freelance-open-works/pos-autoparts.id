@@ -8,7 +8,7 @@ import SearchInput from '@/Components/DaisyUI/SearchInput'
 import { useDebounce, usePagination } from '@/hooks'
 import { formatIDR } from '@/utils'
 
-export default function SelectModalPurchaseOrder(props) {
+export default function SelectModalPurchase(props) {
     const {
         props: { auth },
     } = usePage()
@@ -25,10 +25,7 @@ export default function SelectModalPurchaseOrder(props) {
         setOpen(!isOpen)
     }
 
-    const [data, fetch, loading] = usePagination(
-        auth,
-        `api.purchase-orders.index`
-    )
+    const [data, fetch, loading] = usePagination(auth, `api.purchases.index`)
 
     const handleItemSelected = (item) => {
         onChange(item)
@@ -82,9 +79,9 @@ export default function SelectModalPurchaseOrder(props) {
                                 <tr>
                                     <th>No PO</th>
                                     <th>Tanggal</th>
-                                    <th>Kode Supplier</th>
+                                    <th>Kode Cust</th>
                                     <th>Supplier</th>
-                                    <th>Total</th>
+                                    <th>Total (NET)</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>
@@ -95,8 +92,8 @@ export default function SelectModalPurchaseOrder(props) {
                                         key={item.id}
                                         className="hover"
                                     >
-                                        <td>{item.po_code}</td>
-                                        <td>{item.po_date}</td>
+                                        <td>{item.purchase_order.po_code}</td>
+                                        <td>{item.p_date}</td>
                                         <td>{item.supplier.code}</td>
                                         <td>{item.supplier.name}</td>
                                         <td>{formatIDR(item.amount_cost)}</td>

@@ -5,8 +5,6 @@ namespace App\Constants;
 class PermissionConstant
 {
     const LIST = [
-        ['label' => 'View Dashboard', 'name' => 'view-dashboard'],
-
         ['label' => 'Create User', 'name' => 'create-user'],
         ['label' => 'Update User', 'name' => 'update-user'],
         ['label' => 'View User', 'name' => 'view-user'],
@@ -17,9 +15,12 @@ class PermissionConstant
         ['label' => 'View Role', 'name' => 'view-role'],
         ['label' => 'Delete Role', 'name' => 'delete-role'],
 
-        ['label' => 'View Setting', 'name' => 'view-setting'],
-
         // #Add New Permission Below!
+        ['label' => 'Delete Sale', 'name' => 'delete-sale'],
+        ['label' => 'Update Sale', 'name' => 'update-sale'],
+        ['label' => 'Create Sale', 'name' => 'create-sale'],
+        ['label' => 'View Sale', 'name' => 'view-sale'],
+
         ['label' => 'Delete Purchase', 'name' => 'delete-purchase'],
         ['label' => 'Update Purchase', 'name' => 'update-purchase'],
         ['label' => 'Create Purchase', 'name' => 'create-purchase'],
@@ -29,8 +30,6 @@ class PermissionConstant
         ['label' => 'Update Purchase Order', 'name' => 'update-purchase-order'],
         ['label' => 'Create Purchase Order', 'name' => 'create-purchase-order'],
         ['label' => 'View Purchase Order', 'name' => 'view-purchase-order'],
-
-        ['label' => 'View Product Stock', 'name' => 'view-product-stock'],
 
         ['label' => 'Delete Product', 'name' => 'delete-product'],
         ['label' => 'Update Product', 'name' => 'update-product'],
@@ -52,5 +51,9 @@ class PermissionConstant
         ['label' => 'Create Expedition', 'name' => 'create-expedition'],
         ['label' => 'View Expedition', 'name' => 'view-expedition'],
 
+        // Lonely permission
+        ['label' => 'View Dashboard', 'name' => 'view-dashboard'],
+        ['label' => 'View Setting', 'name' => 'view-setting'],
+        ['label' => 'View Product Stock', 'name' => 'view-product-stock'],
     ];
 }
