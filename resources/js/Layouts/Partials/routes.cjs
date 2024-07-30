@@ -5,6 +5,8 @@ import {
     HiGlobeAlt,
     HiInformationCircle,
     HiListBullet,
+    HiShoppingBag,
+    HiOutlineArchiveBox,
 } from 'react-icons/hi2'
 
 export default [
@@ -17,37 +19,49 @@ export default [
         permission: 'view-dashboard',
     },
     {
-        name: 'Ekspedisi',
+        name: 'Pemesanan (PO)',
         show: true,
-        icon: HiListBullet,
-        route: route('expeditions.index'),
-        active: 'expeditions.index',
-        permission: 'view-expedition',
+        icon: HiOutlineArchiveBox,
+        route: route('purchase-orders.index'),
+        active: 'purchase-orders.*',
+        permission: 'view-purchase-order',
     },
     {
-        name: 'Customer',
+        name: 'Data',
         show: true,
         icon: HiListBullet,
-        route: route('customers.index'),
-        active: 'customers.index',
-        permission: 'view-customer',
+        items: [
+            {
+                name: 'Ekspedisi',
+                show: true,
+                route: route('expeditions.index'),
+                active: 'expeditions.index',
+                permission: 'view-expedition',
+            },
+            {
+                name: 'Customer',
+                show: true,
+                route: route('customers.index'),
+                active: 'customers.index',
+                permission: 'view-customer',
+            },
+            {
+                name: 'Supplier',
+                show: true,
+                route: route('suppliers.index'),
+                active: 'suppliers.index',
+                permission: 'view-supplier',
+            },
+            {
+                name: 'Barang',
+                show: true,
+                route: route('products.index'),
+                active: 'products.index',
+                permission: 'view-product',
+            },
+        ],
     },
-    {
-        name: 'Supplier',
-        show: true,
-        icon: HiListBullet,
-        route: route('suppliers.index'),
-        active: 'suppliers.index',
-        permission: 'view-supplier',
-    },
-    {
-        name: 'Barang',
-        show: true,
-        icon: HiListBullet,
-        route: route('products.index'),
-        active: 'products.index',
-        permission: 'view-product',
-    },
+
     {
         name: 'Stok',
         show: true,

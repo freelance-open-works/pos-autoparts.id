@@ -1,15 +1,16 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use App\Models\Product;
 use Illuminate\Http\Request;
 
-class ProductStockController extends Controller
+class ProductContoller extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::query()->with(['brand', 'stock']);
+        $query = Product::with(['brand']);
 
         if ($request->q) {
             $query->where(function ($query) use ($request) {
@@ -20,8 +21,6 @@ class ProductStockController extends Controller
 
         $query->orderBy('created_at', 'desc');
 
-        return inertia('ProductStock/Index', [
-            'data' => $query->paginate(),
-        ]);
+        return $query->paginate();
     }
 }

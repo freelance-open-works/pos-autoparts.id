@@ -19,20 +19,11 @@ class PermissionConstant
 
         ['label' => 'View Setting', 'name' => 'view-setting'],
 
-        // Modules Permissions
-        ['label' => 'View Shortlink', 'name' => 'view-shortlink'],
-
-        ['label' => 'Create Custom Form', 'name' => 'create-custom-form'],
-        ['label' => 'Update Custom Form', 'name' => 'update-custom-form'],
-        ['label' => 'View Custom Form', 'name' => 'view-custom-form'],
-        ['label' => 'Delete Custom Form', 'name' => 'delete-custom-form'],
-
-        ['label' => 'Create Custom Form Record', 'name' => 'create-custom-form-record'],
-        ['label' => 'Update Custom Form Record', 'name' => 'update-custom-form-record'],
-        ['label' => 'View Custom Form Record', 'name' => 'view-custom-form-record'],
-        ['label' => 'Delete Custom Form Record', 'name' => 'delete-custom-form-record'],
-
         // #Add New Permission Below!
+        ['label' => 'Delete Purchase Order', 'name' => 'delete-purchase-order'],
+        ['label' => 'Update Purchase Order', 'name' => 'update-purchase-order'],
+        ['label' => 'Create Purchase Order', 'name' => 'create-purchase-order'],
+        ['label' => 'View Purchase Order', 'name' => 'view-purchase-order'],
 
         ['label' => 'View Product Stock', 'name' => 'view-product-stock'],
 

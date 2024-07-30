@@ -1,57 +1,20 @@
 import { useEffect, useState } from 'react'
 import { usePage } from '@inertiajs/react'
 
-import Modal from './Modal'
-import PaginationApi from './PaginationApi'
-import Spinner from './Spinner'
-import SearchInput from './SearchInput'
-import { useDebounce, useSelectApiPagination } from '@/hooks'
+import Modal from '@/Components/DaisyUI/Modal'
+import PaginationApi from '@/Components/DaisyUI/PaginationApi'
+import Spinner from '@/Components/DaisyUI/Spinner'
+import SearchInput from '@/Components/DaisyUI/SearchInput'
+import { useDebounce, usePagination } from '@/hooks'
 import { isEmpty } from 'lodash'
+import { formatIDR } from '@/utils'
 
-/**
- *
- * @param {*} props
- * @returns
- *
- * Example :
- * <SelectModalInput
- *     label="Role"
- *     value={data.role}
- *     onChange={(item) =>
- *         setData({
- *             ...data,
- *             role: item,
- *             role_id: item ? item.id : null,
- *         })
- *     }
- *     error={errors.role_id}
- *     params={{
- *         table: 'roles',
- *         columns: 'id|name',
- *         orderby: 'created_at.asc',
- *     }}
- * />
- */
-export default function SelectModalInput(props) {
+export default function SelectModalProduct(props) {
     const {
         props: { auth },
     } = usePage()
 
-    const {
-        label,
-        error,
-        value,
-        onChange,
-        params,
-        placeholder = '',
-        maxW = 'md:max-w-md',
-    } = props
-
-    const [headers] = useState(
-        params.columns.split('|').filter((i) => i !== 'id')
-    )
-
-    const [selected, setSelected] = useState('')
+    const { label, error, onChange, placeholder = '' } = props
 
     const [search, setSearch] = useState('')
     const q = useDebounce(search, 750)
@@ -62,14 +25,7 @@ export default function SelectModalInput(props) {
         setOpen(!isOpen)
     }
 
-    const [data, fetch, loading] = useSelectApiPagination(auth, {
-        table: params.table,
-        display_name: params.columns,
-        orderby: params.orderby,
-        limit: params.limit,
-        q: q,
-        pagination: 'true',
-    })
+    const [data, fetch, loading] = usePagination(auth, `api.products.index`)
 
     const handleItemSelected = (item) => {
         onChange(item)
@@ -88,23 +44,6 @@ export default function SelectModalInput(props) {
         fetch(1, { q })
     }, [q])
 
-    useEffect(() => {
-        if (isEmpty(value) === false) {
-            let display_name = headers
-            if (isEmpty(params.display_name) === false) {
-                display_name = params.display_name.split('|')
-            }
-
-            setSelected(
-                display_name
-                    .map((h) => {
-                        return value[h]
-                    })
-                    .join(' | ')
-            )
-        }
-    }, [value])
-
     return (
         <>
             <div className="form-control">
@@ -115,14 +54,14 @@ export default function SelectModalInput(props) {
                     className={`input input-bordered w-full ${
                         error && 'input-error'
                     }`}
-                    value={selected}
+                    value={''}
                     onClick={toggle}
                     placeholder={placeholder}
                     readOnly={true}
                 />
                 <p className="label-text text-red-600">{error}</p>
             </div>
-            <Modal isOpen={isOpen} onClose={toggle} maxW={maxW}>
+            <Modal isOpen={isOpen} onClose={toggle} maxW={`md:max-w-4xl`}>
                 <div className="mb-3"></div>
                 <SearchInput
                     value={search}
@@ -138,14 +77,12 @@ export default function SelectModalInput(props) {
                         <table className="table mt-3">
                             <thead>
                                 <tr>
-                                    {headers.map((h) => (
-                                        <th
-                                            className="capitalize"
-                                            key={`header-${h}`}
-                                        >
-                                            {h}
-                                        </th>
-                                    ))}
+                                    <th>Part No</th>
+                                    <th>Nama</th>
+                                    <th>Tipe</th>
+                                    <th>Merk</th>
+                                    <th>Harga Beli</th>
+                                    <th>Harga Jual</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -155,11 +92,12 @@ export default function SelectModalInput(props) {
                                         key={item.id}
                                         className="hover"
                                     >
-                                        {headers.map((h) => (
-                                            <td key={`${item.id}-${h}`}>
-                                                {item[h]}
-                                            </td>
-                                        ))}
+                                        <td>{item.part_code}</td>
+                                        <td>{item.name}</td>
+                                        <td>{item.tipe}</td>
+                                        <td>{item.brand.name}</td>
+                                        <td>{formatIDR(item.cost)}</td>
+                                        <td>{formatIDR(item.price)}</td>
                                     </tr>
                                 ))}
                             </tbody>

@@ -11,6 +11,8 @@ use App\Models\Default\Setting;
 use App\Models\Default\User;
 use App\Models\Expedition;
 use App\Models\Product;
+use App\Models\ProductStock;
+use App\Models\Supplier;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Support\Str;
@@ -26,7 +28,7 @@ class DefaultSeeder extends Seeder
     {
         $settings = [
             ['id' => Str::ulid(), 'key' => 'app_name', 'value' => 'Autoparts.id', 'type' => 'text'],
-            ['id' => Str::ulid(), 'key' => 'app_logo', 'value' => '', 'type' => 'image'],
+            ['id' => Str::ulid(), 'key' => 'app_logo', 'value' => 'logo.png', 'type' => 'image'],
             ['id' => Str::ulid(), 'key' => 'company_name', 'value' => 'PT. AUTOPART SALES INDONESIA', 'type' => 'text'],
             ['id' => Str::ulid(), 'key' => 'company_address', 'value' => 'JL. Pattene Raya No. 3/4 , Sudiang, Makassar, Sulawesi Selatan', 'type' => 'text'],
         ];
@@ -92,6 +94,7 @@ class DefaultSeeder extends Seeder
 
         $this->expeditions();
         $this->customers();
+        $this->suppliers();
         $this->brands();
         $this->products();
     }
@@ -152,6 +155,18 @@ class DefaultSeeder extends Seeder
         }
     }
 
+    public function suppliers()
+    {
+        $suppliers = [
+            ['code' => 'SUP-01', 'name' => 'Example', 'address' => 'Example Address', 'type' => Customer::OUTCITY],
+            ['code' => 'SUP-02', 'name' => 'Suppliers ', 'address' => 'JL. Diponegoro No. 44, Penanian, Rantepao', 'type' => Customer::OUTCITY],
+        ];
+
+        foreach ($suppliers as $s) {
+            Supplier::create($s);
+        }
+    }
+
     public function brands()
     {
         $brands = [
@@ -193,6 +208,7 @@ class DefaultSeeder extends Seeder
 
                 $ulid = fn () => Str::ulid();
                 $products = [];
+
                 foreach ($sheet as $r) {
                     $products[] = [
                         'id' => $ulid(),
@@ -208,6 +224,15 @@ class DefaultSeeder extends Seeder
 
                 foreach (array_chunk($products, 1000) as $ps) {
                     Product::insert($ps);
+                    // convert to product_stocks and insert it
+                    $stocks = array_map(function ($item) {
+                        return [
+                            'id' => $item['id'],
+                            'product_id' => $item['id'],
+                            'stock' => '0'
+                        ];
+                    }, $ps);
+                    ProductStock::insert($stocks);
                 }
 
                 syslog(LOG_INFO, 'Chunk = ' . $n . ' Done');

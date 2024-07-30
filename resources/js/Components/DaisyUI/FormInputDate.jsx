@@ -21,8 +21,12 @@ export default function FormInputDate({
     placeholder,
 }) {
     return (
-        <div>
-            {label !== '' && <label className="text-label">{label}</label>}
+        <div className="form-control">
+            {label !== '' && (
+                <div className="label">
+                    <span className="label-text">{label}</span>
+                </div>
+            )}
             <Datepicker
                 inputClassName={'input input-bordered w-full text-base-content'}
                 useRange={false}

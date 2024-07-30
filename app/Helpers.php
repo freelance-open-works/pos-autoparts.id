@@ -1,6 +1,7 @@
 <?php
 
-if (! function_exists('splitPascalCase')) {
+
+if (!function_exists('splitPascalCase')) {
     function splitPascalCase($string)
     {
         $word = '';
@@ -12,9 +13,23 @@ if (! function_exists('splitPascalCase')) {
 
                 continue;
             }
-            $word .= '-'.$s;
+            $word .= '-' . $s;
         }
 
         return $word;
+    }
+}
+
+if (!function_exists('formatIDR')) {
+    function formatIDR($output)
+    {
+        return number_format($output, 0, ',', '.');
+    }
+}
+
+if (!function_exists('formatDate')) {
+    function formatDate($date)
+    {
+        return \Illuminate\Support\Carbon::parse($date)->format('d-m-Y');
     }
 }

@@ -1,6 +1,6 @@
-# Laravel Template - DaisyUI
+# Laravel POS
 
-This just a laravel template with breeze react, user role based access crud with setup <a href="https://daisyui.com?ref=github.com/ajikamaludin" target="_blank">daisyui style</a> admin template test
+This is app description
 
 ## Support me
 
@@ -8,10 +8,16 @@ This just a laravel template with breeze react, user role based access crud with
 
 ## Requirements
 
--   PHP 8.2 or latest
+-   PHP 8.3 or latest
 -   Node 20+ or latest
 
 ## How to run
+
+setup puppeteer & chromium
+
+```
+npm install -g puppeteer chromium
+```
 
 prepare env
 

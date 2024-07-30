@@ -21,16 +21,16 @@ claim (pengembalian) -> berdasarkan invoice penjualan nanti bisa di filter pakai
 -   [x] crud customer - normal
 -   [x] crud supplier - normal
 -   [x] crud product/barang/part - normal (pakai table brands)
--   [ ] halaman stock
+-   [x] halaman stock
 
--   [ ] pemesanan po ( tidak berpengaruh ke stock )
+-   [x] pemesanan po ( tidak berpengaruh ke stock )
         -> sudah ada sesuai from
-    -   [ ] tambah pemesanan
-    -   [ ] edit pemesanan
-    -   [ ] hapus pemenasan
-    -   [ ] daftar pemesanan
-    -   [ ] submit pemesanan
-    -   [ ] cetak pdf pemesanan -> sesuai form excel;
+    -   [x] tambah pemesanan
+    -   [x] edit pemesanan
+    -   [x] hapus pemenasan
+    -   [x] daftar pemesanan
+    -   [x] submit pemesanan
+    -   [x] cetak pdf pemesanan -> sesuai form excel;
 -   [ ] pembelian
         -> data diambil dari pemesanan , dapat input diskon dan harga beli
     -   [ ] tambah

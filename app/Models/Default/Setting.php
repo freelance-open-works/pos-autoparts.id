@@ -22,6 +22,11 @@ class Setting extends Model
         'url',
     ];
 
+    public function getValueByKey(string $key): ?string
+    {
+        return Setting::where('key', $key)->value('value');
+    }
+
     public static function getByKey(string $key): ?string
     {
         return Setting::where('key', $key)->value('value');
