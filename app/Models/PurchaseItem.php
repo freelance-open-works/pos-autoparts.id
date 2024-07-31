@@ -20,6 +20,11 @@ class PurchaseItem extends Model
         'subtotal_ppn',
     ];
 
+    public function purchase()
+    {
+        return $this->belongsTo(Purchase::class);
+    }
+
     public function product()
     {
         return $this->belongsTo(Product::class);

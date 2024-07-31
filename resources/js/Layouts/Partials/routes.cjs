@@ -104,6 +104,14 @@ export default [
         permission: 'view-report',
     },
     {
+        name: 'Laporan Pembelian',
+        show: true,
+        icon: HiOutlineDocumentReport,
+        route: route('report.purchases'),
+        active: 'report.purchases',
+        permission: 'view-report',
+    },
+    {
         name: 'User',
         show: true,
         icon: HiUser,

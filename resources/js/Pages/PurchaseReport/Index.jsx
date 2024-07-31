@@ -19,11 +19,11 @@ export default function Index(props) {
     } = props
 
     const [dates, setDates] = useState({})
-    const [customer, setCustomer] = useState('')
+    const [supplier, setSupplier] = useState('')
     const [search, setSearch] = useState('')
-    const preValue = usePrevious(`${search}${customer}${dates}`)
+    const preValue = usePrevious(`${search}${supplier}${dates}`)
 
-    const params = { q: search, customer_id: customer?.id, ...dates }
+    const params = { q: search, supplier_id: supplier?.id, ...dates }
     useEffect(() => {
         if (preValue) {
             router.get(route(route().current()), params, {
@@ -31,11 +31,11 @@ export default function Index(props) {
                 preserveState: true,
             })
         }
-    }, [search, customer, dates])
+    }, [search, supplier, dates])
 
     return (
-        <AuthenticatedLayout page={'System'} action={'Report Sale'}>
-            <Head title="Report Sale" />
+        <AuthenticatedLayout page={'System'} action={'Report Purchase'}>
+            <Head title="Report Purchase" />
 
             <div>
                 <Card>
@@ -52,23 +52,26 @@ export default function Index(props) {
                             />
                             <div className="flex flex-row gap-1">
                                 <SelectModalInput
-                                    placeholder="Filter Customer"
-                                    value={customer}
-                                    onChange={(e) => setCustomer(e)}
+                                    placeholder="Filter Supplier"
+                                    value={supplier}
+                                    onChange={(e) => setSupplier(e)}
                                     params={{
-                                        table: 'customers',
+                                        table: 'suppliers',
                                         columns: 'id|code|name|address',
                                         display_name: 'name',
                                         orderby: 'created_at.asc',
                                     }}
                                 />
-                                <Button onClick={(e) => setCustomer('')}>
+                                <Button onClick={(e) => setSupplier('')}>
                                     <HiXCircle className="h-5 w-5" />
                                 </Button>
                             </div>
                             <div className="flex justify-end">
                                 <a
-                                    href={route('report.sales.export', params)}
+                                    href={route(
+                                        'report.purchases.export',
+                                        params
+                                    )}
                                     target="_blank"
                                 >
                                     <Button>Export</Button>
@@ -82,14 +85,14 @@ export default function Index(props) {
                                 <tr>
                                     <th>Invoice Number</th>
                                     <th>Tanggal</th>
-                                    <th>Customer Kode</th>
-                                    <th>Customer Nama</th>
+                                    <th>Supplier Kode</th>
+                                    <th>Supplier Nama</th>
                                     <th>Salesman Kode</th>
                                     <th>Salesman Nama</th>
                                     <th>Part No</th>
                                     <th>Part Nama</th>
                                     <th>Qty</th>
-                                    <th>Harga Jual</th>
+                                    <th>Harga Beli</th>
                                     <th>Total Diskon</th>
                                     <th>DPP</th>
                                     <th>PPN</th>
@@ -100,18 +103,20 @@ export default function Index(props) {
                             <tbody>
                                 {data.map((item, index) => (
                                     <tr key={item.id}>
-                                        <td>{item.sale.s_code}</td>
-                                        <td>{formatDate(item.sale.s_date)}</td>
-                                        <td>{item.sale.customer.code}</td>
-                                        <td>{item.sale.customer.name}</td>
+                                        <td>{item.purchase.p_code}</td>
                                         <td>
-                                            {item.sale.creator.fields?.code}
+                                            {formatDate(item.purchase.p_date)}
                                         </td>
-                                        <td>{item.sale.creator.name}</td>
+                                        <td>{item.purchase.supplier.code}</td>
+                                        <td>{item.purchase.supplier.name}</td>
+                                        <td>
+                                            {item.purchase.creator.fields?.code}
+                                        </td>
+                                        <td>{item.purchase.creator.name}</td>
                                         <td>{item.product.part_code}</td>
                                         <td>{item.product.name}</td>
                                         <td>{formatIDR(item.qty)}</td>
-                                        <td>{formatIDR(item.price)}</td>
+                                        <td>{formatIDR(item.cost)}</td>
                                         <td>
                                             {formatIDR(item.discount_total)}
                                         </td>
@@ -120,7 +125,7 @@ export default function Index(props) {
                                         <td>
                                             {formatIDR(item.subtotal_discount)}
                                         </td>
-                                        <td>{item.sale.status}</td>
+                                        <td>{item.purchase.status}</td>
                                     </tr>
                                 ))}
                             </tbody>
