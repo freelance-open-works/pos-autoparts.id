@@ -124,6 +124,7 @@ export default function Index(props) {
                                                                         value: purchase_order_status_submit,
                                                                     }}
                                                                     className="flex space-x-1 items-center"
+                                                                    as="button"
                                                                 >
                                                                     <HiPaperAirplane />
                                                                     <div>

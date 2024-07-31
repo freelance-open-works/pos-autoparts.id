@@ -2,10 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\SaleCodeAction;
 use App\Models\Default\Setting;
 use App\Models\Sale;
 use App\Models\SaleItem;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -15,7 +17,7 @@ class SaleController extends Controller
 {
     public function index(Request $request): Response
     {
-        $query = Sale::query()->with(['customer']);
+        $query = Sale::query()->with(['customer', 'delivery.expedition']);
 
         if ($request->q) {
             $query->where(function ($query) use ($request) {
@@ -68,7 +70,7 @@ class SaleController extends Controller
         DB::beginTransaction();
         $items = collect($request->items);
         $sale = Sale::create([
-            'purchase_order_id' => $request->purchase_order_id,
+            'purchase_id' => $request->purchase_id,
             'customer_id' => $request->customer_id,
             's_date' => $request->s_date,
             'status' => $request->status,
@@ -126,8 +128,14 @@ class SaleController extends Controller
 
         DB::beginTransaction();
         $items = collect($request->items);
+
+        if (in_array($sale->status, [Sale::STATUS_SUBMIT, Sale::STATUS_DONE]) && !in_array($request->status, [Sale::STATUS_SUBMIT, Sale::STATUS_DONE])) {
+            return redirect()->route('sales.index')
+                ->with('message', ['type' => 'error', 'message' => 'Sudah disubmit hanya boleh di selesai']);
+        }
+
         $sale->update([
-            'purchase_order_id' => $request->purchase_order_id,
+            'purchase_id' => $request->purchase_id,
             'customer_id' => $request->customer_id,
             's_date' => $request->s_date,
             'status' => $request->status,
@@ -151,6 +159,11 @@ class SaleController extends Controller
 
     public function destroy(Sale $sale): RedirectResponse
     {
+        if (in_array($sale->status, [Sale::STATUS_SUBMIT, Sale::STATUS_DONE])) {
+            return redirect()->route('sales.index')
+                ->with('message', ['type' => 'error', 'message' => 'Tidak dapat menghapus penjualan dengan status submit dan selesai']);
+        }
+
         $sale->delete();
 
         return redirect()->route('sales.index')
@@ -159,7 +172,17 @@ class SaleController extends Controller
 
     public function patch(Request $request, Sale $sale)
     {
-        // if key is status and it submit update stock to up
+        if ($request->key == 'status') {
+            if ($sale->status != Sale::STATUS_SUBMIT && $request->value == Sale::STATUS_SUBMIT) {
+                try {
+                    SaleCodeAction::update_stocks($sale);
+                } catch (Exception $e) {
+                    return redirect()->route('sales.index')
+                        ->with('message', ['type' => 'error', 'message' => $e->getMessage()]);
+                }
+            }
+        }
+
         $sale->update([
             $request->key => $request->value
         ]);
@@ -168,7 +191,7 @@ class SaleController extends Controller
             ->with('message', ['type' => 'success', 'message' => 'Item has beed updated']);
     }
 
-    public function print(Sale $sale)
+    public function print_invoice(Sale $sale)
     {
         $pdf = Pdf::loadView('print.sale', [
             'sale' => $sale->load(['creator', 'purchase']),

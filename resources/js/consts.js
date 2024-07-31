@@ -29,3 +29,5 @@ export const purchase_order_types = [
     purchase_order_type_pemesanan_stock,
     purchase_order_type_penjualan_stock,
 ]
+
+export const delivery_services = ['darat', 'udara', 'laut']

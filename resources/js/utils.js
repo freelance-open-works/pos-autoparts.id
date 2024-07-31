@@ -81,3 +81,11 @@ export const showToast = (message, type) => {
     }
     toast(message)
 }
+
+export const openInNewTab = (href) => {
+    Object.assign(document.createElement('a'), {
+        target: '_blank',
+        rel: 'noopener noreferrer',
+        href: href,
+    }).click()
+}

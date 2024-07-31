@@ -28,7 +28,9 @@ export default function FormInputDate({
                 </div>
             )}
             <Datepicker
-                inputClassName={'input input-bordered w-full text-base-content'}
+                inputClassName={`input input-bordered w-full text-base-content ${
+                    error && 'input-error'
+                }`}
                 useRange={false}
                 asSingle={true}
                 value={{ startDate: value, endDate: value }}

@@ -7,6 +7,7 @@ use App\Models\ProductStockHistory;
 use App\Models\Purchase;
 use App\Models\PurchaseItem;
 use Exception;
+use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class PurchaseAction
@@ -16,7 +17,9 @@ class PurchaseAction
     public static function generate_code($date)
     {
         $fallback = '-';
-        $purchase = Purchase::where(DB::raw("DATE(p_date)"), $date)
+        $date = Carbon::parse($date);
+        $purchase = Purchase::whereYear("p_date", $date->format('Y'))
+            ->whereMonth('p_date', $date->format('m'))
             ->orderBy('created_at', 'desc')
             ->first();
 
@@ -67,7 +70,7 @@ class PurchaseAction
                 'start' => $start_stock,
                 'in' => $item->qty,
                 'out' => 0,
-                'last' => $stock->stock + $item->qty,
+                'last' => $stock->stock,
             ]);
         }
     }
@@ -104,7 +107,7 @@ class PurchaseAction
                 'start' => $start_stock,
                 'in' => 0,
                 'out' => $item->qty,
-                'last' => $stock->stock - $item->qty,
+                'last' => $stock->stock,
             ]);
         }
     }

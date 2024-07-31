@@ -14,7 +14,9 @@ import Dropdown from '@/Components/DaisyUI/Dropdown'
 import Button from '@/Components/DaisyUI/Button'
 import Card from '@/Components/DaisyUI/Card'
 import { formatIDR } from '@/utils'
-import { HiReceiptPercent, HiTruck } from 'react-icons/hi2'
+import { HiPaperAirplane, HiReceiptPercent, HiTruck } from 'react-icons/hi2'
+import { sale_status_submit } from '@/consts'
+import FormModal from './FormModal'
 
 export default function Index(props) {
     const {
@@ -25,10 +27,16 @@ export default function Index(props) {
     const preValue = usePrevious(search)
 
     const confirmModal = useModalState()
+    const deliveryModal = useModalState()
 
     const handleDeleteClick = (sale) => {
         confirmModal.setData(sale)
         confirmModal.toggle()
+    }
+
+    const handleDeliveryPrintClick = (sale) => {
+        deliveryModal.setData(sale)
+        deliveryModal.toggle()
     }
 
     const onDelete = () => {
@@ -74,7 +82,7 @@ export default function Index(props) {
                         </div>
                     </div>
                     <div className="overflow-x-auto">
-                        <table className="table">
+                        <table className="table mt-6">
                             <thead>
                                 <tr>
                                     <th>Invoice Number</th>
@@ -112,7 +120,13 @@ export default function Index(props) {
                                                             </div>
                                                         </Dropdown.Item>
                                                     </a>
-                                                    <Dropdown.Item>
+                                                    <Dropdown.Item
+                                                        onClick={() =>
+                                                            handleDeliveryPrintClick(
+                                                                item
+                                                            )
+                                                        }
+                                                    >
                                                         <div className="flex space-x-1 items-center">
                                                             <HiTruck />
                                                             <div>
@@ -124,21 +138,45 @@ export default function Index(props) {
                                                 </Dropdown>
                                                 <Dropdown label={'Opsi'}>
                                                     <HasPermission p="update-sale">
-                                                        <Dropdown.Item
-                                                            onClick={() =>
-                                                                router.visit(
-                                                                    route(
-                                                                        'sales.edit',
+                                                        <>
+                                                            <Dropdown.Item>
+                                                                <Link
+                                                                    href={route(
+                                                                        'sales.patch',
                                                                         item
+                                                                    )}
+                                                                    method="patch"
+                                                                    data={{
+                                                                        key: 'status',
+                                                                        value: sale_status_submit,
+                                                                    }}
+                                                                    className="flex space-x-1 items-center"
+                                                                    as="button"
+                                                                >
+                                                                    <HiPaperAirplane />
+                                                                    <div>
+                                                                        Submit
+                                                                    </div>
+                                                                </Link>
+                                                            </Dropdown.Item>
+                                                            <Dropdown.Item
+                                                                onClick={() =>
+                                                                    router.visit(
+                                                                        route(
+                                                                            'sales.edit',
+                                                                            item
+                                                                        )
                                                                     )
-                                                                )
-                                                            }
-                                                        >
-                                                            <div className="flex space-x-1 items-center">
-                                                                <HiPencil />
-                                                                <div>Ubah</div>
-                                                            </div>
-                                                        </Dropdown.Item>
+                                                                }
+                                                            >
+                                                                <div className="flex space-x-1 items-center">
+                                                                    <HiPencil />
+                                                                    <div>
+                                                                        Ubah
+                                                                    </div>
+                                                                </div>
+                                                            </Dropdown.Item>
+                                                        </>
                                                     </HasPermission>
                                                     <HasPermission p="delete-sale">
                                                         <Dropdown.Item
@@ -168,6 +206,7 @@ export default function Index(props) {
                 </Card>
             </div>
             <ModalConfirm modalState={confirmModal} onConfirm={onDelete} />
+            <FormModal modalState={deliveryModal} />
         </AuthenticatedLayout>
     )
 }

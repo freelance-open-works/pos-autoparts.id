@@ -102,6 +102,8 @@ export default function SelectModalInput(props) {
                     })
                     .join(' | ')
             )
+        } else {
+            setSelected('')
         }
     }, [value])
 

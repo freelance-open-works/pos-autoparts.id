@@ -15,6 +15,7 @@ use App\Http\Controllers\Default\ProfileController;
 use App\Http\Controllers\Default\RoleController;
 use App\Http\Controllers\Default\SettingController;
 use App\Http\Controllers\Default\UserController;
+use App\Http\Controllers\SaleDeliveryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -52,7 +53,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // #Admin
-    Route::get('sales/{sale}/print', [SaleController::class, 'print'])->name('sales.print');
+    Route::get('sales/{sale}/delivery-print', [SaleDeliveryController::class, 'print'])->name('sales.delivery-print');
+    Route::post('sales/{sale}/delivery', [SaleDeliveryController::class, 'update'])->name('sales.delivery');
+    Route::get('sales/{sale}/print', [SaleController::class, 'print_invoice'])->name('sales.print');
     Route::patch('sales/{sale}/patch', [SaleController::class, 'patch'])->name('sales.patch');
     Route::resource('sales', SaleController::class);
 

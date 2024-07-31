@@ -2,35 +2,35 @@
 
 namespace App\Actions;
 
-use App\Models\PurchaseOrder;
+use App\Models\SaleDelivery;
 use Exception;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 
-class PurchaseOrderAction
+class SaleDeliveryAction
 {
-    const PREFIX = '/PO-ASI/';
+    const PREFIX = '/LOG-ASI/';
 
     public static function generate_code($date)
     {
-        $fallback = 99999;
+        $fallback = '-';
         $date = Carbon::parse($date);
-        $purchase = PurchaseOrder::whereYear("po_date", $date->format('Y'))
-            ->whereMonth('po_date', $date->format('m'))
+        $saled = SaleDelivery::whereYear("sd_date",  $date->format('Y'))
+            ->whereMonth('sd_date', $date->format('m'))
             ->orderBy('created_at', 'desc')
             ->first();
 
         $num = 1;
-        if ($purchase !== null) {
+        if ($saled !== null) {
             try {
-                $lastnum = explode('/', $purchase->po_code);
+                $lastnum = explode('/', $saled->sd_code);
                 $num = is_numeric($lastnum[0])  ? $lastnum[0] + 1 : $fallback;
             } catch (Exception $e) {
                 $num = $fallback;
             }
         }
 
-        $code = formatNumZero($num) . self::PREFIX . now()->format('m/Y');
+        $code =  formatNumZero($num)  . self::PREFIX .  now()->format('m/Y');
         return $code;
     }
 }
