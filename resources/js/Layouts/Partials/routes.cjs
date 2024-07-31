@@ -7,6 +7,7 @@ import {
     HiListBullet,
     HiShoppingBag,
     HiOutlineArchiveBox,
+    HiBackward,
 } from 'react-icons/hi2'
 
 export default [
@@ -41,6 +42,14 @@ export default [
         route: route('sales.index'),
         active: 'sales.*',
         permission: 'view-sale',
+    },
+    {
+        name: 'Pengembalian (Claim)',
+        show: true,
+        icon: HiBackward,
+        route: route('claims.index'),
+        active: 'claims.*',
+        permission: 'view-claim',
     },
     {
         name: 'Data',

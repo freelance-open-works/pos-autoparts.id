@@ -3,6 +3,7 @@
 use App\Http\Controllers\Api\ProductContoller;
 use App\Http\Controllers\Api\PurchaseController;
 use App\Http\Controllers\Api\PurchaseOrderController;
+use App\Http\Controllers\Api\SaleController;
 use App\Http\Controllers\Default\Api\SelectTableController;
 use App\Http\Controllers\Default\FileController;
 use App\Http\Middleware\JwtCustomApiVerification;
@@ -32,5 +33,6 @@ Route::middleware([JwtCustomApiVerification::class])
 
         Route::get('/products', [ProductContoller::class, 'index'])->name('api.products.index');
         Route::get('/purchases', [PurchaseController::class, 'index'])->name('api.purchases.index');
+        Route::get('/sales', [SaleController::class, 'index'])->name('api.sales.index');
         Route::get('/purchase-orders', [PurchaseOrderController::class, 'index'])->name('api.purchase-orders.index');
     });

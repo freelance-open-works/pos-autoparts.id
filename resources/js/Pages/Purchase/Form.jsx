@@ -184,7 +184,10 @@ export default function Form(props) {
     }, [purchase])
 
     return (
-        <AuthenticatedLayout page={'System'} action={'Purchase'}>
+        <AuthenticatedLayout
+            page={'System'}
+            action={['Purchase', purchase?.p_code]}
+        >
             <Head title="Purchase" />
 
             <div>

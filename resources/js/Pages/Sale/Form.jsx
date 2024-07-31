@@ -183,7 +183,7 @@ export default function Form(props) {
     }, [sale])
 
     return (
-        <AuthenticatedLayout page={'System'} action={'Sale'}>
+        <AuthenticatedLayout page={'System'} action={['Sale', sale?.s_code]}>
             <Head title="Sale" />
 
             <div>
@@ -201,7 +201,7 @@ export default function Form(props) {
                                 value={s_date}
                                 label={'Tanggal'}
                                 onChange={(date) => set_s_date(date)}
-                                error={errors.po_date}
+                                error={errors.s_date}
                             />
                             <SelectOptionArray
                                 value={status}
