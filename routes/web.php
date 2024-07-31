@@ -16,6 +16,7 @@ use App\Http\Controllers\Default\ProfileController;
 use App\Http\Controllers\Default\RoleController;
 use App\Http\Controllers\Default\SettingController;
 use App\Http\Controllers\Default\UserController;
+use App\Http\Controllers\ReportSaleController;
 use App\Http\Controllers\SaleDeliveryController;
 use Illuminate\Support\Facades\Route;
 
@@ -54,6 +55,9 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // #Admin
+    Route::get('/report/sales/export', [ReportSaleController::class, 'export'])->name('report.sales.export');
+    Route::get('/report/sales', [ReportSaleController::class, 'index'])->name('report.sales');
+
     Route::patch('claims/{claim}/patch', [ClaimController::class, 'patch'])->name('claims.patch');
     Route::resource('claims', ClaimController::class);
 

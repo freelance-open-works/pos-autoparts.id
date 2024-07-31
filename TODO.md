@@ -28,5 +28,5 @@ claim (pengembalian) -> berdasarkan invoice penjualan nanti bisa di filter pakai
 -   [x] penjualan
 -   [x] pengembalian
 
--   [ ] laporan pembelian (index, filter: tanggal, supplier, export excel)
+-   [x] laporan pembelian (index, filter: tanggal, supplier, export excel)
 -   [ ] laporan penjualan (index, filter: tanggal, customer, export excel)

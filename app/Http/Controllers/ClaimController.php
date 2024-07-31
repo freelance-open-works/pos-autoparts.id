@@ -26,7 +26,7 @@ class ClaimController extends Controller
         $query->orderBy('created_at', 'desc');
 
         return inertia('Claim/Index', [
-            'data' => $query->paginate(10),
+            'data' => $query->paginate(),
         ]);
     }
 

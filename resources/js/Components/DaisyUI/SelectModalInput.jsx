@@ -110,9 +110,11 @@ export default function SelectModalInput(props) {
     return (
         <>
             <div className="form-control">
-                <div className="label">
-                    <label className="label-text">{label}</label>
-                </div>
+                {label && (
+                    <div className="label">
+                        <label className="label-text">{label}</label>
+                    </div>
+                )}
                 <input
                     className={`input input-bordered w-full ${
                         error && 'input-error'

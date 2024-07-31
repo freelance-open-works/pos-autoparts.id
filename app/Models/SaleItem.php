@@ -21,6 +21,11 @@ class SaleItem extends Model
         'subtotal_ppn',
     ];
 
+    public function sale()
+    {
+        return $this->belongsTo(Sale::class);
+    }
+
     public function product()
     {
         return $this->belongsTo(Product::class);

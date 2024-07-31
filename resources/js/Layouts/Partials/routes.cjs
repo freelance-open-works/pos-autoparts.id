@@ -1,3 +1,4 @@
+import { HiOutlineDocumentReport } from 'react-icons/hi'
 import {
     HiChartPie,
     HiUser,
@@ -86,7 +87,6 @@ export default [
             },
         ],
     },
-
     {
         name: 'Stok',
         show: true,
@@ -94,6 +94,14 @@ export default [
         route: route('product-stocks.index'),
         active: 'product-stocks.index',
         permission: 'view-product-stock',
+    },
+    {
+        name: 'Laporan Penjualan',
+        show: true,
+        icon: HiOutlineDocumentReport,
+        route: route('report.sales'),
+        active: 'report.sales',
+        permission: 'view-report',
     },
     {
         name: 'User',
