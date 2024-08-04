@@ -13,6 +13,7 @@ use App\Models\Expedition;
 use App\Models\Product;
 use App\Models\ProductStock;
 use App\Models\Supplier;
+use Exception;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Support\Str;
@@ -208,7 +209,12 @@ class DefaultSeeder extends Seeder
                 $capsule->setAsGlobal();
                 $capsule->bootEloquent();
 
-                $sheet = (new FastExcel())->sheet($n)->import($path);
+                try {
+                    $sheet = (new FastExcel())->sheet($n)->import($path);
+                } catch (Exception $e) {
+                    syslog(LOG_INFO, 'Chunk = ' . $n . ' ; Error : ' . $e->getMessage());
+                }
+                syslog(LOG_INFO, 'Chunk = ' . $n . ' ; Total : ' . count($sheet));
 
                 $ulid = fn () => Str::ulid();
                 $products = [];
@@ -222,7 +228,7 @@ class DefaultSeeder extends Seeder
                         'discount' => $r['Discount'],
                         'cost' => $r['Harga Beli'],
                         'price' => $r['Harga Jual'],
-                        'brand_id' => $brands[$r['Merk']],
+                        'brand_id' => $brands[$r['Merk']] ?? $brands[0],
                     ];
                 }
 

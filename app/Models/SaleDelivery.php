@@ -31,11 +31,11 @@ class SaleDelivery extends Model
 
     public function sale()
     {
-        return $this->belongsTo(Sale::class);
+        return $this->belongsTo(Sale::class)->withTrashed();
     }
 
     public function expedition()
     {
-        return $this->belongsTo(Expedition::class);
+        return $this->belongsTo(Expedition::class)->withTrashed();
     }
 }

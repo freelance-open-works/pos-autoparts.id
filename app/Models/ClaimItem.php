@@ -15,16 +15,16 @@ class ClaimItem extends Model
 
     public function claim()
     {
-        return $this->belongsTo(Claim::class);
+        return $this->belongsTo(Claim::class)->withTrashed();
     }
 
     public function product()
     {
-        return $this->belongsTo(Product::class);
+        return $this->belongsTo(Product::class)->withTrashed();
     }
 
     public function saleItem()
     {
-        return $this->belongsTo(SaleItem::class);
+        return $this->belongsTo(SaleItem::class)->withTrashed();
     }
 }
