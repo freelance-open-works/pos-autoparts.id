@@ -112,7 +112,6 @@ class GeneralController extends Controller
         });
 
         $sales = $sales->get()->mapWithKeys(function ($item) {
-            info(self::class, [$item]);
             return [$item->s_s_date => [
                 'total' => $item->pq_total,
                 'qty' => $item?->pq_qty,
