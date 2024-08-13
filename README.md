@@ -1,6 +1,6 @@
-# Laravel POS
+# Laravel Autoparts.id
 
-This is app description
+merupakan aplikasi pencatatan pemesanan, pembelian, penjualan dan data barang termasuk stock dan lain sebagainya
 
 ## Support me
 
@@ -59,6 +59,10 @@ password : password
 
 ## Deploy ( go to production )
 
+```bash
+
+```
+
 ### method 1 - compile assets
 
 ```bash
@@ -78,33 +82,3 @@ this command will generate `app_name.zip` in your root folder and its file ready
 ## Screen Capture
 
 ![](screenshot_v3.gif?raw=true)
-
-<hr/>
-
-## Features
-
-### 1. Scaffold generator
-
-it can generate 3 type of crud : form modal, form page, and single form, run command below to test
-
-```bash
-php artisan scaffold
-```
-
-will ask you few options
-
-![](screenshot_generator.gif?raw=true)
-
-in above example you will can see the result by access [http://localhost/customers](http://localhost/customers) or add menu to sidebar with
-
-```js
-// resources/js/Layouts/routes.cjs
-{
-    name: 'Customer',
-    show: true,
-    icon: HiCog,
-    route: route('customers.index'),
-    active: 'customers.index',
-    permission: 'view-setting-customers',
-},
-```

@@ -14,6 +14,7 @@ import Dropdown from '@/Components/DaisyUI/Dropdown'
 import Card from '@/Components/DaisyUI/Card'
 import FormModal from './FormModal'
 import { formatIDR } from '@/utils'
+import ImportModal from './ImportModal'
 
 export default function Index(props) {
     const {
@@ -25,6 +26,7 @@ export default function Index(props) {
 
     const confirmModal = useModalState()
     const formModal = useModalState()
+    const importModal = useModalState()
 
     const toggleFormModal = (product = null) => {
         formModal.setData(product)
@@ -64,13 +66,22 @@ export default function Index(props) {
                 <Card>
                     <div className="flex justify-between mb-4">
                         <HasPermission p="create-product">
-                            <Button
-                                size="sm"
-                                onClick={() => toggleFormModal()}
-                                type="primary"
-                            >
-                                Tambah
-                            </Button>
+                            <div className="grid grid-cols-2 gap-2">
+                                <Button
+                                    size="sm"
+                                    onClick={() => toggleFormModal()}
+                                    type="primary"
+                                >
+                                    Tambah
+                                </Button>
+                                <Button
+                                    size="sm"
+                                    onClick={importModal.toggle}
+                                    type="secondary"
+                                >
+                                    Import
+                                </Button>
+                            </div>
                         </HasPermission>
                         <div className="flex items-center">
                             <SearchInput
@@ -147,6 +158,7 @@ export default function Index(props) {
             </div>
             <ModalConfirm onConfirm={onDelete} modalState={confirmModal} />
             <FormModal modalState={formModal} />
+            <ImportModal modalState={importModal} />
         </AuthenticatedLayout>
     )
 }

@@ -2,7 +2,7 @@ TODO :
 
 -   [x] ganti title app dengan local, ganti app_name dari .env laravel
 -   [] 1. Dashboard : Tambahkan rekap, pembelian dan penjualan by merek, by year, by month, by sales, by incity/out city, by part number (top penjualan)
--   [] 15. Data > Barang : Jika ada perubahan harga apakah bisa update secara banyak, misal upload csv atau xls. Kemudian produk yang diupload bisa replace harga produk lama.
+-   [x] 15. Data > Barang : Jika ada perubahan harga apakah bisa update secara banyak, misal upload csv atau xls. Kemudian produk yang diupload bisa replace harga produk lama.
 -   [x] 2. Sebelum menu Pemesanan (PO) Tambahkan 1 step menu Lagi : Order Toko (Isi Form sama dengan dengan menu Pemesanan (PO))
 -   [x] 3. Harga dihidden saja di menu Order Toko dan Pemesanan (PO)
 -   [x] 4. Tulisan Originator di bagian Cetak, menu Pemesanan (PO) Pembelian dan Penjualan, dihidden saja

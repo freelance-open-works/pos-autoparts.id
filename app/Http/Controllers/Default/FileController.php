@@ -13,16 +13,18 @@ class FileController extends Controller
 {
     public function show(string $name)
     {
-        if (Storage::disk('local')->exists('default/'.$name)) {
-            return Storage::disk('local')->get('default/'.$name);
+        $path = Storage::disk('local')->path('public/' . $name);
+
+        if (Storage::disk('local')->exists('default/' . $name)) {
+            $path = Storage::disk('local')->path('default/' . $name);
         }
 
-        return Storage::disk('local')->get('public/'.$name);
+        return response()->download($path);
     }
 
     public function store(Request $request)
     {
-        $rule = ['required', 'file'];
+        $rule = ['required', 'file', 'max:2048']; //limit all file to 2Mb
         if ($request->filemimes != '') {
             $rule[] = FileRule::types($request->filemimes);
         }

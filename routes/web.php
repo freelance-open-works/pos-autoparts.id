@@ -17,6 +17,7 @@ use App\Http\Controllers\Default\ProfileController;
 use App\Http\Controllers\Default\RoleController;
 use App\Http\Controllers\Default\SettingController;
 use App\Http\Controllers\Default\UserController;
+use App\Http\Controllers\ProductImportController;
 use App\Http\Controllers\ReportPurchaseController;
 use App\Http\Controllers\ReportSaleController;
 use App\Http\Controllers\SaleDeliveryController;
@@ -85,6 +86,8 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('purchase-orders', PurchaseOrderController::class);
 
     Route::get('product-stocks', [ProductStockController::class, 'index'])->name('product-stocks.index');
+
+    Route::post('product-imports', [ProductImportController::class, 'store'])->name('product-imports.store');
 
     Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
     Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');

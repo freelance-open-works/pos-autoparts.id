@@ -60,6 +60,7 @@ export default function FormFile({
             })
             .catch((error) => {
                 toast.error(error.response.data.message)
+                inputRef.current.value = null
             })
             .finally(() => {
                 setLoading(false)
