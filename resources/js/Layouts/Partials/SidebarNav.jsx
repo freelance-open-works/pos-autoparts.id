@@ -53,7 +53,7 @@ const SidebarItemGroup = ({ item }) => {
 export default function SidebarNav({ user, show, setShow }) {
     const {
         props: {
-            app: { app_name },
+            app: { app_name, app_logo },
         },
     } = usePage()
     const menus = routes.filter((item) => {
@@ -84,11 +84,15 @@ export default function SidebarNav({ user, show, setShow }) {
                 <div className="">
                     <div className="flex flex-row justify-between md:justify-center p-6">
                         <div className="">
+                            {/* HERE */}
                             <Link
                                 className="flex-none text-xl font-semibold text-base-content"
                                 href={route('dashboard')}
                             >
-                                {app_name}
+                                <img
+                                    src={route('file.show', app_logo)}
+                                    className="h-30 px-4"
+                                />
                             </Link>
                         </div>
                         <div
@@ -135,7 +139,7 @@ export default function SidebarNav({ user, show, setShow }) {
                 </div>
             </div>
             <div className="p-6">
-                <p className="text-sm font-light text-center bottom-4 left-4 text-base-content">
+                <p className="text-sm font-light text-center bottom-4 left-4 text-base-content ">
                     {app_name} &copy; {new Date().getFullYear()}
                 </p>
             </div>

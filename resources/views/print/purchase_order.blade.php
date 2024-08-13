@@ -13,7 +13,7 @@
     <table class="w-full mb-4">
         <tr>
             <td>
-                <img src="{{ storage_path('/app/public/'.$setting->getValueByKey('app_logo')) }}" style="width: 200px;" />
+                <img src="{{ $setting->getStoragePath('app_logo') }}" style="width: 200px;" />
             </td>
             <td class="font-bold text-2xl text-right">PURCHASE ORDER</td>
         </tr>
@@ -65,12 +65,12 @@
                 <td class="border border-black font-bold p-2 text-right">
                     Qty
                 </td>
-                <td class="border border-black font-bold p-2 text-right">
+                <!-- <td class="border border-black font-bold p-2 text-right">
                     Harga
                 </td>
                 <td class="border border-black font-bold p-2 text-right">
                     Subtotal
-                </td>
+                </td> -->
             </tr>
         </thead>
         <tbody>
@@ -91,12 +91,12 @@
                 <td class="border border-black p-2 text-right">
                     {{ formatIDR($item->qty) }}
                 </td>
-                <td class="border border-black p-2 text-right">
+                <!-- <td class="border border-black p-2 text-right">
                     {{ formatIDR($item->cost) }}
                 </td>
                 <td class="border border-black p-2 text-right">
                     {{ formatIDR($item->qty * $item->cost) }}
-                </td>
+                </td> -->
             </tr>
             @endforeach
         </tbody>
@@ -105,7 +105,7 @@
         <tbody>
             <tr>
                 <td class="text-left text-sm">Keterangan : </td>
-                <td class="font-bold text-right text-xl">Grand Total : {{ formatIDR($purchase_order->amount_cost) }}</td>
+                <!-- <td class="font-bold text-right text-xl">Grand Total : {{ formatIDR($purchase_order->amount_cost) }}</td> -->
             </tr>
             <tr>
                 <td class="text-left" style="width: 200px;">
@@ -122,7 +122,7 @@
 - Barang akan kami kembalikan jika tidak sesuai PO
                 </pre>
                 </td>
-                <td class="text-center font-bold">Originator</td>
+                <td class="text-center font-bold"></td>
             </tr>
             <tr>
                 <td class="text-left text-xs"> </td>

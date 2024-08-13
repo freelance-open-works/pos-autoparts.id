@@ -19,6 +19,8 @@ use Illuminate\Database\Capsule\Manager as Capsule;
 use Illuminate\Support\Str;
 use Rap2hpoutre\FastExcel\FastExcel;
 use Spatie\Async\Pool;
+use Spatie\SimpleExcel\SimpleExcelReader;
+use Symfony\Component\CssSelector\Node\FunctionNode;
 
 class DefaultSeeder extends Seeder
 {
@@ -28,7 +30,7 @@ class DefaultSeeder extends Seeder
     public function run(): void
     {
         $settings = [
-            ['id' => Str::ulid(), 'key' => 'app_name', 'value' => 'Autoparts.id', 'type' => 'text'],
+            ['id' => Str::ulid(), 'key' => 'app_name', 'value' => 'AUTOPART SALES', 'type' => 'text'],
             ['id' => Str::ulid(), 'key' => 'app_logo', 'value' => 'logo.png', 'type' => 'image'],
             ['id' => Str::ulid(), 'key' => 'company_name', 'value' => 'PT. AUTOPART SALES INDONESIA', 'type' => 'text'],
             ['id' => Str::ulid(), 'key' => 'company_address', 'value' => 'JL. Pattene Raya No. 3/4 , Sudiang, Makassar, Sulawesi Selatan', 'type' => 'text'],
@@ -216,7 +218,7 @@ class DefaultSeeder extends Seeder
                 }
                 syslog(LOG_INFO, 'Chunk = ' . $n . ' ; Total : ' . count($sheet));
 
-                $ulid = fn () => Str::ulid();
+                $ulid = fn() => Str::ulid();
                 $products = [];
 
                 foreach ($sheet as $r) {

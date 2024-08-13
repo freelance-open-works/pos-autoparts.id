@@ -42,6 +42,12 @@ class SaleDeliveryController extends Controller
 
     public function print(Sale $sale)
     {
+        return view('print.delivery', [
+            'sale' => $sale->load(['creator', 'purchase']),
+            'delivery' => $sale->delivery->load(['expedition']),
+            'setting' => new Setting(),
+        ]);
+
         $pdf = Pdf::loadView('print.delivery', [
             'sale' => $sale->load(['creator', 'purchase']),
             'delivery' => $sale->delivery->load(['expedition']),

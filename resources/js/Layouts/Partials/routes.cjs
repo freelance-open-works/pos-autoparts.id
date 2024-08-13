@@ -3,10 +3,7 @@ import {
     HiChartPie,
     HiUser,
     HiCog,
-    HiGlobeAlt,
-    HiInformationCircle,
     HiListBullet,
-    HiShoppingBag,
     HiOutlineArchiveBox,
     HiBackward,
 } from 'react-icons/hi2'
@@ -19,6 +16,14 @@ export default [
         route: route('dashboard'),
         active: 'dashboard',
         permission: 'view-dashboard',
+    },
+    {
+        name: 'Order Toko',
+        show: true,
+        icon: HiOutlineArchiveBox,
+        route: route('store-orders.index'),
+        active: 'store-orders.*',
+        permission: 'view-store-order',
     },
     {
         name: 'Pemesanan (PO)',

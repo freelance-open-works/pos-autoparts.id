@@ -18,10 +18,7 @@ class PurchaseAction
     {
         $fallback = '-';
         $date = Carbon::parse($date);
-        $purchase = Purchase::whereYear("p_date", $date->format('Y'))
-            ->whereMonth('p_date', $date->format('m'))
-            ->orderBy('created_at', 'desc')
-            ->first();
+        $purchase = Purchase::orderBy('created_at', 'desc')->first();
 
         $num = 1;
         if ($purchase !== null) {

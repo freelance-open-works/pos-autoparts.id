@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\Storage;
 
 class Setting extends Model
 {
@@ -27,6 +28,18 @@ class Setting extends Model
         return Setting::where('key', $key)->value('value');
     }
 
+    public function getStoragePath(string $key): ?string
+    {
+        $value = Setting::where('key', $key)->value('value');
+
+        $path = storage_path('/app/public/' . $value);
+        if (Storage::exists($path)) {
+            return $path;
+        }
+
+        return storage_path('/app/default/' . $value);
+    }
+
     public static function getByKey(string $key): ?string
     {
         return Setting::where('key', $key)->value('value');
@@ -45,6 +58,6 @@ class Setting extends Model
 
     public function url(): Attribute
     {
-        return Attribute::make(get: fn () => $this->type == 'image' && $this->value != '' ? route('file.show', ['file' => $this->value]) : null);
+        return Attribute::make(get: fn() => $this->type == 'image' && $this->value != '' ? route('file.show', ['file' => $this->value]) : null);
     }
 }

@@ -14,6 +14,7 @@ return new class extends Migration
         Schema::create('purchase_orders', function (Blueprint $table) {
             $table->ulid('id')->primary();
             //
+            $table->ulid('store_order_id')->nullable();
             $table->ulid('supplier_id')->nullable();
             $table->string('po_code')->nullable(); // generated
             $table->timestamp('po_date')->nullable(); // generated

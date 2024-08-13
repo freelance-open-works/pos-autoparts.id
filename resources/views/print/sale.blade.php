@@ -13,7 +13,7 @@
     <table class="w-full mb-4">
         <tr>
             <td>
-                <img src="{{ storage_path('/app/public/'.$setting->getValueByKey('app_logo')) }}" style="width: 200px;" />
+                <img src="{{ $setting->getStoragePath('app_logo') }}" style="width: 200px;" />
             </td>
             <td class="font-bold text-2xl text-right">SALE INVOICE</td>
         </tr>
@@ -137,7 +137,7 @@
         <tbody>
             <tr>
                 <td class="text-center">Yang Menerima</td>
-                <td class="text-center font-bold">Originator</td>
+                <td class="text-center font-bold"></td>
             </tr>
             <tr>
                 <td class="text-center text-xs"> </td>

@@ -17,16 +17,17 @@
 <body>
     <table class="w-full mb-4">
         <tr>
-            <td>
-                <img src="{{ storage_path('/app/public/'.$setting->getValueByKey('app_logo')) }}" style="width: 200px;" />
+            <td rowspan="2" style="width: 200px;">
+                <img src="{{ $setting->getStoragePath('app_logo') }}" style="width: 200px;" />
             </td>
-            <td class="font-bold text-2xl text-right">SURAT JALAN</td>
+            <td class="text-center pr-48">
+                <span class="font-bold text-2xl">SURAT JALAN</span>
+            </td>
         </tr>
         <tr>
-            <td>
+            <td class="text-center">
                 <pre class="font-sans text-xs">{{ $setting->getValueByKey('company_address') }}</pre>
             </td>
-            <td></td>
         </tr>
     </table>
     <hr />
@@ -34,7 +35,7 @@
         <tbody>
             <tr class="border border-black">
                 <td class="border border-black" style="width: 50%;">
-                    <span class="font-bold">Tanggal</span> : {{ formatDate($delivery->sd_date) }}
+                    <span class="font-bold">Tanggal</span> : {{ formatDateString($delivery->sd_date) }}
                 </td>
                 <td class="border border-black" colspan="2">
                     <span class="font-bold">Layanan</span> : {{ $delivery->service }}
@@ -44,11 +45,11 @@
                 <td class="border border-black">
                     <span class="font-bold">No Surat Jalan</span> : {{ $delivery->sd_code }}
                 </td>
-                <td class="border border-black font-bold" colspan="2">INVOICE NO.</td>
+                <td class="border border-black font-bold text-center" colspan="2">DOKUMEN NO.</td>
             </tr>
             <tr class="border border-black">
                 <td class="border border-black"></td>
-                <td class="border border-black font-bold" colspan="2">{{ $sale->s_code }}</td>
+                <td class="border border-black font-bold text-center" colspan="2">{{ $sale->s_code }}</td>
             </tr>
             <tr class="border border-black">
                 <td class="border border-black font-bold">PENGIRIM</td>
@@ -120,7 +121,7 @@
     <div class="border border-collapse border-black ">
         <table class="" style="max-width: 200px;">
             <tr class="">
-                <td class="px-4 text-center" style="width: 200px;"><img src="{{ storage_path('/app/public/'.$setting->getValueByKey('app_logo')) }}" width="200px" />
+                <td class="px-4 text-center" style="width: 200px;"><img src="{{ $setting->getStoragePath('app_logo') }}" width="200px" />
                 </td>
                 <td class="font-bold">
                     <pre class="font-sans">Pengirim: 

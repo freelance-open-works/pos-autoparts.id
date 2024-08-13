@@ -11,10 +11,12 @@ export default function ApplicationLogo({ className }) {
 
     return (
         <>
-            {isEmpty(app_logo) && (
-                <img src={app_logo} className="w-36 h-3w-36" />
+            {!isEmpty(app_logo) && (
+                <img
+                    src={route('file.show', app_logo)}
+                    className="h-30 px-4 py-6"
+                />
             )}
-            <h1 className={className}>{app_name}</h1>
         </>
     )
 }

@@ -34,10 +34,17 @@ if (!function_exists('formatDate')) {
     }
 }
 
+if (!function_exists('formatDateString')) {
+    function formatDateString($date)
+    {
+        return \Illuminate\Support\Carbon::parse($date)->translatedFormat('d F Y');
+    }
+}
+
 if (!function_exists('formatNumZero')) {
     function formatNumZero($n)
     {
-        $max = 4; // 1000
+        $max = 6; // 100000
 
         $number = '';
         foreach (range(0, $max - strlen($n)) as $_) {

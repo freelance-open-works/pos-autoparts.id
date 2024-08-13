@@ -15,10 +15,7 @@ class SaleDeliveryAction
     {
         $fallback = '-';
         $date = Carbon::parse($date);
-        $saled = SaleDelivery::whereYear("sd_date",  $date->format('Y'))
-            ->whereMonth('sd_date', $date->format('m'))
-            ->orderBy('created_at', 'desc')
-            ->first();
+        $saled = SaleDelivery::orderBy('created_at', 'desc')->first();
 
         $num = 1;
         if ($saled !== null) {

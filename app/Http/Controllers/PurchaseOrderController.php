@@ -39,6 +39,7 @@ class PurchaseOrderController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
+            'store_order_id' => 'required|exists:store_orders,id',
             'po_date' => 'required|date',
             'type' => 'required|string',
             'status' => 'required|string',
@@ -54,11 +55,12 @@ class PurchaseOrderController extends Controller
         DB::beginTransaction();
         $items = collect($request->items);
         $purchaseOrder = PurchaseOrder::create([
+            'store_order_id' => $request->store_order_id,
             'supplier_id' => $request->supplier_id,
             'po_date' => $request->po_date,
             'type' => $request->type,
             'status' => $request->status,
-            'amount_cost' => $items->reduce(fn ($_, $item) => $item['cost'] * $item['qty'], 0),
+            'amount_cost' => $items->reduce(fn($_, $item) => $item['cost'] * $item['qty'], 0),
             'address' => $request->address,
             'note' => $request->note,
         ]);
@@ -71,16 +73,24 @@ class PurchaseOrderController extends Controller
             ->with('message', ['type' => 'success', 'message' => 'Item has beed created']);
     }
 
+    public function show(PurchaseOrder $purchaseOrder): Response
+    {
+        return inertia('PurchaseOrder/Show', [
+            'purchaseOrder' => $purchaseOrder->load(['supplier', 'storeOrder', 'items.product.brand']),
+        ]);
+    }
+
     public function edit(PurchaseOrder $purchaseOrder): Response
     {
         return inertia('PurchaseOrder/Form', [
-            'purchaseOrder' => $purchaseOrder->load(['supplier', 'items.product.brand']),
+            'purchaseOrder' => $purchaseOrder->load(['supplier', 'storeOrder', 'items.product.brand']),
         ]);
     }
 
     public function update(Request $request, PurchaseOrder $purchaseOrder): RedirectResponse
     {
         $request->validate([
+            'store_order_id' => 'required|exists:store_orders,id',
             'po_date' => 'required|date',
             'type' => 'required|string',
             'status' => 'required|string',
@@ -97,11 +107,12 @@ class PurchaseOrderController extends Controller
 
         $items = collect($request->items);
         $purchaseOrder->update([
+            'store_order_id' => $request->store_order_id,
             'supplier_id' => $request->supplier_id,
             'po_date' => $request->po_date,
             'type' => $request->type,
             'status' => $request->status,
-            'amount_cost' => $items->reduce(fn ($_, $item) => $item['cost'] * $item['qty'], 0),
+            'amount_cost' => $items->reduce(fn($_, $item) => $item['cost'] * $item['qty'], 0),
             'address' => $request->address,
             'note' => $request->note,
         ]);

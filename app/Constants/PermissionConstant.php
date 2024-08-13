@@ -16,10 +16,16 @@ class PermissionConstant
         ['label' => 'Delete Role', 'name' => 'delete-role'],
 
         // #Add New Permission Below!
+        ['label' => 'Delete Order Toko', 'name' => 'delete-store-order'],
+        ['label' => 'Update Order Toko', 'name' => 'update-store-order'],
+        ['label' => 'Create Order Toko', 'name' => 'create-store-order'],
+        ['label' => 'View Order Toko', 'name' => 'view-store-order'],
+
         ['label' => 'Delete Claim', 'name' => 'delete-claim'],
         ['label' => 'Update Claim', 'name' => 'update-claim'],
         ['label' => 'Create Claim', 'name' => 'create-claim'],
         ['label' => 'View Claim', 'name' => 'view-claim'],
+
         ['label' => 'Delete Sale', 'name' => 'delete-sale'],
         ['label' => 'Update Sale', 'name' => 'update-sale'],
         ['label' => 'Create Sale', 'name' => 'create-sale'],

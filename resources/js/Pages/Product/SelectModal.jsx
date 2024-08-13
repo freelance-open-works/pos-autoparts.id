@@ -14,7 +14,14 @@ export default function SelectModalProduct(props) {
         props: { auth },
     } = usePage()
 
-    const { label, error, onChange, placeholder = '' } = props
+    const {
+        label,
+        error,
+        onChange,
+        placeholder = '',
+        withCost = true,
+        withPrice = true,
+    } = props
 
     const [search, setSearch] = useState('')
     const q = useDebounce(search, 750)
@@ -81,8 +88,8 @@ export default function SelectModalProduct(props) {
                                     <th>Nama</th>
                                     <th>Tipe</th>
                                     <th>Merk</th>
-                                    <th>Harga Beli</th>
-                                    <th>Harga Jual</th>
+                                    {withCost && <th>Harga Beli</th>}
+                                    {withPrice && <th>Harga Jual</th>}
                                 </tr>
                             </thead>
                             <tbody>
@@ -96,8 +103,12 @@ export default function SelectModalProduct(props) {
                                         <td>{item.name}</td>
                                         <td>{item.tipe}</td>
                                         <td>{item.brand.name}</td>
-                                        <td>{formatIDR(item.cost)}</td>
-                                        <td>{formatIDR(item.price)}</td>
+                                        {withCost && (
+                                            <td>{formatIDR(item.cost)}</td>
+                                        )}
+                                        {withPrice && (
+                                            <td>{formatIDR(item.price)}</td>
+                                        )}
                                     </tr>
                                 ))}
                             </tbody>

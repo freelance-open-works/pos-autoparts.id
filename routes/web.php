@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\StoreOrderController;
 use App\Http\Controllers\ClaimController;
 use App\Http\Controllers\SaleController;
 use App\Http\Controllers\PurchaseController;
@@ -56,6 +57,10 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // #Admin
+    Route::get('store-orders/{storeOrder}/print', [StoreOrderController::class, 'print'])->name('store-orders.print');
+    Route::patch('store-orders/{storeOrder}/patch', [StoreOrderController::class, 'patch'])->name('store-orders.patch');
+    Route::resource('store-orders', StoreOrderController::class);
+
     Route::get('/report/purchases/export', [ReportPurchaseController::class, 'export'])->name('report.purchases.export');
     Route::get('/report/purchases', [ReportPurchaseController::class, 'index'])->name('report.purchases');
 

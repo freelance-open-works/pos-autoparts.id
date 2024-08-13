@@ -4,6 +4,7 @@ namespace App\Models;
 
 use App\Actions\PurchaseOrderAction;
 use App\Models\Default\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Support\Carbon;
 
 class PurchaseOrder extends Model
@@ -14,6 +15,7 @@ class PurchaseOrder extends Model
     const STATUS_DONE = 'selesai';
 
     protected $fillable = [
+        'store_order_id',
         'supplier_id',
         'po_code',
         'po_date',
@@ -23,6 +25,8 @@ class PurchaseOrder extends Model
         'address',
         'note',
     ];
+
+    protected $appends = ['allow_change'];
 
     protected static function booted(): void
     {
@@ -40,5 +44,15 @@ class PurchaseOrder extends Model
     public function supplier()
     {
         return $this->belongsTo(Supplier::class)->withTrashed();
+    }
+
+    public function storeOrder()
+    {
+        return $this->belongsTo(StoreOrder::class)->withTrashed();
+    }
+
+    public function allowChange(): Attribute
+    {
+        return Attribute::make(get: fn() => $this->status !== self::STATUS_SUBMIT);
     }
 }

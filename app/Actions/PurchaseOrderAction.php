@@ -15,10 +15,7 @@ class PurchaseOrderAction
     {
         $fallback = 99999;
         $date = Carbon::parse($date);
-        $purchase = PurchaseOrder::whereYear("po_date", $date->format('Y'))
-            ->whereMonth('po_date', $date->format('m'))
-            ->orderBy('created_at', 'desc')
-            ->first();
+        $purchase = PurchaseOrder::orderBy('created_at', 'desc')->first();
 
         $num = 1;
         if ($purchase !== null) {

@@ -12,8 +12,13 @@ import SelectModalProduct from '../Product/SelectModal'
 import { HiXMark } from 'react-icons/hi2'
 import { formatIDR } from '@/utils'
 import { SelectOptionArray } from '@/Components/DaisyUI/SelectInput'
-import { purchase_order_status, purchase_order_types } from '@/consts'
+import {
+    purchase_order_status,
+    purchase_order_status_draft,
+    purchase_order_types,
+} from '@/consts'
 import TextareaInput from '@/Components/DaisyUI/TextareaInput'
+import SelectModalStoreOrder from '../StoreOrder/SelectModal'
 
 export default function Form(props) {
     const {
@@ -23,14 +28,31 @@ export default function Form(props) {
 
     const [processing, set_processing] = useState(false)
 
+    const [store_order, set_store_order] = useState(null)
     const [po_code, set_po_code] = useState('')
     const [po_date, set_po_date] = useState(new Date())
     const [type, set_type] = useState('')
-    const [status, set_status] = useState('')
+    const [status, set_status] = useState(purchase_order_status_draft)
     const [address, set_address] = useState('')
     const [note, set_note] = useState('')
     const [supplier, set_supplier] = useState(null)
     const [items, set_items] = useState([])
+
+    const handleSetStoreOrder = (so) => {
+        set_store_order(so)
+        handleSetSupplier(so.supplier)
+        set_items(
+            so.items.map((item) => {
+                return {
+                    ...item.product,
+                    product_id: item.product.id,
+                    qty: item.qty,
+                    cost: item.cost,
+                    subtotal: item.qty * item.cost,
+                }
+            })
+        )
+    }
 
     const handleSetSupplier = (supplier) => {
         set_supplier(supplier)
@@ -75,6 +97,7 @@ export default function Form(props) {
     }
 
     const payload = {
+        store_order_id: store_order?.id,
         po_date,
         type,
         status,
@@ -108,6 +131,7 @@ export default function Form(props) {
 
     useEffect(() => {
         if (!isEmpty(purchaseOrder)) {
+            set_store_order(purchaseOrder.store_order)
             set_po_code(purchaseOrder.po_code)
             set_po_date(purchaseOrder.po_date)
             set_type(purchaseOrder.type)
@@ -136,6 +160,13 @@ export default function Form(props) {
             <div>
                 <Card>
                     <div className="flex flex-col gap-2 justify-between">
+                        <SelectModalStoreOrder
+                            label="Order Toko"
+                            placeholder="Pilih Order Toko"
+                            onChange={handleSetStoreOrder}
+                            error={errors.store_order_id}
+                            value={store_order?.so_code}
+                        />
                         <TextInput
                             label={'No PO'}
                             value={po_code}
@@ -174,13 +205,13 @@ export default function Form(props) {
                                 onChange={(e) => set_address(e.target.value)}
                                 error={errors.address}
                             />
-                            <SelectOptionArray
+                            {/* <SelectOptionArray
                                 value={status}
                                 label={'Status'}
                                 options={purchase_order_status}
                                 onChange={(e) => set_status(e.target.value)}
                                 error={errors.status}
-                            />
+                            /> */}
                             <TextareaInput
                                 value={note}
                                 label={'Keterangan'}
@@ -194,6 +225,8 @@ export default function Form(props) {
                                 placeholder="Pilih Part"
                                 onChange={handleAddItem}
                                 error={errors.items}
+                                withCost={false}
+                                withPrice={false}
                             />
                             <div className="overflow-x-auto">
                                 <table className="table">
@@ -203,12 +236,12 @@ export default function Form(props) {
                                             <th>Part Name</th>
                                             <th>Merk</th>
                                             <th>QTY</th>
-                                            <th className="text-right">
+                                            {/* <th className="text-right">
                                                 Harga
-                                            </th>
-                                            <th className="text-right">
+                                            </th> */}
+                                            {/* <th className="text-right">
                                                 Subtotal
-                                            </th>
+                                            </th> */}
                                             <th></th>
                                         </tr>
                                     </thead>
@@ -237,12 +270,12 @@ export default function Form(props) {
                                                         />
                                                     </div>
                                                 </td>
-                                                <td className="text-right">
+                                                {/* <td className="text-right">
                                                     {formatIDR(item.cost)}
-                                                </td>
-                                                <td className="text-right">
+                                                </td> */}
+                                                {/* <td className="text-right">
                                                     {formatIDR(item.subtotal)}
-                                                </td>
+                                                </td> */}
                                                 <td>
                                                     <div
                                                         onClick={() =>
@@ -260,10 +293,10 @@ export default function Form(props) {
                                 </table>
                             </div>
                         </div>
-                        <div className="w-full flex flex-row justify-between p-4 font-bold text-xl border border-gray-400 rounded-xl">
+                        {/* <div className="w-full flex flex-row justify-between p-4 font-bold text-xl border border-gray-400 rounded-xl">
                             <div>TOTAL : </div>
                             <div>{formatIDR(total)}</div>
-                        </div>
+                        </div> */}
                         <div className="flex items-center">
                             <div className="flex space-x-2">
                                 <Button

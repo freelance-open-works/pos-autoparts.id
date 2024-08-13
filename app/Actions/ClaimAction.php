@@ -16,10 +16,7 @@ class ClaimAction
     {
         $fallback = '-';
         $date = Carbon::parse($date);
-        $purchase = Claim::whereYear('c_date', $date->format('Y'))
-            ->whereMonth('c_date', $date->format('m'))
-            ->orderBy('created_at', 'desc')
-            ->first();
+        $purchase = Claim::orderBy('created_at', 'desc')->first();
 
         $num = 1;
         if ($purchase !== null) {
