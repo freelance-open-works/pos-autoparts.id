@@ -4,10 +4,13 @@ namespace App\Models;
 
 use App\Actions\SaleCodeAction;
 use App\Models\Default\Model;
+use App\Models\Traits\HasStatusWithAllowChange;
 use Illuminate\Support\Carbon;
 
 class Sale extends Model
 {
+    use HasStatusWithAllowChange;
+
     const STATUS_DRAFT = 'draft';
     const STATUS_PROCESS = 'proses';
     const STATUS_SUBMIT = 'submit';

@@ -20,6 +20,7 @@ class SaleDeliveryController extends Controller
             'volume' => 'nullable|numeric',
             'volume_unit' => 'nullable|string',
             'note' => 'nullable|string',
+            'note_manual' => 'nullable|string',
             'service' => 'nullable|string',
         ]);
 
@@ -33,6 +34,7 @@ class SaleDeliveryController extends Controller
             'volume' => $request->volume,
             'volume_unit' => $request->volume_unit,
             'note' => $request->note,
+            'note_manual' => $request->note_manual,
             'service' => $request->service,
         ]);
 
@@ -42,11 +44,11 @@ class SaleDeliveryController extends Controller
 
     public function print(Sale $sale)
     {
-        return view('print.delivery', [
-            'sale' => $sale->load(['creator', 'purchase']),
-            'delivery' => $sale->delivery->load(['expedition']),
-            'setting' => new Setting(),
-        ]);
+        // return view('print.delivery', [
+        //     'sale' => $sale->load(['creator', 'purchase']),
+        //     'delivery' => $sale->delivery->load(['expedition']),
+        //     'setting' => new Setting(),
+        // ]);
 
         $pdf = Pdf::loadView('print.delivery', [
             'sale' => $sale->load(['creator', 'purchase']),

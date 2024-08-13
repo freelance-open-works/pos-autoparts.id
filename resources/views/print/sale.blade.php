@@ -65,10 +65,10 @@
                     Harga
                 </td>
                 <td class="border border-black font-bold p-1 text-right">
-                    Diskon (IDR)
+                    Diskon 1 (%)
                 </td>
                 <td class="border border-black font-bold p-1 text-right">
-                    Diskon (%)
+                    Diskon 2 (%)
                 </td>
                 <td class="border border-black font-bold p-1 text-right">
                     Amount Diskon
@@ -100,10 +100,10 @@
                     {{ formatIDR($item->price) }}
                 </td>
                 <td class="border border-black p-1 text-right">
-                    {{ formatIDR($item->discount_amount) }}
+                    {{ formatIDR($item->discount_percent_2) }}
                 </td>
                 <td class="border border-black p-1 text-right">
-                    {{ formatIDR($item->discount_percent) }}
+                    {{ formatIDR($item->discount_percent_1) }}
                 </td>
                 <td class="border border-black p-1 text-right">
                     {{ formatIDR($item->discount_total) }}

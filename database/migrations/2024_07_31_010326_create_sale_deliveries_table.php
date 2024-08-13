@@ -23,6 +23,7 @@ return new class extends Migration
             $table->string('volume')->nullable();
             $table->string('volume_unit')->nullable();
             $table->text('note')->nullable();
+            $table->text('note_manual')->nullable();
             $table->string('service')->nullable();
             //
             $table->timestamps();

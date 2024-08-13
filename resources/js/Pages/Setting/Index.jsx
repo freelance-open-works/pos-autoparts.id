@@ -88,7 +88,7 @@ export default function Setting(props) {
                         name="ppn_percent"
                         value={data.ppn_percent}
                         onChange={handleOnChange}
-                        label="PPN (%)"
+                        label="Pembagi DPP"
                         error={errors.ppn_percent}
                     />
                     <div className="mt-4">

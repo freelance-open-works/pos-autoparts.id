@@ -17,18 +17,15 @@
 <body>
     <table class="w-full mb-4">
         <tr>
-            <td rowspan="2" style="width: 200px;">
+            <td style="width: 200px;">
                 <img src="{{ $setting->getStoragePath('app_logo') }}" style="width: 200px;" />
             </td>
             <td class="text-center pr-48">
                 <span class="font-bold text-2xl">SURAT JALAN</span>
-            </td>
-        </tr>
-        <tr>
-            <td class="text-center">
                 <pre class="font-sans text-xs">{{ $setting->getValueByKey('company_address') }}</pre>
             </td>
         </tr>
+
     </table>
     <hr />
     <table class="w-full table table-zebra border-collapse">
@@ -52,28 +49,34 @@
                 <td class="border border-black font-bold text-center" colspan="2">{{ $sale->s_code }}</td>
             </tr>
             <tr class="border border-black">
-                <td class="border border-black font-bold">PENGIRIM</td>
-                <td class="border border-black font-bold" colspan="2">TOTAL BARANG</td>
+                <td class="border border-black">
+                    <span class="font-bold">PENGIRIM</span>
+                    <pre class="font-sans">Nama : {{ $setting->getValueByKey('company_name') }}
+Alamat : {{ $setting->getValueByKey('company_address') }}
+                    </pre>
+                </td>
+                <td class="border border-black" colspan="2" style="height: 80px;">{{ $delivery->note_manual }}</td>
             </tr>
             <tr class="border border-black">
-                <td class="border border-black">Nama : {{ $setting->getValueByKey('company_name') }}</td>
-                <td class="border border-black text-center" rowspan="2">QTY ({{ $delivery->qty_unit }})</td>
-                <td class="border border-black text-center" rowspan="2">BERAT VOLUME ({{ $delivery->volume_unit }})</td>
+                <td class="border border-black"></td>
+                <td class="border border-black font-bold text-center" colspan="2">TOTAL BARANG</td>
             </tr>
             <tr class="border border-black">
-                <td class="border border-black">Alamat : {{ $setting->getValueByKey('company_address') }}</td>
+                <td class="border border-black">
+                </td>
+                <td class="border border-black text-center">QTY ({{ $delivery->qty_unit }})</td>
+                <td class="border border-black text-center">BERAT VOLUME ({{ $delivery->volume_unit }})</td>
             </tr>
             <tr class="border border-black">
-                <td class="border border-black font-bold">PENERIMA</td>
-                <td class="border border-black text-center" rowspan="3"> {{ $delivery->qty }} </td>
-                <td class="border border-black text-center" rowspan="3"> {{ $delivery->volume }} </td>
+                <td class="border border-black"><span class="font-bold">PENERIMA</span>
+                    <pre class="font-sans">Nama : {{ $sale->customer->name }}
+Alamat : {{$sale->address }}
+                    </pre>
+                </td>
+                <td class="border border-black text-center"> {{ $delivery->qty }} </td>
+                <td class="border border-black text-center"> {{ $delivery->volume }} </td>
             </tr>
-            <tr class="border border-black">
-                <td class="border border-black">Nama : {{ $sale->customer->name }}</td>
-            </tr>
-            <tr class="border border-black">
-                <td class="border border-black">Alamat : {{$sale->address }}</td>
-            </tr>
+
             <tr class="border border-black">
                 <td class="border border-black font-bold">DIANGKUT OLEH</td>
                 <td class="border border-black font-bold" colspan="2">KETERANGAN : </td>
@@ -101,7 +104,7 @@
     <table class="w-full pt-4 text-center mt-4">
         <tbody>
             <tr>
-                <td style="width: 25%;"></td>
+                <td style="width: 25%;">Admin</td>
                 <td style="width: 25%;"></td>
                 <td class="text-center font-bold">EKSPEDISI</td>
             </tr>

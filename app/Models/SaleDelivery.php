@@ -18,6 +18,7 @@ class SaleDelivery extends Model
         'volume',
         'volume_unit',
         'note',
+        'note_manual',
         'service',
     ];
 

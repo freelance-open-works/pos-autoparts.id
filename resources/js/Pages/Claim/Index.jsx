@@ -109,59 +109,68 @@ export default function Index(props) {
                                                         <div>View</div>
                                                     </div>
                                                 </Dropdown.Item>
-                                                <HasPermission p="update-claim">
+                                                {claim.allow_change ===
+                                                    true && (
                                                     <>
-                                                        <Dropdown.Item>
-                                                            <Link
-                                                                href={route(
-                                                                    'claims.patch',
-                                                                    claim.id
-                                                                )}
-                                                                method="patch"
-                                                                data={{
-                                                                    key: 'status',
-                                                                    value: claim_status_submit,
-                                                                }}
-                                                                className="flex space-x-1 items-center"
-                                                                as="button"
-                                                            >
-                                                                <HiPaperAirplane />
-                                                                <div>
-                                                                    Submit
-                                                                </div>
-                                                            </Link>
-                                                        </Dropdown.Item>
-                                                        <Dropdown.Item
-                                                            onClick={() =>
-                                                                router.visit(
-                                                                    route(
-                                                                        'claims.edit',
+                                                        <HasPermission p="update-claim">
+                                                            <>
+                                                                <Dropdown.Item>
+                                                                    <Link
+                                                                        href={route(
+                                                                            'claims.patch',
+                                                                            claim.id
+                                                                        )}
+                                                                        method="patch"
+                                                                        data={{
+                                                                            key: 'status',
+                                                                            value: claim_status_submit,
+                                                                        }}
+                                                                        className="flex space-x-1 items-center"
+                                                                        as="button"
+                                                                    >
+                                                                        <HiPaperAirplane />
+                                                                        <div>
+                                                                            Submit
+                                                                        </div>
+                                                                    </Link>
+                                                                </Dropdown.Item>
+                                                                <Dropdown.Item
+                                                                    onClick={() =>
+                                                                        router.visit(
+                                                                            route(
+                                                                                'claims.edit',
+                                                                                claim
+                                                                            )
+                                                                        )
+                                                                    }
+                                                                >
+                                                                    <div className="flex space-x-1 items-center">
+                                                                        <HiPencil />
+                                                                        <div>
+                                                                            Ubah
+                                                                        </div>
+                                                                    </div>
+                                                                </Dropdown.Item>
+                                                            </>
+                                                        </HasPermission>
+                                                        <HasPermission p="delete-claim">
+                                                            <Dropdown.Item
+                                                                onClick={() =>
+                                                                    handleDeleteClick(
                                                                         claim
                                                                     )
-                                                                )
-                                                            }
-                                                        >
-                                                            <div className="flex space-x-1 items-center">
-                                                                <HiPencil />
-                                                                <div>Ubah</div>
-                                                            </div>
-                                                        </Dropdown.Item>
+                                                                }
+                                                            >
+                                                                <div className="flex space-x-1 items-center">
+                                                                    <HiTrash />
+                                                                    <div>
+                                                                        Hapus
+                                                                    </div>
+                                                                </div>
+                                                            </Dropdown.Item>
+                                                        </HasPermission>
                                                     </>
-                                                </HasPermission>
-                                                <HasPermission p="delete-claim">
-                                                    <Dropdown.Item
-                                                        onClick={() =>
-                                                            handleDeleteClick(
-                                                                claim
-                                                            )
-                                                        }
-                                                    >
-                                                        <div className="flex space-x-1 items-center">
-                                                            <HiTrash />
-                                                            <div>Hapus</div>
-                                                        </div>
-                                                    </Dropdown.Item>
-                                                </HasPermission>
+                                                )}
                                             </Dropdown>
                                         </td>
                                     </tr>

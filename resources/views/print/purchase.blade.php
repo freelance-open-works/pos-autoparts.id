@@ -15,7 +15,7 @@
             <td>
                 <img src="{{ $setting->getStoragePath('app_logo') }}" style="width: 200px;" />
             </td>
-            <td class="font-bold text-2xl text-right">PURCHASE</td>
+            <td class="font-bold text-2xl text-right">Nota Pembelian</td>
         </tr>
         <tr>
             <td>
@@ -69,10 +69,10 @@
                     Harga
                 </td>
                 <td class="border border-black font-bold p-1 text-right">
-                    Diskon (IDR)
+                    Diskon 1 (%)
                 </td>
                 <td class="border border-black font-bold p-1 text-right">
-                    Diskon (%)
+                    Diskon 2 (%)
                 </td>
                 <td class="border border-black font-bold p-1 text-right">
                     Amount Diskon
@@ -104,10 +104,10 @@
                     {{ formatIDR($item->cost) }}
                 </td>
                 <td class="border border-black p-1 text-right">
-                    {{ formatIDR($item->discount_amount) }}
+                    {{ formatIDR($item->discount_percent_2) }}
                 </td>
                 <td class="border border-black p-1 text-right">
-                    {{ formatIDR($item->discount_percent) }}
+                    {{ formatIDR($item->discount_percent_1) }}
                 </td>
                 <td class="border border-black p-1 text-right">
                     {{ formatIDR($item->discount_total) }}
@@ -118,9 +118,9 @@
             </tr>
             @endforeach
             @foreach ([
-            'Harga Jual' => $purchase->amount_cost + $purchase->amount_discount,
+            'Harga Beli' => $purchase->amount_cost ,
             'Diskon' => $purchase->amount_discount,
-            'Grand Total' => $purchase->amount_cost,
+            'Grand Total' => $purchase->amount_cost - $purchase->amount_discount,
             'DPP' => $purchase->amount_net,
             'PPN' => $purchase->amount_ppn,
             ] as $key => $value)

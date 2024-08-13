@@ -59,8 +59,8 @@ class PurchaseController extends Controller
             'items.*.cost' => 'required|numeric|min:1',
             'items.*.qty' => 'required|numeric|min:1',
             'items.*.subtotal' => 'required|numeric',
-            'items.*.discount_percent' => 'required|numeric',
-            'items.*.discount_amount' => 'required|numeric',
+            'items.*.discount_percent_1' => 'required|numeric',
+            'items.*.discount_percent_2' => 'required|numeric',
             'items.*.discount_total' => 'required|numeric',
             'items.*.subtotal_discount' => 'required|numeric',
             'items.*.subtotal_net' => 'required|numeric',
@@ -84,9 +84,6 @@ class PurchaseController extends Controller
         ]);
 
         $purchase->items()->saveMany($items->mapInto(PurchaseItem::class));
-        if ($purchase->status == Purchase::STATUS_SUBMIT) {
-            PurchaseAction::update_stocks($purchase);
-        }
 
         DB::commit();
 
@@ -98,7 +95,15 @@ class PurchaseController extends Controller
     {
         return inertia('Purchase/Form', [
             'purchase' => $purchase->load(['items.product.brand', 'supplier', 'purchaseOrder']),
-            'ppn_percent' => $purchase->ppn_percent_applied,
+            'ppn_percent' => Setting::getByKey('ppn_percent'),
+        ]);
+    }
+
+    public function show(Purchase $purchase): Response
+    {
+        return inertia('Purchase/Show', [
+            'purchase' => $purchase->load(['items.product.brand', 'supplier', 'purchaseOrder']),
+            'ppn_percent' => Setting::getByKey('ppn_percent'),
         ]);
     }
 
@@ -121,8 +126,8 @@ class PurchaseController extends Controller
             'items.*.cost' => 'required|numeric|min:1',
             'items.*.qty' => 'required|numeric|min:1',
             'items.*.subtotal' => 'required|numeric',
-            'items.*.discount_percent' => 'required|numeric',
-            'items.*.discount_amount' => 'required|numeric',
+            'items.*.discount_percent_1' => 'required|numeric',
+            'items.*.discount_percent_2' => 'required|numeric',
             'items.*.discount_total' => 'required|numeric',
             'items.*.subtotal_discount' => 'required|numeric',
             'items.*.subtotal_net' => 'required|numeric',
@@ -131,16 +136,6 @@ class PurchaseController extends Controller
 
         DB::beginTransaction();
         $items = collect($request->items);
-
-        if ($purchase->status == Purchase::STATUS_SUBMIT && !in_array($request->status, [Purchase::STATUS_DONE, Purchase::STATUS_SUBMIT])) {
-            try {
-                PurchaseAction::revert_stocks($purchase);
-            } catch (Exception $e) {
-                return redirect()->route('purchases.index')
-                    ->with('message', ['type' => 'error', 'message' => $e->getMessage()]);
-            }
-        }
-        $purchase->items()->delete();
 
         $purchase->update([
             'purchase_order_id' => $request->purchase_order_id,
@@ -156,6 +151,7 @@ class PurchaseController extends Controller
             'ppn_percent_applied' => $request->ppn_percent_applied,
         ]);
 
+        $purchase->items()->delete();
         $purchase->items()->saveMany($items->mapInto(PurchaseItem::class));
 
         DB::commit();
@@ -166,14 +162,6 @@ class PurchaseController extends Controller
 
     public function destroy(Purchase $purchase): RedirectResponse
     {
-        if ($purchase->status == Purchase::STATUS_SUBMIT) {
-            try {
-                PurchaseAction::revert_stocks($purchase);
-            } catch (Exception $e) {
-                return redirect()->route('purchases.index')
-                    ->with('message', ['type' => 'error', 'message' => $e->getMessage()]);
-            }
-        }
         $purchase->delete();
 
         return redirect()->route('purchases.index')
@@ -183,18 +171,8 @@ class PurchaseController extends Controller
     public function patch(Request $request, Purchase $purchase)
     {
         // if key is status and it submit update stock to up
-        if ($request->key == 'status') {
-            if ($purchase->status == Purchase::STATUS_SUBMIT && !in_array($request->value, [Purchase::STATUS_DONE, Purchase::STATUS_SUBMIT])) {
-                try {
-                    PurchaseAction::revert_stocks($purchase);
-                } catch (Exception $e) {
-                    return redirect()->route('purchases.index')
-                        ->with('message', ['type' => 'error', 'message' => $e->getMessage()]);
-                }
-            }
-            if ($purchase->status != Purchase::STATUS_SUBMIT && $request->value == Purchase::STATUS_SUBMIT) {
-                PurchaseAction::update_stocks($purchase);
-            }
+        if ($request->key == 'status' && $request->value == Purchase::STATUS_SUBMIT) {
+            PurchaseAction::update_stocks($purchase);
         }
 
         $purchase->update([

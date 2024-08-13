@@ -81,7 +81,7 @@ export default function SelectModalPurchase(props) {
                                     <th>Tanggal</th>
                                     <th>Kode Cust</th>
                                     <th>Supplier</th>
-                                    <th>Total (NET)</th>
+                                    <th>Total (Net)</th>
                                     <th>Status</th>
                                 </tr>
                             </thead>

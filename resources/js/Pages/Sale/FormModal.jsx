@@ -25,6 +25,7 @@ export default function FormModal(props) {
             volume: '',
             volume_unit: '',
             note: '',
+            note_manual: '',
             service: '',
         })
 
@@ -163,6 +164,13 @@ export default function FormModal(props) {
                     label="Keterangan"
                     onChange={handleOnChange}
                     error={errors.note}
+                />
+                <TextareaInput
+                    name="note_manual"
+                    value={data.note_manual}
+                    label="Isian Manual"
+                    onChange={handleOnChange}
+                    error={errors.note_manual}
                 />
                 <div className="flex items-center space-x-2 mt-4">
                     <Button

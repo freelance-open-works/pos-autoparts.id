@@ -80,7 +80,7 @@ export default function SelectModalSale(props) {
                                     <th>Invoice Number</th>
                                     <th>Tanggal</th>
                                     <th>Customer</th>
-                                    <th>Total (NET)</th>
+                                    <th>Total (Net)</th>
                                     <th>Status</th>
                                     <th />
                                 </tr>
@@ -95,7 +95,7 @@ export default function SelectModalSale(props) {
                                         <td>{item.s_code}</td>
                                         <td>{item.s_date}</td>
                                         <td>{item.customer.name}</td>
-                                        <td>{formatIDR(item.amount_net)}</td>
+                                        <td>{formatIDR(item.amount_cost)}</td>
                                         <td>{item.status}</td>
                                     </tr>
                                 ))}

@@ -14,7 +14,12 @@ import Dropdown from '@/Components/DaisyUI/Dropdown'
 import Button from '@/Components/DaisyUI/Button'
 import Card from '@/Components/DaisyUI/Card'
 import { formatIDR } from '@/utils'
-import { HiPaperAirplane, HiReceiptPercent, HiTruck } from 'react-icons/hi2'
+import {
+    HiEye,
+    HiPaperAirplane,
+    HiReceiptPercent,
+    HiTruck,
+} from 'react-icons/hi2'
 import { sale_status_submit } from '@/consts'
 import FormModal from './FormModal'
 
@@ -82,13 +87,13 @@ export default function Index(props) {
                         </div>
                     </div>
                     <div className="overflow-x-auto">
-                        <table className="table mt-6">
+                        <table className="table mt-12">
                             <thead>
                                 <tr>
                                     <th>Invoice Number</th>
                                     <th>Tanggal</th>
                                     <th>Customer</th>
-                                    <th>Total (NET)</th>
+                                    <th>Total (Net)</th>
                                     <th>Status</th>
                                     <th />
                                 </tr>
@@ -99,7 +104,7 @@ export default function Index(props) {
                                         <td>{item.s_code}</td>
                                         <td>{item.s_date}</td>
                                         <td>{item.customer.name}</td>
-                                        <td>{formatIDR(item.amount_net)}</td>
+                                        <td>{formatIDR(item.amount_cost)}</td>
                                         <td>{item.status}</td>
                                         <td className="text-right">
                                             <div className="w-full flex flex-row gap-2">
@@ -137,61 +142,80 @@ export default function Index(props) {
                                                     </Dropdown.Item>
                                                 </Dropdown>
                                                 <Dropdown label={'Opsi'}>
-                                                    <HasPermission p="update-sale">
+                                                    <Dropdown.Item>
+                                                        <Link
+                                                            href={route(
+                                                                'sales.show',
+                                                                item
+                                                            )}
+                                                            className="flex space-x-1 items-center"
+                                                        >
+                                                            <HiEye />
+                                                            <div>View</div>
+                                                        </Link>
+                                                    </Dropdown.Item>
+                                                    {item.allow_change ===
+                                                        true && (
                                                         <>
-                                                            <Dropdown.Item>
-                                                                <Link
-                                                                    href={route(
-                                                                        'sales.patch',
-                                                                        item
-                                                                    )}
-                                                                    method="patch"
-                                                                    data={{
-                                                                        key: 'status',
-                                                                        value: sale_status_submit,
-                                                                    }}
-                                                                    className="flex space-x-1 items-center"
-                                                                    as="button"
-                                                                >
-                                                                    <HiPaperAirplane />
-                                                                    <div>
-                                                                        Submit
-                                                                    </div>
-                                                                </Link>
-                                                            </Dropdown.Item>
-                                                            <Dropdown.Item
-                                                                onClick={() =>
-                                                                    router.visit(
-                                                                        route(
-                                                                            'sales.edit',
+                                                            <HasPermission p="update-sale">
+                                                                <>
+                                                                    <Dropdown.Item>
+                                                                        <Link
+                                                                            href={route(
+                                                                                'sales.patch',
+                                                                                item
+                                                                            )}
+                                                                            method="patch"
+                                                                            data={{
+                                                                                key: 'status',
+                                                                                value: sale_status_submit,
+                                                                            }}
+                                                                            className="flex space-x-1 items-center"
+                                                                            as="button"
+                                                                        >
+                                                                            <HiPaperAirplane />
+                                                                            <div>
+                                                                                Submit
+                                                                            </div>
+                                                                        </Link>
+                                                                    </Dropdown.Item>
+                                                                    <Dropdown.Item
+                                                                        onClick={() =>
+                                                                            router.visit(
+                                                                                route(
+                                                                                    'sales.edit',
+                                                                                    item
+                                                                                )
+                                                                            )
+                                                                        }
+                                                                    >
+                                                                        <div className="flex space-x-1 items-center">
+                                                                            <HiPencil />
+                                                                            <div>
+                                                                                Ubah
+                                                                            </div>
+                                                                        </div>
+                                                                    </Dropdown.Item>
+                                                                </>
+                                                            </HasPermission>
+                                                            <HasPermission p="delete-sale">
+                                                                <Dropdown.Item
+                                                                    onClick={() =>
+                                                                        handleDeleteClick(
                                                                             item
                                                                         )
-                                                                    )
-                                                                }
-                                                            >
-                                                                <div className="flex space-x-1 items-center">
-                                                                    <HiPencil />
-                                                                    <div>
-                                                                        Ubah
+                                                                    }
+                                                                >
+                                                                    <div className="flex space-x-1 items-center">
+                                                                        <HiTrash />
+                                                                        <div>
+                                                                            Hapus
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </Dropdown.Item>
+                                                                </Dropdown.Item>
+                                                            </HasPermission>
                                                         </>
-                                                    </HasPermission>
-                                                    <HasPermission p="delete-sale">
-                                                        <Dropdown.Item
-                                                            onClick={() =>
-                                                                handleDeleteClick(
-                                                                    item
-                                                                )
-                                                            }
-                                                        >
-                                                            <div className="flex space-x-1 items-center">
-                                                                <HiTrash />
-                                                                <div>Hapus</div>
-                                                            </div>
-                                                        </Dropdown.Item>
-                                                    </HasPermission>
+                                                    )}
                                                 </Dropdown>
                                             </div>
                                         </td>

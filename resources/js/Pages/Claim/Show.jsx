@@ -6,6 +6,7 @@ import AuthenticatedLayout from '@/Layouts/AuthenticatedLayout'
 import TextInput from '@/Components/DaisyUI/TextInput'
 import Button from '@/Components/DaisyUI/Button'
 import Card from '@/Components/DaisyUI/Card'
+import { formatIDR } from '@/utils'
 
 export default function Form(props) {
     const {
@@ -101,12 +102,14 @@ export default function Form(props) {
                                                 <td>{item.part_code}</td>
                                                 <td>{item.name}</td>
                                                 <td>{item?.brand?.name}</td>
-                                                <td>{item.price}</td>
+                                                <td>{formatIDR(item.price)}</td>
                                                 <td>
-                                                    {item.qty_item -
-                                                        item.qty_return}
+                                                    {formatIDR(
+                                                        item.qty_item -
+                                                            item.qty_return
+                                                    )}
                                                 </td>
-                                                <td>{item.qty}</td>
+                                                <td>{formatIDR(item.qty)}</td>
                                             </tr>
                                         ))}
                                     </tbody>

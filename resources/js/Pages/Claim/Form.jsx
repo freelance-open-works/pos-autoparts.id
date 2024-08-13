@@ -9,7 +9,7 @@ import Card from '@/Components/DaisyUI/Card'
 import SelectModalSale from '../Sale/SelectModal'
 import FormInputDate from '@/Components/DaisyUI/FormInputDate'
 import { SelectOptionArray } from '@/Components/DaisyUI/SelectInput'
-import { claim_status } from '@/consts'
+import { claim_status, claim_status_draft } from '@/consts'
 import { HiXMark } from 'react-icons/hi2'
 
 export default function Form(props) {
@@ -24,7 +24,7 @@ export default function Form(props) {
     const [customer, set_customer] = useState(null)
     const [c_date, set_c_date] = useState(new Date())
     const [reason, set_reason] = useState('')
-    const [status, set_status] = useState('')
+    const [status, set_status] = useState(claim_status_draft)
     const [items, set_items] = useState([])
 
     const handleSetSale = (sale) => {
@@ -140,13 +140,13 @@ export default function Form(props) {
                                 label="Customer"
                                 readOnly={true}
                             />
-                            <SelectOptionArray
+                            {/* <SelectOptionArray
                                 value={status}
                                 label={'Status'}
                                 options={claim_status}
                                 onChange={(e) => set_status(e.target.value)}
                                 error={errors.status}
-                            />
+                            /> */}
                             <TextInput
                                 name="reason"
                                 value={reason}

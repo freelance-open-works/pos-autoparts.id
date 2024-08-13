@@ -20,8 +20,8 @@ return new class extends Migration
             $table->decimal('qty_return', 20, 2)->default(0);
             $table->decimal('price', 20, 2)->default(0);
             $table->decimal('subtotal', 20, 2)->default(0);
-            $table->decimal('discount_percent', 20, 2)->default(0);
-            $table->decimal('discount_amount', 20, 2)->default(0);
+            $table->decimal('discount_percent_1', 20, 2)->default(0);
+            $table->decimal('discount_percent_2', 20, 2)->default(0);
             $table->decimal('discount_total', 20, 2)->default(0);
             $table->decimal('subtotal_discount', 20, 2)->default(0);
             $table->decimal('subtotal_net', 20, 2)->default(0);

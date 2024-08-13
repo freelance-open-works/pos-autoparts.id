@@ -9,12 +9,13 @@ import Card from '@/Components/DaisyUI/Card'
 import FormInputDate from '@/Components/DaisyUI/FormInputDate'
 import { SelectOptionArray } from '@/Components/DaisyUI/SelectInput'
 import SelectModalInput from '@/Components/DaisyUI/SelectModalInput'
-import { sale_status } from '@/consts'
+import { sale_status, sale_status_draft } from '@/consts'
 import TextareaInput from '@/Components/DaisyUI/TextareaInput'
 import SelectModalProduct from '../Product/SelectModal'
 import { HiXMark } from 'react-icons/hi2'
 import { formatIDR } from '@/utils'
 import SelectModalPurchase from '../Purchase/SelectModal'
+import Checkbox from '@/Components/DaisyUI/Checkbox'
 
 export default function Form(props) {
     const {
@@ -24,13 +25,42 @@ export default function Form(props) {
 
     const [processing, setProcessing] = useState(false)
 
+    const [use_ppn, set_use_ppn] = useState(true)
+    const [use_ppn_percent, set_use_ppn_percent] = useState(ppn_percent)
     const [purchase, set_purchase] = useState('')
     const [s_date, set_s_date] = useState(new Date())
-    const [status, set_status] = useState('')
+    const [status, set_status] = useState(sale_status_draft)
     const [address, set_address] = useState('')
     const [note, set_note] = useState('')
     const [customer, set_customer] = useState(null)
     const [items, set_items] = useState([])
+
+    const handleSetPpn = () => {
+        set_use_ppn(!use_ppn)
+        let ppn_use = ppn_percent
+        if (!use_ppn === false) {
+            ppn_use = 1
+        }
+        set_use_ppn_percent(ppn_use)
+        // update items
+        set_items(
+            items.map((i) => {
+                i['subtotal'] = Number(i['qty'] * i['price'])
+                i['discount_total'] =
+                    Number(i['discount_percent_2']) +
+                    Number(i['subtotal'] * (i['discount_percent_1'] / 100))
+                i['subtotal_discount'] = Number(
+                    i['subtotal'] - i['discount_total']
+                )
+                i['subtotal_net'] = Number(i['subtotal_discount'] / ppn_use)
+                i['subtotal_ppn'] = Number(
+                    i['subtotal_discount'] - i['subtotal_discount'] / ppn_use
+                )
+
+                return i
+            })
+        )
+    }
 
     const handleSetPurchase = (p) => {
         set_purchase(p)
@@ -41,14 +71,14 @@ export default function Form(props) {
                     product_id: item.product.id,
                     qty: item.qty,
                     subtotal: item.product.price,
-                    discount_percent: 0,
-                    discount_amount: 0,
+                    discount_percent_1: 0,
+                    discount_percent_2: 0,
                     discount_total: 0,
                     subtotal_discount: item.product.price,
-                    subtotal_net:
+                    subtotal_net: item.product.price / use_ppn_percent,
+                    subtotal_ppn:
                         item.product.price -
-                        item.product.price * (ppn_percent / 100),
-                    subtotal_ppn: item.product.price * (ppn_percent / 100),
+                        item.product.price / use_ppn_percent,
                 }
             })
         )
@@ -71,12 +101,12 @@ export default function Form(props) {
                 product_id: item.id,
                 qty: 1,
                 subtotal: item.price,
-                discount_percent: 0,
-                discount_amount: 0,
+                discount_percent_1: 0,
+                discount_percent_2: 0,
                 discount_total: 0,
                 subtotal_discount: item.price,
-                subtotal_net: item.price - item.price * (ppn_percent / 100),
-                subtotal_ppn: item.price * (ppn_percent / 100),
+                subtotal_net: item.price / use_ppn_percent,
+                subtotal_ppn: item.price - item.price / use_ppn_percent,
             })
         )
     }
@@ -97,7 +127,11 @@ export default function Form(props) {
                         return i
                     }
 
-                    if (value > 100 && name === 'discount_percent') {
+                    if (value > 100 && name === 'discount_percent_1') {
+                        return i
+                    }
+
+                    if (value > 100 && name === 'discount_percent_2') {
                         return i
                     }
 
@@ -105,16 +139,17 @@ export default function Form(props) {
 
                     i['subtotal'] = Number(i['qty'] * i['price'])
                     i['discount_total'] =
-                        Number(i['discount_amount']) +
-                        Number(i['subtotal'] * (i['discount_percent'] / 100))
+                        Number(i['discount_percent_2']) +
+                        Number(i['subtotal'] * (i['discount_percent_1'] / 100))
                     i['subtotal_discount'] = Number(
                         i['subtotal'] - i['discount_total']
                     )
-                    i['subtotal_net'] =
-                        Number(i['subtotal_discount']) -
-                        Number(i['subtotal_discount'] * (ppn_percent / 100))
+                    i['subtotal_net'] = Number(
+                        i['subtotal_discount'] / use_ppn_percent
+                    )
                     i['subtotal_ppn'] = Number(
-                        i['subtotal_discount'] * (ppn_percent / 100)
+                        i['subtotal_net'] -
+                            i['subtotal_discount'] / use_ppn_percent
                     )
                 }
                 return i
@@ -130,7 +165,7 @@ export default function Form(props) {
 
     const payload = {
         purchase_id: purchase?.id,
-        ppn_percent_applied: ppn_percent,
+        ppn_percent_applied: use_ppn_percent,
         s_date: s_date,
         status,
         address,
@@ -163,6 +198,10 @@ export default function Form(props) {
 
     useEffect(() => {
         if (!isEmpty(sale)) {
+            if (sale.ppn_percent_applied === 1) {
+                set_use_ppn(false)
+            }
+            set_use_ppn_percent(sale.ppn_percent_applied)
             set_purchase(sale.purchase)
             set_s_date(sale.s_date)
             set_status(sale.status)
@@ -203,13 +242,13 @@ export default function Form(props) {
                                 onChange={(date) => set_s_date(date)}
                                 error={errors.s_date}
                             />
-                            <SelectOptionArray
+                            {/* <SelectOptionArray
                                 value={status}
                                 label={'Status'}
                                 options={sale_status}
                                 onChange={(e) => set_status(e.target.value)}
                                 error={errors.status}
-                            />
+                            /> */}
                             <SelectModalInput
                                 label="Nama Customer"
                                 value={customer}
@@ -255,10 +294,10 @@ export default function Form(props) {
                                                 Harga
                                             </th>
                                             <th className="text-right">
-                                                Diskon (IDR)
+                                                Diskon 1 (%)
                                             </th>
                                             <th className="text-right">
-                                                Diskon (%)
+                                                Diskon 2 (%)
                                             </th>
                                             <th className="text-right">
                                                 Amount Diskon
@@ -318,7 +357,7 @@ export default function Form(props) {
                                                         <TextInput
                                                             type="number"
                                                             value={
-                                                                item.discount_amount
+                                                                item.discount_percent_2
                                                             }
                                                             onChange={({
                                                                 target: {
@@ -327,7 +366,7 @@ export default function Form(props) {
                                                             }) =>
                                                                 handleChangeItem(
                                                                     item,
-                                                                    'discount_amount',
+                                                                    'discount_percent_2',
                                                                     value
                                                                 )
                                                             }
@@ -339,7 +378,7 @@ export default function Form(props) {
                                                         <TextInput
                                                             type="number"
                                                             value={
-                                                                item.discount_percent
+                                                                item.discount_percent_1
                                                             }
                                                             onChange={({
                                                                 target: {
@@ -348,7 +387,7 @@ export default function Form(props) {
                                                             }) =>
                                                                 handleChangeItem(
                                                                     item,
-                                                                    'discount_percent',
+                                                                    'discount_percent_1',
                                                                     value
                                                                 )
                                                             }
@@ -413,6 +452,13 @@ export default function Form(props) {
                                     {formatIDR(total_ppn)}
                                 </div>
                             </div>
+                        </div>
+                        <div className="w-full flex flex-col justify-between p-4 font-bold text-xl border border-gray-400 rounded-xl">
+                            <Checkbox
+                                label="Menggunakan PPN"
+                                value={use_ppn}
+                                onChange={handleSetPpn}
+                            />
                         </div>
                         <div className="flex items-center">
                             <div className="flex space-x-2">

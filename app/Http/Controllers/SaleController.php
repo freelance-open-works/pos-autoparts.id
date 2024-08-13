@@ -59,8 +59,8 @@ class SaleController extends Controller
             'items.*.price' => 'required|numeric|min:1',
             'items.*.qty' => 'required|numeric|min:1',
             'items.*.subtotal' => 'required|numeric',
-            'items.*.discount_percent' => 'required|numeric',
-            'items.*.discount_amount' => 'required|numeric',
+            'items.*.discount_percent_1' => 'required|numeric',
+            'items.*.discount_percent_2' => 'required|numeric',
             'items.*.discount_total' => 'required|numeric',
             'items.*.subtotal_discount' => 'required|numeric',
             'items.*.subtotal_net' => 'required|numeric',
@@ -91,11 +91,19 @@ class SaleController extends Controller
             ->with('message', ['type' => 'success', 'message' => 'Item has beed created']);
     }
 
+    public function show(Sale $sale): Response
+    {
+        return inertia('Sale/Show', [
+            'sale' => $sale->load(['items.product.brand', 'customer', 'purchase']),
+            'ppn_percent' => Setting::getByKey('ppn_percent'),
+        ]);
+    }
+
     public function edit(Sale $sale): Response
     {
         return inertia('Sale/Form', [
             'sale' => $sale->load(['items.product.brand', 'customer', 'purchase']),
-            'ppn_percent' => $sale->ppn_percent_applied,
+            'ppn_percent' => Setting::getByKey('ppn_percent'),
         ]);
     }
 
@@ -118,8 +126,8 @@ class SaleController extends Controller
             'items.*.price' => 'required|numeric|min:1',
             'items.*.qty' => 'required|numeric|min:1',
             'items.*.subtotal' => 'required|numeric',
-            'items.*.discount_percent' => 'required|numeric',
-            'items.*.discount_amount' => 'required|numeric',
+            'items.*.discount_percent_1' => 'required|numeric',
+            'items.*.discount_percent_2' => 'required|numeric',
             'items.*.discount_total' => 'required|numeric',
             'items.*.subtotal_discount' => 'required|numeric',
             'items.*.subtotal_net' => 'required|numeric',
@@ -127,12 +135,6 @@ class SaleController extends Controller
         ]);
 
         DB::beginTransaction();
-        $items = collect($request->items);
-
-        if (in_array($sale->status, [Sale::STATUS_SUBMIT, Sale::STATUS_DONE]) && !in_array($request->status, [Sale::STATUS_SUBMIT, Sale::STATUS_DONE])) {
-            return redirect()->route('sales.index')
-                ->with('message', ['type' => 'error', 'message' => 'Sudah disubmit hanya boleh di selesai']);
-        }
 
         $sale->update([
             'purchase_id' => $request->purchase_id,
@@ -149,7 +151,7 @@ class SaleController extends Controller
         ]);
 
         $sale->items()->delete();
-        $sale->items()->saveMany($items->mapInto(SaleItem::class));
+        $sale->items()->saveMany(collect($request->items)->mapInto(SaleItem::class));
 
         DB::commit();
 
@@ -159,11 +161,6 @@ class SaleController extends Controller
 
     public function destroy(Sale $sale): RedirectResponse
     {
-        if (in_array($sale->status, [Sale::STATUS_SUBMIT, Sale::STATUS_DONE])) {
-            return redirect()->route('sales.index')
-                ->with('message', ['type' => 'error', 'message' => 'Tidak dapat menghapus penjualan dengan status submit dan selesai']);
-        }
-
         $sale->delete();
 
         return redirect()->route('sales.index')
@@ -172,14 +169,12 @@ class SaleController extends Controller
 
     public function patch(Request $request, Sale $sale)
     {
-        if ($request->key == 'status') {
-            if ($sale->status != Sale::STATUS_SUBMIT && $request->value == Sale::STATUS_SUBMIT) {
-                try {
-                    SaleCodeAction::update_stocks($sale);
-                } catch (Exception $e) {
-                    return redirect()->route('sales.index')
-                        ->with('message', ['type' => 'error', 'message' => $e->getMessage()]);
-                }
+        if ($request->key == 'status' && $request->value == Sale::STATUS_SUBMIT) {
+            try {
+                SaleCodeAction::update_stocks($sale);
+            } catch (Exception $e) {
+                return redirect()->route('sales.index')
+                    ->with('message', ['type' => 'error', 'message' => $e->getMessage()]);
             }
         }
 

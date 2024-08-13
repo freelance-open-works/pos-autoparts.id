@@ -23,7 +23,11 @@ if (!function_exists('splitPascalCase')) {
 if (!function_exists('formatIDR')) {
     function formatIDR($output)
     {
-        return number_format($output, 0, ',', '.');
+        $decimal = 0;
+        if (is_float($output)) {
+            $decimal = 2;
+        }
+        return number_format($output, $decimal, ',', '.');
     }
 }
 
