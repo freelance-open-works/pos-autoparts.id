@@ -18,12 +18,12 @@ class SaleCodeAction
     {
         $fallback = '-';
         $date = Carbon::parse($date);
-        $purchase = Sale::orderBy('created_at', 'desc')->first();
+        $sale = Sale::orderBy('created_at', 'desc')->first();
 
         $num = 1;
-        if ($purchase !== null) {
+        if ($sale !== null) {
             try {
-                $lastnum = explode('/', $purchase->s_code);
+                $lastnum = explode('/', $sale->s_code);
                 $lastnum = explode('-', $lastnum[0]);
                 $num = is_numeric($lastnum[1])  ? $lastnum[1] + 1 : $fallback;
             } catch (Exception $e) {

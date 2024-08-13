@@ -78,6 +78,7 @@ export default function FormModal(props) {
                 volume: sale.delivery?.volume ?? '',
                 volume_unit: sale.delivery?.volume_unit ?? '',
                 note: sale.delivery?.note ?? '',
+                note_manual: sale.delivery?.note_manual ?? '',
                 service: sale.delivery?.service ?? '',
             })
             return
