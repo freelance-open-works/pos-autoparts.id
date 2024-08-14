@@ -35,6 +35,17 @@ export default function Form(props) {
     const [customer, set_customer] = useState(null)
     const [items, set_items] = useState([])
 
+    const formatItem = (i, ppn) => {
+        i['subtotal'] = Number(i['qty'] * i['price'])
+        i['discount_total'] =
+            Number(i['subtotal'] * (i['discount_percent_2'] / 100)) +
+            Number(i['subtotal'] * (i['discount_percent_1'] / 100))
+        i['subtotal_discount'] = Number(i['subtotal'] - i['discount_total'])
+        i['subtotal_net'] = Number(i['subtotal'] / ppn)
+        i['subtotal_ppn'] = Number(i['subtotal'] - i['subtotal_net'])
+        return i
+    }
+
     const handleSetPpn = () => {
         set_use_ppn(!use_ppn)
         let ppn_use = ppn_percent
@@ -45,19 +56,7 @@ export default function Form(props) {
         // update items
         set_items(
             items.map((i) => {
-                i['subtotal'] = Number(i['qty'] * i['price'])
-                i['discount_total'] =
-                    Number(i['discount_percent_2']) +
-                    Number(i['subtotal'] * (i['discount_percent_1'] / 100))
-                i['subtotal_discount'] = Number(
-                    i['subtotal'] - i['discount_total']
-                )
-                i['subtotal_net'] = Number(i['subtotal_discount'] / ppn_use)
-                i['subtotal_ppn'] = Number(
-                    i['subtotal_discount'] - i['subtotal_discount'] / ppn_use
-                )
-
-                return i
+                return formatItem(i, ppn_use)
             })
         )
     }
@@ -67,6 +66,7 @@ export default function Form(props) {
         set_items(
             p.items.map((item) => {
                 return {
+                    // HERE
                     ...item.product,
                     product_id: item.product.id,
                     qty: item.qty,
@@ -97,6 +97,7 @@ export default function Form(props) {
 
         set_items(
             items.concat({
+                // HERE
                 ...item,
                 product_id: item.id,
                 qty: 1,
@@ -136,21 +137,7 @@ export default function Form(props) {
                     }
 
                     i[name] = value
-
-                    i['subtotal'] = Number(i['qty'] * i['price'])
-                    i['discount_total'] =
-                        Number(i['discount_percent_2']) +
-                        Number(i['subtotal'] * (i['discount_percent_1'] / 100))
-                    i['subtotal_discount'] = Number(
-                        i['subtotal'] - i['discount_total']
-                    )
-                    i['subtotal_net'] = Number(
-                        i['subtotal_discount'] / use_ppn_percent
-                    )
-                    i['subtotal_ppn'] = Number(
-                        i['subtotal_net'] -
-                            i['subtotal_discount'] / use_ppn_percent
-                    )
+                    i = formatItem(i, use_ppn_percent)
                 }
                 return i
             })
@@ -160,7 +147,9 @@ export default function Form(props) {
     const total_cost = items.reduce((p, item) => p + item.subtotal, 0)
     const discount = items.reduce((p, item) => p + item.discount_total, 0)
     const total = items.reduce((p, item) => p + item.subtotal_discount, 0)
-    const total_net = items.reduce((p, item) => p + item.subtotal_net, 0)
+    const total_net = use_ppn
+        ? items.reduce((p, item) => p + item.subtotal_net, 0)
+        : 0
     const total_ppn = items.reduce((p, item) => p + item.subtotal_ppn, 0)
 
     const payload = {
@@ -222,7 +211,7 @@ export default function Form(props) {
     }, [sale])
 
     return (
-        <AuthenticatedLayout page={'System'} action={['Sale', sale?.s_code]}>
+        <AuthenticatedLayout page={'System'} action={['Sale', sale?.s_code ?? 'Form']}>
             <Head title="Sale" />
 
             <div>

@@ -12,7 +12,7 @@ class ReportPurchaseController extends Controller
 {
     public function index(Request $request)
     {
-        $query = PurchaseItem::query()->with(['purchase.supplier', 'purchase.creator', 'product']);
+        $query = PurchaseItem::query()->with(['purchase.supplier', 'purchase.creator', 'purchase.purchaseOrder', 'product']);
 
         if ($request->q) {
             $query->whereHas('purchase', function ($query) use ($request) {

@@ -40,7 +40,7 @@ export default function Form(props) {
 
     const handleSetStoreOrder = (so) => {
         set_store_order(so)
-        handleSetSupplier(so.supplier)
+        // handleSetSupplier(so.supplier)
         set_items(
             so.items.map((item) => {
                 return {
@@ -154,7 +154,10 @@ export default function Form(props) {
     const total = items.reduce((p, item) => p + item.subtotal, 0)
 
     return (
-        <AuthenticatedLayout page={'System'} action={'Purchase Order'}>
+        <AuthenticatedLayout
+            page={'System'}
+            action={['Purchase Order', purchaseOrder?.po_code ?? 'Form']}
+        >
             <Head title="Purchase Order" />
 
             <div>

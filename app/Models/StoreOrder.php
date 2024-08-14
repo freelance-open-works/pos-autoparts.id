@@ -15,7 +15,7 @@ class StoreOrder extends Model
     const STATUS_DONE = 'selesai';
 
     protected $fillable = [
-        'supplier_id',
+        'customer_id',
         'so_code',
         'so_date',
         'type',
@@ -40,9 +40,9 @@ class StoreOrder extends Model
         return $this->hasMany(StoreOrderItem::class);
     }
 
-    public function supplier()
+    public function customer()
     {
-        return $this->belongsTo(Supplier::class)->withTrashed();
+        return $this->belongsTo(Customer::class)->withTrashed();
     }
 
     public function allowChange(): Attribute

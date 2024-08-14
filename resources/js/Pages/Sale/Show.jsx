@@ -38,7 +38,9 @@ export default function Show(props) {
     const total_cost = items.reduce((p, item) => p + item.subtotal, 0)
     const discount = items.reduce((p, item) => p + item.discount_total, 0)
     const total = items.reduce((p, item) => p + item.subtotal_discount, 0)
-    const total_net = items.reduce((p, item) => p + item.subtotal_net, 0)
+    const total_net = use_ppn
+        ? items.reduce((p, item) => p + item.subtotal_net, 0)
+        : 0
     const total_ppn = items.reduce((p, item) => p + item.subtotal_ppn, 0)
 
     useEffect(() => {

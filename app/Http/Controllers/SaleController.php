@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Inertia\Response;
 
 class SaleController extends Controller
@@ -43,7 +44,12 @@ class SaleController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'purchase_id' => 'nullable|exists:purchases,id',
+            'purchase_id' => [
+                'nullable',
+                'exists:purchases,id',
+                Rule::unique('sales', 'purchase_id')
+                    ->where(fn($q) => $q->where('deleted_at', null))
+            ],
             'customer_id' => 'required|exists:customers,id',
             's_date' => 'required|date',
             'status' => 'required|string',
@@ -110,7 +116,13 @@ class SaleController extends Controller
     public function update(Request $request, Sale $sale): RedirectResponse
     {
         $request->validate([
-            'purchase_id' => 'nullable|exists:purchases,id',
+            'purchase_id' => [
+                'nullable',
+                'exists:purchases,id',
+                Rule::unique('sales', 'purchase_id')
+                    ->where(fn($q) => $q->where('deleted_at', null))
+                    ->ignore($sale->id)
+            ],
             'customer_id' => 'required|exists:customers,id',
             's_date' => 'required|date',
             'status' => 'required|string',

@@ -9,6 +9,7 @@ use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Inertia\Response;
 
 class PurchaseOrderController extends Controller
@@ -39,7 +40,11 @@ class PurchaseOrderController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'store_order_id' => 'required|exists:store_orders,id',
+            'store_order_id' => [
+                'required',
+                'exists:store_orders,id',
+                Rule::unique('purchase_orders', 'store_order_id')->where(fn($q) => $q->where('deleted_at', null))
+            ],
             'po_date' => 'required|date',
             'type' => 'required|string',
             'status' => 'required|string',
@@ -90,7 +95,13 @@ class PurchaseOrderController extends Controller
     public function update(Request $request, PurchaseOrder $purchaseOrder): RedirectResponse
     {
         $request->validate([
-            'store_order_id' => 'required|exists:store_orders,id',
+            'store_order_id' => [
+                'required',
+                'exists:store_orders,id',
+                Rule::unique('purchase_orders', 'store_order_id')
+                    ->where(fn($q) => $q->where('deleted_at', null))
+                    ->ignore($purchaseOrder->id)
+            ],
             'po_date' => 'required|date',
             'type' => 'required|string',
             'status' => 'required|string',

@@ -80,8 +80,8 @@ export default function Index(props) {
                                 <tr>
                                     <th>No</th>
                                     <th>Tanggal</th>
-                                    <th>Kode Supplier</th>
-                                    <th>Supplier</th>
+                                    <th>Kode Customer</th>
+                                    <th>Customer</th>
                                     {/* <th>Total</th> */}
                                     <th>Status</th>
                                     <th />
@@ -92,8 +92,8 @@ export default function Index(props) {
                                     <tr key={item.id}>
                                         <td>{item.so_code}</td>
                                         <td>{item.so_date}</td>
-                                        <td>{item.supplier.code}</td>
-                                        <td>{item.supplier.name}</td>
+                                        <td>{item.customer.code}</td>
+                                        <td>{item.customer.name}</td>
                                         {/* <td>{formatIDR(item.amount_cost)}</td> */}
                                         <td>{item.status}</td>
                                         <td className="text-right">

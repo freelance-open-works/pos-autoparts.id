@@ -83,7 +83,7 @@ export default function Index(props) {
                         <table className="table mt-6">
                             <thead>
                                 <tr>
-                                    <th>Invoice Number</th>
+                                    <th>PO Number</th>
                                     <th>Tanggal</th>
                                     <th>Supplier Kode</th>
                                     <th>Supplier Nama</th>
@@ -103,7 +103,12 @@ export default function Index(props) {
                             <tbody>
                                 {data.map((item, index) => (
                                     <tr key={item.id}>
-                                        <td>{item.purchase.p_code}</td>
+                                        <td>
+                                            {
+                                                item.purchase.purchase_order
+                                                    .po_code
+                                            }
+                                        </td>
                                         <td>
                                             {formatDate(item.purchase.p_date)}
                                         </td>

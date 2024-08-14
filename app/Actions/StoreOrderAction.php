@@ -8,7 +8,7 @@ use Illuminate\Support\Carbon;
 
 class StoreOrderAction
 {
-    const PREFIX = '/OT-ASI/';
+    const PREFIX = '/ORD-ASI/';
 
     public static function generate_code($date)
     {

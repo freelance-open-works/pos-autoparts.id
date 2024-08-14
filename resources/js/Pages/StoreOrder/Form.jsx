@@ -33,12 +33,12 @@ export default function Form(props) {
     const [status, set_status] = useState(store_order_status_draft)
     const [address, set_address] = useState('')
     const [note, set_note] = useState('')
-    const [supplier, set_supplier] = useState(null)
+    const [customer, set_customer] = useState(null)
     const [items, set_items] = useState([])
 
-    const handleSetSupplier = (supplier) => {
-        set_supplier(supplier)
-        set_address(supplier.address)
+    const handleSetCustomer = (customer) => {
+        set_customer(customer)
+        set_address(customer.address)
     }
 
     const handleAddItem = (item) => {
@@ -84,7 +84,7 @@ export default function Form(props) {
         status,
         address,
         note,
-        supplier_id: supplier?.id,
+        customer_id: customer?.id,
         items,
     }
 
@@ -108,14 +108,13 @@ export default function Form(props) {
 
     useEffect(() => {
         if (!isEmpty(storeOrder)) {
-            
             set_so_code(storeOrder.so_code)
             set_so_date(storeOrder.so_date)
             set_type(storeOrder.type)
             set_status(storeOrder.status)
             set_address(storeOrder.address)
             set_note(storeOrder.note)
-            set_supplier(storeOrder.supplier)
+            set_customer(storeOrder.customer)
             set_items(
                 storeOrder.items.map((item) => {
                     return {
@@ -131,7 +130,10 @@ export default function Form(props) {
     const total = items.reduce((p, item) => p + item.subtotal, 0)
 
     return (
-        <AuthenticatedLayout page={'System'} action={'Order Toko'}>
+        <AuthenticatedLayout
+            page={'System'}
+            action={['Order Toko', storeOrder?.so_code ?? 'Form']}
+        >
             <Head title="Order Toko" />
 
             <div>
@@ -158,12 +160,12 @@ export default function Form(props) {
                                 error={errors.type}
                             />
                             <SelectModalInput
-                                label="Nama Supplier"
-                                value={supplier}
-                                onChange={handleSetSupplier}
-                                error={errors.supplier_id}
+                                label="Nama Customer"
+                                value={customer}
+                                onChange={handleSetCustomer}
+                                error={errors.customer_id}
                                 params={{
-                                    table: 'suppliers',
+                                    table: 'customers',
                                     columns: 'id|code|name|address',
                                     display_name: 'name',
                                     orderby: 'created_at.asc',

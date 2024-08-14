@@ -15,7 +15,7 @@
             <td>
                 <img src="{{ $setting->getStoragePath('app_logo') }}" style="width: 200px;" />
             </td>
-            <td class="font-bold text-2xl text-right">ORDER TOKO</td>
+            <td class="font-bold text-2xl text-right">SALES ORDER</td>
         </tr>
         <tr>
             <td>
@@ -37,12 +37,12 @@
             <td> {{ formatDate($store_order->so_date) }}</td>
         </tr>
         <tr>
-            <td class="font-bold capitalize">Nama Supplier</td>
+            <td class="font-bold capitalize">Nama Customer</td>
             <td class="px-2">:</td>
-            <td> {{ $store_order->supplier->name }}</td>
+            <td> {{ $store_order->customer->name }}</td>
         </tr>
         <tr>
-            <td class="font-bold capitalize">Alamat Supplier</td>
+            <td class="font-bold capitalize">Alamat Customer</td>
             <td class="px-2">:</td>
             <td> {{ $store_order->address }}</td>
         </tr>
@@ -99,13 +99,14 @@
                 </td> -->
             </tr>
             @endforeach
+
         </tbody>
     </table>
     <table class="w-full pt-4 text-center">
         <tbody>
             <tr>
                 <td class="text-left text-sm">Keterangan : </td>
-                <!-- <td class="font-bold text-right text-xl">Grand Total : {{ formatIDR($store_order->amount_cost) }}</td> -->
+                <td class="font-bold text-right text-xl">Total Qty : {{ formatIDR($store_order->items()->sum('qty')) }}</td>
             </tr>
             <tr>
                 <td class="text-left" style="width: 200px;">
@@ -117,20 +118,20 @@
     <table class="w-full pt-4 text-center mt-4">
         <tbody>
             <tr>
-                <td class="text-left ">
-                    <pre class="font-sans text-xs">- Semua pengiriman barang harus disertakan Nota/Faktur
-- Barang akan kami kembalikan jika tidak sesuai PO
-                </pre>
+                <td class="text-left" style="width: 700px;">
+                    <!-- <pre class="font-sans text-xs">- Semua pengiriman barang harus disertakan Nota/Faktur
+- Barang akan kami kembalikan jika tidak sesuai PO -->
+                    </pre>
                 </td>
                 <td class="text-center font-bold"></td>
             </tr>
             <tr>
                 <td class="text-left text-xs"> </td>
-                <td class="text-center font-bold">Autopart Sales Indonesia</td>
+                <td class="text-center font-bold">Nama Customer</td>
             </tr>
             <tr>
                 <td class=""></td>
-                <td class="pt-10">{{ $store_order->creator->name }}</td>
+                <td class="pt-10">{{ $store_order->customer->name }}</td>
             </tr>
         </tbody>
     </table>

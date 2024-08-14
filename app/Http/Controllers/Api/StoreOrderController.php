@@ -10,7 +10,7 @@ class StoreOrderController extends Controller
 {
     public function index(Request $request)
     {
-        $query = StoreOrder::with(['supplier', 'items.product.brand']);
+        $query = StoreOrder::with(['customer', 'items.product.brand']);
 
         if ($request->q) {
             $query->where(function ($query) use ($request) {

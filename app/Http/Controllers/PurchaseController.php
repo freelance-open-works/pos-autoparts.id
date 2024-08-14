@@ -11,6 +11,7 @@ use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Validation\Rule;
 use Inertia\Response;
 
 class PurchaseController extends Controller
@@ -43,7 +44,12 @@ class PurchaseController extends Controller
     public function store(Request $request): RedirectResponse
     {
         $request->validate([
-            'purchase_order_id' => 'required|exists:purchase_orders,id',
+            'purchase_order_id' => [
+                'required',
+                'exists:purchase_orders,id',
+                Rule::unique('purchases', 'purchase_order_id')
+                    ->where(fn($q) => $q->where('deleted_at', null))
+            ],
             'supplier_id' => 'required|exists:suppliers,id',
             'p_date' => 'required|date',
             'status' => 'required|string',
@@ -110,7 +116,13 @@ class PurchaseController extends Controller
     public function update(Request $request, Purchase $purchase): RedirectResponse
     {
         $request->validate([
-            'purchase_order_id' => 'required|exists:purchase_orders,id',
+            'purchase_order_id' => [
+                'required',
+                'exists:purchase_orders,id',
+                Rule::unique('purchases', 'purchase_order_id')
+                    ->where(fn($q) => $q->where('deleted_at', null))
+                    ->ignore($purchase->id)
+            ],
             'supplier_id' => 'required|exists:suppliers,id',
             'p_date' => 'required|date',
             'status' => 'required|string',

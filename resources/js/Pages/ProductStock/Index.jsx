@@ -52,6 +52,7 @@ export default function Index(props) {
                                     <th>Nama</th>
                                     <th>Tipe</th>
                                     <th>Merk</th>
+                                    <th>Harga Jual</th>
                                     <th>Stok</th>
                                     <th />
                                 </tr>
@@ -63,6 +64,7 @@ export default function Index(props) {
                                         <td>{product.name}</td>
                                         <td>{product.type}</td>
                                         <td>{product.brand.name}</td>
+                                        <td>{formatIDR(product.price)}</td>
                                         <td>
                                             {formatIDR(product.stock.stock)}
                                         </td>

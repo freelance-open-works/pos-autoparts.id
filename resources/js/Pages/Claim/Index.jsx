@@ -53,8 +53,8 @@ export default function Index(props) {
     }, [search])
 
     return (
-        <AuthenticatedLayout page={'System'} action={'Claim'}>
-            <Head title="Claim" />
+        <AuthenticatedLayout page={'System'} action={'Pengembalian'}>
+            <Head title="Pengembalian" />
 
             <div>
                 <Card>

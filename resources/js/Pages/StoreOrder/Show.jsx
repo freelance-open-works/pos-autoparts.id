@@ -21,7 +21,7 @@ export default function Form(props) {
     const [status, set_status] = useState(store_order_status_draft)
     const [address, set_address] = useState('')
     const [note, set_note] = useState('')
-    const [supplier, set_supplier] = useState(null)
+    const [customer, set_customer] = useState(null)
     const [items, set_items] = useState([])
 
     useEffect(() => {
@@ -32,7 +32,7 @@ export default function Form(props) {
             set_status(storeOrder.status)
             set_address(storeOrder.address)
             set_note(storeOrder.note)
-            set_supplier(storeOrder.supplier)
+            set_customer(storeOrder.customer)
             set_items(
                 storeOrder.items.map((item) => {
                     return {
@@ -74,10 +74,10 @@ export default function Form(props) {
                                 error={errors.type}
                             />
                             <TextInput
-                                label="Nama Supplier"
-                                value={supplier?.name}
+                                label="Nama Customer"
+                                value={customer?.name}
                                 readOnly={true}
-                                error={errors.supplier_id}
+                                error={errors.customer_id}
                             />
                             <TextInput
                                 value={address}

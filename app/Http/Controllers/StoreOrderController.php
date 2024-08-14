@@ -15,7 +15,7 @@ class StoreOrderController extends Controller
 {
     public function index(Request $request): Response
     {
-        $query = StoreOrder::with(['supplier']);
+        $query = StoreOrder::with(['customer']);
 
         if ($request->q) {
             $query->where(function ($query) use ($request) {
@@ -44,7 +44,7 @@ class StoreOrderController extends Controller
             'status' => 'required|string',
             'address' => 'nullable|string',
             'note' => 'nullable|string',
-            'supplier_id' => 'required|exists:suppliers,id',
+            'customer_id' => 'required|exists:customers,id',
             'items' => 'required|array',
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.cost' => 'required|numeric|min:1',
@@ -54,7 +54,7 @@ class StoreOrderController extends Controller
         DB::beginTransaction();
         $items = collect($request->items);
         $order = StoreOrder::create([
-            'supplier_id' => $request->supplier_id,
+            'customer_id' => $request->customer_id,
             'so_date' => $request->so_date,
             'type' => $request->type,
             'status' => $request->status,
@@ -74,14 +74,14 @@ class StoreOrderController extends Controller
     public function show(StoreOrder $storeOrder): Response
     {
         return inertia('StoreOrder/Show', [
-            'storeOrder' => $storeOrder->load(['supplier', 'items.product.brand']),
+            'storeOrder' => $storeOrder->load(['customer', 'items.product.brand']),
         ]);
     }
 
     public function edit(StoreOrder $storeOrder): Response
     {
         return inertia('StoreOrder/Form', [
-            'storeOrder' => $storeOrder->load(['supplier', 'items.product.brand']),
+            'storeOrder' => $storeOrder->load(['customer', 'items.product.brand']),
         ]);
     }
 
@@ -93,7 +93,7 @@ class StoreOrderController extends Controller
             'status' => 'required|string',
             'address' => 'nullable|string',
             'note' => 'nullable|string',
-            'supplier_id' => 'required|exists:suppliers,id',
+            'customer_id' => 'required|exists:customers,id',
             'items' => 'required|array',
             'items.*.product_id' => 'required|exists:products,id',
             'items.*.cost' => 'required|numeric|min:1',
@@ -104,7 +104,7 @@ class StoreOrderController extends Controller
 
         $items = collect($request->items);
         $storeOrder->update([
-            'supplier_id' => $request->supplier_id,
+            'customer_id' => $request->customer_id,
             'so_date' => $request->so_date,
             'type' => $request->type,
             'status' => $request->status,

@@ -114,7 +114,10 @@ export default function Form(props) {
     }, [claim])
 
     return (
-        <AuthenticatedLayout page={'System'} action={['Claim', claim?.c_code]}>
+        <AuthenticatedLayout
+            page={'System'}
+            action={['Pengembalian', claim?.c_code ?? 'Form']}
+        >
             <Head title="Claim" />
 
             <div>

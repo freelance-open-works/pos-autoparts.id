@@ -50,7 +50,7 @@ export default [
         permission: 'view-sale',
     },
     {
-        name: 'Pengembalian (Claim)',
+        name: 'Pengembalian (retur)',
         show: true,
         icon: HiBackward,
         route: route('claims.index'),
