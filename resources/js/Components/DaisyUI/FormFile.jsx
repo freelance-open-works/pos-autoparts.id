@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import { toast } from 'sonner'
 import { usePage } from '@inertiajs/react'
 import Spinner from './Spinner'
@@ -22,6 +22,7 @@ export default function FormFile({
     const [link, setLink] = useState(url)
     const [loading, setLoading] = useState(false)
     const [percent, setPercent] = useState(0)
+    const [ierror, setIError] = useState(error)
 
     const handleClick = () => {
         inputRef.current.click()
@@ -59,6 +60,7 @@ export default function FormFile({
                 setName(response.data.name_original)
             })
             .catch((error) => {
+                setIError(error.response.data.message)
                 toast.error(error.response.data.message)
                 inputRef.current.value = null
             })
@@ -66,6 +68,10 @@ export default function FormFile({
                 setLoading(false)
             })
     }
+
+    useEffect(() => {
+        setIError(error)
+    }, [error])
 
     return (
         <div className="my-2">
@@ -124,10 +130,10 @@ export default function FormFile({
                         </a>
                     </div>
                 )}
-                {error && (
+                {ierror && (
                     <div className="label">
                         <span className="label-text-alt text-red-600">
-                            {error}
+                            {ierror}
                         </span>
                     </div>
                 )}
