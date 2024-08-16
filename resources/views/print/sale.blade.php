@@ -137,7 +137,7 @@
         <tbody>
             <tr>
                 <td class="text-center">Yang Menerima</td>
-                <td class="text-center font-bold">Makasar, {{ formatDate($sale->s_date) }}</td>
+                <td class="text-center font-bold">Makassar, {{ formatDate($sale->s_date) }}</td>
             </tr>
             <tr>
                 <td class="pt-10 text-center">

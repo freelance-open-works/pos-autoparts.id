@@ -42,7 +42,7 @@
                     </div>
                 </td>
                 <td class="border border-black" style="border: 1px solid black;">
-                    <span class="font-bold">ASAL</span> : MAKASAR <br />
+                    <span class="font-bold">ASAL</span> : MAKASSAR <br />
                     <span class="font-bold">TUJUAN</span> : {{ $sale->address }} <br />
                     <span class="font-bold">LAYANAN</span> : {{ $delivery->service }} <br />
                 </td>

@@ -13,6 +13,7 @@ use App\Models\Expedition;
 use App\Models\Product;
 use App\Models\ProductStock;
 use App\Models\Supplier;
+use Carbon\Carbon;
 use Exception;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Capsule\Manager as Capsule;
@@ -202,50 +203,51 @@ class DefaultSeeder extends Seeder
 
         $path = storage_path('app/default/DATABASE SPAREPART.xlsx');
         $pool = Pool::create();
-        foreach (range(1, 7) as $n) { //50 * 7 = 350,
+        foreach (range(1, 10) as $n) { //50 * 7 = 350,
             $config = config('database.connections.sqlite');
             $pool->add(function () use ($n, $path, $brands, $config) {
-                syslog(LOG_INFO, 'Chunk = ' . $n . ' Start');
-                // recreate eloquent connection on every threads created
-                $capsule = new Capsule;
-                $capsule->addConnection($config);
-                $capsule->setAsGlobal();
-                $capsule->bootEloquent();
-
                 try {
+                    syslog(LOG_INFO, 'Chunk = ' . $n . ' Start');
+                    // recreate eloquent connection on every threads created
+                    $capsule = new Capsule;
+                    $capsule->addConnection($config);
+                    $capsule->setAsGlobal();
+                    $capsule->bootEloquent();
+
+                    $now = Carbon::now();
                     $sheet = (new FastExcel())->sheet($n)->import($path);
-                } catch (Exception $e) {
-                    syslog(LOG_INFO, 'Chunk = ' . $n . ' ; Error : ' . $e->getMessage());
-                }
-                syslog(LOG_INFO, 'Chunk = ' . $n . ' ; Total : ' . count($sheet));
+                    syslog(LOG_INFO, 'Chunk = ' . $n . ' ; Read Total : ' . count($sheet) . "; Time : " . $now->diffInSeconds(Carbon::now()) . "s");
 
-                $ulid = fn() => Str::ulid();
-                $products = [];
+                    $ulid = fn() => Str::ulid();
+                    $products = [];
 
-                foreach ($sheet as $r) {
-                    $products[] = [
-                        'id' => $ulid(),
-                        'name' => $r['Nama Barang'],
-                        'part_code' => $r['Part No'],
-                        'type' => $r['Type Barang'],
-                        'discount' => $r['Discount'],
-                        'cost' => $r['Harga Beli'],
-                        'price' => $r['Harga Jual'],
-                        'brand_id' => $brands[$r['Merk']] ?? $brands[0],
-                    ];
-                }
-
-                foreach (array_chunk($products, 1000) as $ps) {
-                    Product::insert($ps);
-                    // convert to product_stocks and insert it
-                    $stocks = array_map(function ($item) {
-                        return [
-                            'id' => $item['id'],
-                            'product_id' => $item['id'],
-                            'stock' => '0'
+                    foreach ($sheet as $r) {
+                        $products[] = [
+                            'id' => $ulid(),
+                            'name' => Str::trim($r['Nama Barang']),
+                            'part_code' => Str::trim($r['Part No']),
+                            'type' => Str::trim($r['Type Barang']),
+                            'discount' => Str::trim($r['Discount']),
+                            'cost' => Str::trim($r['Harga Beli']),
+                            'price' => Str::trim($r['Harga Jual']),
+                            'brand_id' => $brands[Str::trim($r['Merk'])] ?? $brands[0],
                         ];
-                    }, $ps);
-                    ProductStock::insert($stocks);
+                    }
+
+                    foreach (array_chunk($products, 5000) as $ps) {
+                        Product::insert($ps);
+                        // convert to product_stocks and insert it
+                        $stocks = array_map(function ($item) {
+                            return [
+                                'id' => $item['id'],
+                                'product_id' => $item['id'],
+                                'stock' => '0'
+                            ];
+                        }, $ps);
+                        ProductStock::insert($stocks);
+                    }
+                } catch (Exception $e) {
+                    syslog(LOG_INFO, 'Chunk = ' . $n . ' ; Error : ' . json_encode($e->getMessage()));
                 }
 
                 syslog(LOG_INFO, 'Chunk = ' . $n . ' Done');
@@ -255,7 +257,9 @@ class DefaultSeeder extends Seeder
         }
 
         $pool->wait();
+        sleep(5);
+        syslog(LOG_INFO, '============| IMPORT DONE |==============');
 
-        info(self::class, ['done import products', now(), $startTime->diffInSeconds(now())]);
+        info(self::class, ['done import products', Product::count(), now(), $startTime->diffInSeconds(now())]);
     }
 }
