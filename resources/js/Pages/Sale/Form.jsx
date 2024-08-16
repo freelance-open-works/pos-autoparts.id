@@ -41,8 +41,8 @@ export default function Form(props) {
             Number(i['subtotal'] * (i['discount_percent_2'] / 100)) +
             Number(i['subtotal'] * (i['discount_percent_1'] / 100))
         i['subtotal_discount'] = Number(i['subtotal'] - i['discount_total'])
-        i['subtotal_net'] = Number(i['subtotal'] / ppn)
-        i['subtotal_ppn'] = Number(i['subtotal'] - i['subtotal_net'])
+        i['subtotal_net'] = Number(i['subtotal_discount'] / ppn)
+        i['subtotal_ppn'] = Number(i['subtotal_discount'] - i['subtotal_net'])
         return i
     }
 
@@ -79,10 +79,9 @@ export default function Form(props) {
                     discount_percent_2: item.product.discount ?? 0,
                     discount_total: discount,
                     subtotal_discount: subtotal_discount,
-                    subtotal_net: item.product.price / use_ppn_percent,
+                    subtotal_net: subtotal_discount / use_ppn_percent,
                     subtotal_ppn:
-                        item.product.price -
-                        item.product.price / use_ppn_percent,
+                        subtotal_discount - subtotal_discount / use_ppn_percent,
                 }
             })
         )
@@ -99,8 +98,8 @@ export default function Form(props) {
             return
         }
 
-        let subtotal = item.price * item.qty
-        let discount = subtotal * (item.discount / 100)
+        let subtotal = item.price * 1
+        let discount = subtotal * (Number(item.discount) / 100)
         let subtotal_discount = subtotal - discount
 
         set_items(
@@ -111,11 +110,12 @@ export default function Form(props) {
                 qty: 1,
                 subtotal: subtotal,
                 discount_percent_1: 0,
-                discount_percent_2: item.discount ?? 0,
+                discount_percent_2: Number(item.discount),
                 discount_total: discount,
                 subtotal_discount: subtotal_discount,
-                subtotal_net: item.price / use_ppn_percent,
-                subtotal_ppn: item.price - item.price / use_ppn_percent,
+                subtotal_net: subtotal_discount / use_ppn_percent,
+                subtotal_ppn:
+                    subtotal_discount - subtotal_discount / use_ppn_percent,
             })
         )
     }

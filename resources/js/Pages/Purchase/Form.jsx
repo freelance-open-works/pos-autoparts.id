@@ -41,8 +41,8 @@ export default function Form(props) {
             Number(i['subtotal'] * (i['discount_percent_2'] / 100)) +
             Number(i['subtotal'] * (i['discount_percent_1'] / 100))
         i['subtotal_discount'] = Number(i['subtotal'] - i['discount_total'])
-        i['subtotal_net'] = Number(i['subtotal'] / ppn)
-        i['subtotal_ppn'] = i['subtotal'] - i['subtotal_net']
+        i['subtotal_net'] = Number(i['subtotal_discount'] / ppn)
+        i['subtotal_ppn'] = i['subtotal_discount'] - i['subtotal_net']
         return i
     }
 
