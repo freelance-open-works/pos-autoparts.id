@@ -1,6 +1,6 @@
 TODO :
 
-default count product must -> 506.706
+default count product must -> 507.317
 
 rsync -arP -e 'ssh -p 2233' \
 --exclude=node_modules \

@@ -203,7 +203,7 @@ class DefaultSeeder extends Seeder
 
         $path = storage_path('app/default/DATABASE SPAREPART.xlsx');
         $pool = Pool::create();
-        foreach (range(1, 10) as $n) { //50 * 7 = 350,
+        foreach (range(1, 11) as $n) { // ~250s
             $config = config('database.connections.sqlite');
             $pool->add(function () use ($n, $path, $brands, $config) {
                 try {
