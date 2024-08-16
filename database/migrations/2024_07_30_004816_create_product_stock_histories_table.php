@@ -16,10 +16,10 @@ return new class extends Migration
             //
             $table->ulid('product_id');
             $table->ulid('product_stock_id');
-            $table->decimal('start', 20, 2)->default(0);
-            $table->decimal('in', 20, 2)->default(0);
-            $table->decimal('out', 20, 2)->default(0);
-            $table->decimal('last', 20, 2)->default(0);
+            $table->decimal('start', 20, 2)->nullable()->default(0);
+            $table->decimal('in', 20, 2)->nullable()->default(0);
+            $table->decimal('out', 20, 2)->nullable()->default(0);
+            $table->decimal('last', 20, 2)->nullable()->default(0);
             $table->text('extras')->nullable();
             //
             $table->timestamps();

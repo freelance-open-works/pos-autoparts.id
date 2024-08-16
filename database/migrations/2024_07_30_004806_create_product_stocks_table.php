@@ -15,7 +15,7 @@ return new class extends Migration
             $table->ulid('id')->primary();
             //
             $table->ulid('product_id');
-            $table->decimal('stock', 20, 2)->default(0);
+            $table->decimal('stock', 20, 2)->nullable()->default(0);
             //
             $table->timestamps();
             $table->softDeletes();

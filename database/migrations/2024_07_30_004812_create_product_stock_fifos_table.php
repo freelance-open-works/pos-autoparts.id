@@ -18,8 +18,8 @@ return new class extends Migration
             $table->ulid('model_id')->nullable();
             $table->ulid('product_id');
             $table->ulid('product_stock_id');
-            $table->decimal('stock', 20, 2)->default(0);
-            $table->decimal('cost', 20, 2)->default(0);
+            $table->decimal('stock', 20, 2)->nullable()->default(0);
+            $table->decimal('cost', 20, 2)->nullable()->default(0);
             //
             $table->timestamps();
             $table->softDeletes();

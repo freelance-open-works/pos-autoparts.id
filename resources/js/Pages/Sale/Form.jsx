@@ -66,9 +66,10 @@ export default function Form(props) {
         set_items(
             p.items.map((item) => {
                 let subtotal = item.product.price * item.qty
-                let discount = subtotal * (item.product.discount / 100)
+                let discount = subtotal * (Number(item.product.discount) / 100)
                 let subtotal_discount = subtotal - discount
 
+                // debugger
                 return {
                     // HERE
                     ...item.product,
@@ -76,7 +77,7 @@ export default function Form(props) {
                     qty: item.qty,
                     subtotal: subtotal,
                     discount_percent_1: 0,
-                    discount_percent_2: item.product.discount ?? 0,
+                    discount_percent_2: Number(item.product.discount),
                     discount_total: discount,
                     subtotal_discount: subtotal_discount,
                     subtotal_net: subtotal_discount / use_ppn_percent,

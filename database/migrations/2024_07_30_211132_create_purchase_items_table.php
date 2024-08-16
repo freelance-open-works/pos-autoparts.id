@@ -16,15 +16,15 @@ return new class extends Migration
             //
             $table->ulid('purchase_id')->nullable();
             $table->ulid('product_id')->nullable();
-            $table->decimal('qty', 20, 2)->default(0);
-            $table->decimal('cost', 20, 2)->default(0);
-            $table->decimal('subtotal', 20, 2)->default(0);
-            $table->decimal('discount_percent_1', 20, 2)->default(0);
-            $table->decimal('discount_percent_2', 20, 2)->default(0);
-            $table->decimal('discount_total', 20, 2)->default(0);
-            $table->decimal('subtotal_discount', 20, 2)->default(0);
-            $table->decimal('subtotal_net', 20, 2)->default(0);
-            $table->decimal('subtotal_ppn', 20, 2)->default(0);
+            $table->decimal('qty', 20, 2)->nullable()->default(0);
+            $table->decimal('cost', 20, 2)->nullable()->default(0);
+            $table->decimal('subtotal', 20, 2)->nullable()->default(0);
+            $table->decimal('discount_percent_1', 20, 2)->nullable()->default(0);
+            $table->decimal('discount_percent_2', 20, 2)->nullable()->default(0);
+            $table->decimal('discount_total', 20, 2)->nullable()->default(0);
+            $table->decimal('subtotal_discount', 20, 2)->nullable()->default(0);
+            $table->decimal('subtotal_net', 20, 2)->nullable()->default(0);
+            $table->decimal('subtotal_ppn', 20, 2)->nullable()->default(0);
             //
             $table->timestamps();
             $table->softDeletes();

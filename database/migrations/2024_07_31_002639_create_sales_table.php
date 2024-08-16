@@ -19,11 +19,11 @@ return new class extends Migration
             $table->string('s_code')->nullable();
             $table->timestamp('s_date')->nullable();
             $table->string('status')->nullable();
-            $table->decimal('amount_cost', 20, 2)->default(0);
-            $table->decimal('amount_discount', 20, 2)->default(0);
-            $table->decimal('amount_net', 20, 2)->default(0);
-            $table->decimal('amount_ppn', 20, 2)->default(0);
-            $table->decimal('ppn_percent_applied', 20, 2)->default(11);
+            $table->decimal('amount_cost', 20, 2)->nullable()->default(0);
+            $table->decimal('amount_discount', 20, 2)->nullable()->default(0);
+            $table->decimal('amount_net', 20, 2)->nullable()->default(0);
+            $table->decimal('amount_ppn', 20, 2)->nullable()->default(0);
+            $table->decimal('ppn_percent_applied', 20, 2)->nullable()->default(11);
             $table->text('address')->nullable();
             $table->text('note')->nullable();
             //

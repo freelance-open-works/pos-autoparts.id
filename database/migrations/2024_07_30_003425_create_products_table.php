@@ -17,9 +17,9 @@ return new class extends Migration
             $table->string('name')->nullable();
             $table->string('part_code')->nullable();
             $table->string('type')->nullable();
-            $table->decimal('discount', 20, 2)->default(0);
-            $table->decimal('cost', 20, 2)->default(0);
-            $table->decimal('price', 20, 2)->default(0);
+            $table->decimal('discount', 20, 2)->nullable()->default(0);
+            $table->decimal('cost', 20, 2)->nullable()->default(0);
+            $table->decimal('price', 20, 2)->nullable()->default(0);
             $table->ulid('brand_id')->nullable();
             //
             $table->timestamps();

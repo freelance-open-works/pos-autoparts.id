@@ -19,7 +19,7 @@ return new class extends Migration
             $table->timestamp('so_date')->nullable(); // generated
             $table->string('type')->nullable();
             $table->string('status')->nullable();
-            $table->decimal('amount_cost', 20, 2)->default(0);
+            $table->decimal('amount_cost', 20, 2)->nullable()->default(0);
             $table->text('address')->nullable();
             $table->text('note')->nullable();
             //

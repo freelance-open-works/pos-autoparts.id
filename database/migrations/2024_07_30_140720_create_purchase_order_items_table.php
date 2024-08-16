@@ -16,8 +16,8 @@ return new class extends Migration
             //
             $table->ulid('purchase_order_id')->nullable();
             $table->ulid('product_id')->nullable();
-            $table->decimal('qty', 20, 2)->default(0);
-            $table->decimal('cost', 20, 2)->default(0);
+            $table->decimal('qty', 20, 2)->nullable()->default(0);
+            $table->decimal('cost', 20, 2)->nullable()->default(0);
             //
             $table->timestamps();
             $table->softDeletes();
