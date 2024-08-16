@@ -30,6 +30,7 @@ export default function Setting(props) {
         company_name: extractValue(setting, 'company_name'),
         company_address: extractValue(setting, 'company_address'),
         ppn_percent: extractValue(setting, 'ppn_percent'),
+        monthly_sales_target: extractValue(setting, 'monthly_sales_target'),
     })
 
     const handleOnChange = (event) => {
@@ -90,6 +91,13 @@ export default function Setting(props) {
                         onChange={handleOnChange}
                         label="Pembagi DPP"
                         error={errors.ppn_percent}
+                    />
+                    <TextInput
+                        name="monthly_sales_target"
+                        value={data.monthly_sales_target}
+                        onChange={handleOnChange}
+                        label="Target Penjualan Bulanan"
+                        error={errors.monthly_sales_target}
                     />
                     <div className="mt-4">
                         <Button

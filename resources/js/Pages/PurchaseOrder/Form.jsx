@@ -84,10 +84,10 @@ export default function Form(props) {
             items.map((i) => {
                 if (i.id === item.id) {
                     if (name === 'qty') {
-                        if (value < 1) {
+                        if (value < 0) {
                             return i
                         }
-                        i['subtotal'] = value * i['cost']
+                        i['subtotal'] = Number(value * i['cost'])
                     }
                     i[name] = value
                 }

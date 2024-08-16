@@ -18,7 +18,8 @@ class PurchaseAction
     {
         $fallback = '-';
         $date = Carbon::parse($date);
-        $purchase = Purchase::orderBy('created_at', 'desc')->first();
+        $purchase = Purchase::orderBy('created_at', 'desc')
+            ->whereYear('p_date', $date->format('Y'))->first();
 
         $num = 1;
         if ($purchase !== null) {
@@ -30,7 +31,7 @@ class PurchaseAction
             }
         }
 
-        $code = formatNumZero($num) . self::PREFIX . now()->format('m/Y');
+        $code = formatNumZero($num) . self::PREFIX . $date->format('m/Y');
         return $code;
     }
 

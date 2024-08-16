@@ -66,18 +66,18 @@ export default function Form(props) {
         handleSetSupplier(po.supplier)
         set_items(
             po.items.map((item) => {
+                let subtotal = item.product.cost * item.qty
                 return {
                     ...item.product,
                     product_id: item.product.id,
                     qty: item.qty,
-                    subtotal: item.product.cost,
+                    subtotal: subtotal,
                     discount_percent_1: 0,
                     discount_percent_2: 0,
                     discount_total: 0,
-                    subtotal_discount: item.product.cost,
-                    subtotal_net: item.product.cost / use_ppn_percent,
-                    subtotal_ppn:
-                        item.product.cost - item.product.cost / use_ppn_percent,
+                    subtotal_discount: subtotal,
+                    subtotal_net: subtotal / use_ppn_percent,
+                    subtotal_ppn: subtotal - subtotal / use_ppn_percent,
                 }
             })
         )
@@ -118,10 +118,6 @@ export default function Form(props) {
         set_items(
             items.map((i) => {
                 if (i.id === item.id) {
-                    if (value < 1 && name === 'qty') {
-                        return i
-                    }
-
                     if (value < 0) {
                         return i
                     }

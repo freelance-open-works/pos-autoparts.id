@@ -47,37 +47,37 @@
             <td> {{ $purchase->address }}</td>
         </tr>
     </table>
-    <table class="border-collapse border border-black w-full">
+    <table class="border-collapse border border-black w-full text-xs">
         <thead>
             <tr class="border border-black">
-                <td class="border border-black font-bold p-1 max-w-sm">
+                <td class="border border-black font-bold p-1 max-w-sm" style="border: 1px solid black;">
                     No
                 </td>
-                <td class="border border-black font-bold p-1">
+                <td class="border border-black font-bold p-1" style="border: 1px solid black;">
                     Part No
                 </td>
-                <td class="border border-black font-bold p-1">
+                <td class="border border-black font-bold p-1" style="border: 1px solid black;">
                     Part Name
                 </td>
-                <td class="border border-black font-bold p-1">
+                <td class="border border-black font-bold p-1" style="border: 1px solid black;">
                     Merek
                 </td>
-                <td class="border border-black font-bold p-1 text-right">
+                <td class="border border-black font-bold p-1 text-right" style="border: 1px solid black;">
                     Qty
                 </td>
-                <td class="border border-black font-bold p-1 text-right">
+                <td class="border border-black font-bold p-1 text-right" style="border: 1px solid black;">
                     Harga
                 </td>
-                <td class="border border-black font-bold p-1 text-right">
-                    Diskon 1 (%)
+                <td class="border border-black font-bold p-1 text-right" style="border: 1px solid black;">
+                    Diskon 1
                 </td>
-                <td class="border border-black font-bold p-1 text-right">
-                    Diskon 2 (%)
+                <td class="border border-black font-bold p-1 text-right" style="border: 1px solid black;">
+                    Diskon 2
                 </td>
-                <td class="border border-black font-bold p-1 text-right">
+                <td class="border border-black font-bold p-1 text-right" style="border: 1px solid black;">
                     Amount Diskon
                 </td>
-                <td class="border border-black font-bold p-1 text-right">
+                <td class="border border-black font-bold p-1 text-right" style="border: 1px solid black;">
                     Subtotal
                 </td>
             </tr>
@@ -85,34 +85,34 @@
         <tbody>
             @foreach ($items as $index => $item)
             <tr class="border border-black">
-                <td class="border border-black p-1 max-w-sm">
+                <td class="border border-black p-1 max-w-sm" style="border: 1px solid black;">
                     {{ $index + 1 }}
                 </td>
-                <td class="border border-black p-1">
+                <td class="border border-black p-1" style="border: 1px solid black;">
                     {{ $item->product->part_code }}
                 </td>
-                <td class="border border-black p-1">
+                <td class="border border-black p-1" style="border: 1px solid black;">
                     {{ $item->product->name }}
                 </td>
-                <td class="border border-black p-1">
+                <td class="border border-black p-1" style="border: 1px solid black;">
                     {{ $item->product->brand->name }}
                 </td>
-                <td class="border border-black p-1 text-right">
+                <td class="border border-black p-1 text-right" style="border: 1px solid black;">
                     {{ formatIDR($item->qty) }}
                 </td>
-                <td class="border border-black p-1 text-right">
+                <td class="border border-black p-1 text-right" style="border: 1px solid black;">
                     {{ formatIDR($item->cost) }}
                 </td>
-                <td class="border border-black p-1 text-right">
+                <td class="border border-black p-1 text-right" style="border: 1px solid black;">
                     {{ formatIDR($item->discount_percent_2) }}
                 </td>
-                <td class="border border-black p-1 text-right">
+                <td class="border border-black p-1 text-right" style="border: 1px solid black;">
                     {{ formatIDR($item->discount_percent_1) }}
                 </td>
-                <td class="border border-black p-1 text-right">
+                <td class="border border-black p-1 text-right" style="border: 1px solid black;">
                     {{ formatIDR($item->discount_total) }}
                 </td>
-                <td class="border border-black p-1 text-right">
+                <td class="border border-black p-1 text-right" style="border: 1px solid black;">
                     {{ formatIDR($item->subtotal_discount) }}
                 </td>
             </tr>
@@ -124,13 +124,13 @@
             'DPP' => $purchase->amount_net,
             'PPN' => $purchase->amount_ppn,
             ] as $key => $value)
-            <tr class="border border-black">
-                <td class="border border-black p-1 max-w-sm" colspan="7">
+            <tr class="border-none">
+                <td class="border-none p-1 max-w-sm" colspan="7">
                 </td>
-                <td class="border border-black p-1 text-right font-bold" colspan="2">
+                <td class="border-none p-1 text-right font-bold" colspan="2">
                     {{ $key }}
                 </td>
-                <td class="border border-black p-1 text-right">
+                <td class="border-none p-1 text-right">
                     {{ formatIDR($value) }}
                 </td>
             </tr>

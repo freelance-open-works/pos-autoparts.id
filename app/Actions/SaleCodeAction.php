@@ -18,7 +18,9 @@ class SaleCodeAction
     {
         $fallback = '-';
         $date = Carbon::parse($date);
-        $sale = Sale::orderBy('created_at', 'desc')->first();
+        $sale = Sale::orderBy('created_at', 'desc')
+            ->whereYear('s_date', $date->format('Y'))
+            ->first();
 
         $num = 1;
         if ($sale !== null) {
@@ -31,7 +33,7 @@ class SaleCodeAction
             }
         }
 
-        $code = self::PREFIX . '-' . formatNumZero($num)  . '/' .  now()->format('m/Y');
+        $code = self::PREFIX . '-' . formatNumZero($num)  . '/' .  $date->format('m/Y');
         return $code;
     }
 

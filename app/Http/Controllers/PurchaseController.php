@@ -201,7 +201,7 @@ class PurchaseController extends Controller
             'purchase' => $purchase->load(['creator', 'purchaseOrder']),
             'items' => $purchase->items()->with(['product.brand'])->get(),
             'setting' => new Setting(),
-        ])->setPaper('a4', 'landscape');
+        ])->setPaper('a4');
 
         return $pdf->stream();
     }

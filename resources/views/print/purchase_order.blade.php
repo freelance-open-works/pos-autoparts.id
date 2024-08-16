@@ -46,55 +46,60 @@
             <td class="px-2">:</td>
             <td> {{ $purchase_order->address }}</td>
         </tr>
+        <tr>
+            <td class="font-bold capitalize">Kode Customer</td>
+            <td class="px-2">:</td>
+            <td> {{ $purchase_order->storeOrder->customer->code }}</td>
+        </tr>
     </table>
-    <table class="border-collapse border border-black w-full">
+    <table class="w-full solid-table" border="1" style="border: 1px solid black">
         <thead>
-            <tr class="border border-black">
-                <td class="border border-black font-bold p-2 max-w-sm">
+            <tr class="">
+                <td class=" font-bold p-2 max-w-sm">
                     No
                 </td>
-                <td class="border border-black font-bold p-2">
+                <td class=" font-bold p-2">
                     Part No
                 </td>
-                <td class="border border-black font-bold p-2">
+                <td class=" font-bold p-2">
                     Part Name
                 </td>
-                <td class="border border-black font-bold p-2">
+                <td class=" font-bold p-2">
                     Merek
                 </td>
-                <td class="border border-black font-bold p-2 text-right">
+                <td class=" font-bold p-2 text-right">
                     Qty
                 </td>
-                <!-- <td class="border border-black font-bold p-2 text-right">
+                <!-- <td class=" font-bold p-2 text-right">
                     Harga
                 </td>
-                <td class="border border-black font-bold p-2 text-right">
+                <td class=" font-bold p-2 text-right">
                     Subtotal
                 </td> -->
             </tr>
         </thead>
         <tbody>
             @foreach ($items as $index => $item)
-            <tr class="border border-black">
-                <td class="border border-black p-2 max-w-sm">
+            <tr class="">
+                <td class=" p-2 max-w-sm">
                     {{ $index + 1 }}
                 </td>
-                <td class="border border-black p-2">
+                <td class=" p-2">
                     {{ $item->product->part_code }}
                 </td>
-                <td class="border border-black p-2">
+                <td class=" p-2">
                     {{ $item->product->name }}
                 </td>
-                <td class="border border-black p-2">
+                <td class=" p-2">
                     {{ $item->product->brand->name }}
                 </td>
-                <td class="border border-black p-2 text-right">
+                <td class=" p-2 text-right">
                     {{ formatIDR($item->qty) }}
                 </td>
-                <!-- <td class="border border-black p-2 text-right">
+                <!-- <td class=" p-2 text-right">
                     {{ formatIDR($item->cost) }}
                 </td>
-                <td class="border border-black p-2 text-right">
+                <td class=" p-2 text-right">
                     {{ formatIDR($item->qty * $item->cost) }}
                 </td> -->
             </tr>

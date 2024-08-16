@@ -35,6 +35,7 @@ class DefaultSeeder extends Seeder
             ['id' => Str::ulid(), 'key' => 'company_name', 'value' => 'PT. AUTOPART SALES INDONESIA', 'type' => 'text'],
             ['id' => Str::ulid(), 'key' => 'company_address', 'value' => 'JL. Pattene Raya No. 3/4 , Sudiang, Makassar, Sulawesi Selatan', 'type' => 'text'],
             ['id' => Str::ulid(), 'key' => 'ppn_percent', 'value' => '1.11', 'type' => 'text'],
+            ['id' => Str::ulid(), 'key' => 'monthly_sales_target', 'value' => '0', 'type' => 'text'],
         ];
 
         Setting::insert($settings);

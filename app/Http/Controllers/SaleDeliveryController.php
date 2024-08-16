@@ -54,7 +54,7 @@ class SaleDeliveryController extends Controller
             'sale' => $sale->load(['creator', 'purchase']),
             'delivery' => $sale->delivery->load(['expedition']),
             'setting' => new Setting(),
-        ])->setPaper('a4', 'landscape');
+        ])->setPaper('a4');
 
         return $pdf->stream();
     }

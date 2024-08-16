@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Brand;
 use App\Models\Customer;
 use App\Models\Default\Role;
+use App\Models\Default\Setting;
 use App\Models\Default\User;
 use App\Models\Product;
 use App\Models\Purchase;
@@ -39,7 +40,7 @@ class GeneralController extends Controller
             'user_count' => User::count(),
             'customer_count' => Customer::count(),
             'supplier_count' => Supplier::count(),
-            'product_count' => Product::count(),
+            'monthly_sales_target' => Setting::getByKey('monthly_sales_target'),
             'month' => now()->translatedFormat('F'),
             'total_sale_month' => $total_sale_month,
             'total_sale_today' => $total_sale_today,

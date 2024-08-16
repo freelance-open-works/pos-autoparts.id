@@ -65,16 +65,20 @@ export default function Form(props) {
         set_purchase(p)
         set_items(
             p.items.map((item) => {
+                let subtotal = item.product.price * item.qty
+                let discount = subtotal * (item.product.discount / 100)
+                let subtotal_discount = subtotal - discount
+
                 return {
                     // HERE
                     ...item.product,
                     product_id: item.product.id,
                     qty: item.qty,
-                    subtotal: item.product.price,
+                    subtotal: subtotal,
                     discount_percent_1: 0,
-                    discount_percent_2: 0,
-                    discount_total: 0,
-                    subtotal_discount: item.product.price,
+                    discount_percent_2: item.product.discount ?? 0,
+                    discount_total: discount,
+                    subtotal_discount: subtotal_discount,
                     subtotal_net: item.product.price / use_ppn_percent,
                     subtotal_ppn:
                         item.product.price -
@@ -95,17 +99,21 @@ export default function Form(props) {
             return
         }
 
+        let subtotal = item.price * item.qty
+        let discount = subtotal * (item.discount / 100)
+        let subtotal_discount = subtotal - discount
+
         set_items(
             items.concat({
                 // HERE
                 ...item,
                 product_id: item.id,
                 qty: 1,
-                subtotal: item.price,
+                subtotal: subtotal,
                 discount_percent_1: 0,
-                discount_percent_2: 0,
-                discount_total: 0,
-                subtotal_discount: item.price,
+                discount_percent_2: item.discount ?? 0,
+                discount_total: discount,
+                subtotal_discount: subtotal_discount,
                 subtotal_net: item.price / use_ppn_percent,
                 subtotal_ppn: item.price - item.price / use_ppn_percent,
             })
@@ -120,10 +128,6 @@ export default function Form(props) {
         set_items(
             items.map((i) => {
                 if (i.id === item.id) {
-                    if (value < 1 && name === 'qty') {
-                        return i
-                    }
-
                     if (value < 0) {
                         return i
                     }
@@ -211,7 +215,10 @@ export default function Form(props) {
     }, [sale])
 
     return (
-        <AuthenticatedLayout page={'System'} action={['Sale', sale?.s_code ?? 'Form']}>
+        <AuthenticatedLayout
+            page={'System'}
+            action={['Sale', sale?.s_code ?? 'Form']}
+        >
             <Head title="Sale" />
 
             <div>

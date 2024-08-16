@@ -1,11 +1,8 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { useForm } from '@inertiajs/react'
-import { isEmpty } from 'lodash'
 
 import Modal from '@/Components/DaisyUI/Modal'
 import Button from '@/Components/DaisyUI/Button'
-import TextInput from '@/Components/DaisyUI/TextInput'
-import SelectModalInput from '@/Components/DaisyUI/SelectModalInput'
 import FormFile from '@/Components/DaisyUI/FormFile'
 
 export default function ImportModal(props) {
@@ -43,7 +40,6 @@ export default function ImportModal(props) {
                     label={'File'}
                     onChange={(file_path) => setData('products', file_path)}
                     error={errors.products}
-                    filemimes="xlsx,xls,csv"
                 />
                 <p>
                     contoh format import dapat di download{' '}

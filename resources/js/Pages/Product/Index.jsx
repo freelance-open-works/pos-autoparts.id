@@ -98,7 +98,7 @@ export default function Index(props) {
                                     <th>Nama</th>
                                     <th>Tipe</th>
                                     <th>Merk</th>
-                                    <th>Diskon</th>
+                                    <th>Diskon (%)</th>
                                     <th>Harga Beli</th>
                                     <th>Harga Jual</th>
                                     <th />

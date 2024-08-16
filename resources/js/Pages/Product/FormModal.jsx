@@ -105,7 +105,7 @@ export default function FormModal(props) {
                     name="discount"
                     value={data.discount}
                     onChange={handleOnChange}
-                    label="Diskon (IDR)"
+                    label="Diskon (%)"
                     error={errors.discount}
                 />
                 <TextInput

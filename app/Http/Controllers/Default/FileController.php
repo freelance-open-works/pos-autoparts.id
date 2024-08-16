@@ -24,6 +24,8 @@ class FileController extends Controller
 
     public function store(Request $request)
     {
+        info(self::class, [$request->file('file')->getMimeType()]);
+
         $rule = ['required', 'file', 'max:2048']; //limit all file to 2Mb
         if ($request->filemimes != '') {
             $rule[] = FileRule::types($request->filemimes);

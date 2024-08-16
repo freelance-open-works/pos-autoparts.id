@@ -47,7 +47,7 @@
             <td> {{ $store_order->address }}</td>
         </tr>
     </table>
-    <table class="border-collapse border border-black w-full">
+    <table class="border-collapse border border-black w-full solid-table">
         <thead>
             <tr class="border border-black">
                 <td class="border border-black font-bold p-2 max-w-sm">
@@ -118,7 +118,7 @@
     <table class="w-full pt-4 text-center mt-4">
         <tbody>
             <tr>
-                <td class="text-left" style="width: 700px;">
+                <td class="text-left" style="width: 400px;">
                     <!-- <pre class="font-sans text-xs">- Semua pengiriman barang harus disertakan Nota/Faktur
 - Barang akan kami kembalikan jika tidak sesuai PO -->
                     </pre>

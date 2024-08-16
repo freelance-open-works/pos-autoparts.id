@@ -42,7 +42,7 @@ class BuildArchiveCommand extends Command
      */
     public function handle()
     {
-        $zipName = str_replace(' ', '', basename(base_path())) . '_' . now()->format('dm_His') . '.zip';
+        $zipName = str_replace(' ', '', basename(base_path())) . '.zip';
         if ($this->option('remove') != 'n') {
             try {
                 unlink(base_path($zipName));
@@ -77,7 +77,7 @@ class BuildArchiveCommand extends Command
 
             $this->runShellCommands(['php artisan optimize:clear']);
 
-            spin(fn () => $zipService->create(base_path(), $zipName), 'Zipping files . . . .');
+            spin(fn() => $zipService->create(base_path(), $zipName), 'Zipping files . . . .');
 
             $endTime = microtime(true);
             $timeTaken = number_format($endTime - $startTime, 2);

@@ -5,6 +5,7 @@ namespace App\Actions;
 use App\Models\StoreOrder;
 use Exception;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 
 class StoreOrderAction
 {
@@ -14,7 +15,9 @@ class StoreOrderAction
     {
         $fallback = 99999;
         $date = Carbon::parse($date);
-        $purchase = StoreOrder::orderBy('created_at', 'desc')->first();
+        $purchase = StoreOrder::orderBy('created_at', 'desc')
+            ->whereYear('so_date', $date->format('Y'))
+            ->first();
 
         $num = 1;
         if ($purchase !== null) {
@@ -26,7 +29,7 @@ class StoreOrderAction
             }
         }
 
-        $code = formatNumZero($num) . self::PREFIX . now()->format('m/Y');
+        $code = formatNumZero($num) . self::PREFIX . $date->format('m/Y');
         return $code;
     }
 }

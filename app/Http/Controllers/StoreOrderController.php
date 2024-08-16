@@ -146,7 +146,7 @@ class StoreOrderController extends Controller
             'store_order' => $storeOrder->load(['creator']),
             'items' => $storeOrder->items()->with(['product.brand'])->get(),
             'setting' => new Setting(),
-        ])->setPaper('a4', 'landscape');
+        ])->setPaper('a4');
 
         return $pdf->stream();
     }

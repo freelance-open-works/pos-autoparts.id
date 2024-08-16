@@ -74,9 +74,9 @@ export default function Dashboard(props) {
                     </div>
                     <div className="stats shadow flex-1">
                         <div className="stat">
-                            <div className="stat-title">Product</div>
+                            <div className="stat-title">Target Penjualan</div>
                             <div className="stat-value text-primary text-3xl">
-                                {formatIDR(props.product_count)}
+                                {formatIDR(props.monthly_sales_target)}
                             </div>
                         </div>
                     </div>

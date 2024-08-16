@@ -16,7 +16,9 @@ class ClaimAction
     {
         $fallback = '-';
         $date = Carbon::parse($date);
-        $purchase = Claim::orderBy('created_at', 'desc')->first();
+        $purchase = Claim::orderBy('created_at', 'desc')
+            ->whereYear('c_date', $date->format('Y'))
+            ->first();
 
         $num = 1;
         if ($purchase !== null) {
@@ -29,7 +31,7 @@ class ClaimAction
             }
         }
 
-        $code = formatNumZero($num)  . self::PREFIX  .  now()->format('m/Y');
+        $code = formatNumZero($num)  . self::PREFIX  . $date->format('m/Y');
         return $code;
     }
 
