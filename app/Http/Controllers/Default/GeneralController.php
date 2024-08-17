@@ -160,7 +160,7 @@ class GeneralController extends Controller
         return response()->json([
             ClaimItem::class => ClaimItem::truncate(),
             Claim::class => Claim::truncate(),
-            ProductStock::class => ProductStock::truncate(),
+            ProductStock::class => ProductStock::where('deleted_at', null)->update(['stock' => 0]),
             ProductStockFifo::class => ProductStockFifo::truncate(),
             ProductStockHistory::class => ProductStockHistory::truncate(),
             SaleItem::class => SaleItem::truncate(),
