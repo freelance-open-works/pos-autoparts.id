@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Actions\PurchaseOrderAction;
 use App\Models\Default\Setting;
 use App\Models\PurchaseOrder;
 use App\Models\PurchaseOrderItem;
@@ -147,6 +148,10 @@ class PurchaseOrderController extends Controller
 
     public function patch(Request $request, PurchaseOrder $purchaseOrder)
     {
+        if ($request->key == 'status' && $request->value == PurchaseOrder::STATUS_SUBMIT) {
+            PurchaseOrderAction::update_stocks($purchaseOrder);
+        }
+
         $purchaseOrder->update([
             $request->key => $request->value
         ]);

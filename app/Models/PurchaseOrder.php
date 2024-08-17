@@ -14,6 +14,10 @@ class PurchaseOrder extends Model
     const STATUS_SUBMIT = 'submit';
     const STATUS_DONE = 'selesai';
 
+    const type_pemesanan_toko = 'pemesanan toko/partshop';
+    const type_pemesanan_stock = 'pemesanan stok';
+    const type_penjualan_stock = 'penjualan stok';
+
     protected $fillable = [
         'store_order_id',
         'supplier_id',

@@ -182,6 +182,7 @@ class PurchaseController extends Controller
 
     public function patch(Request $request, Purchase $purchase)
     {
+        DB::beginTransaction();
         // if key is status and it submit update stock to up
         if ($request->key == 'status' && $request->value == Purchase::STATUS_SUBMIT) {
             PurchaseAction::update_stocks($purchase);
@@ -190,6 +191,7 @@ class PurchaseController extends Controller
         $purchase->update([
             $request->key => $request->value
         ]);
+        DB::commit();
 
         return redirect()->route('purchases.index')
             ->with('message', ['type' => 'success', 'message' => 'Item has beed updated']);
