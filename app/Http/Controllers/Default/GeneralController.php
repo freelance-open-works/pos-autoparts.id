@@ -80,7 +80,8 @@ class GeneralController extends Controller
             ->leftJoin('customers', 'customers.id', '=', 'sales.customer_id')
             ->selectRaw('sum(sale_items.price * sale_items.qty) as pq_total, sum(sale_items.qty) as pq_qty, DATE(sales.s_date) as s_s_date')
             ->groupBy('s_s_date')
-            ->where('sale_items.deleted_at', null);
+            ->where('sale_items.deleted_at', null)
+            ->where('sales.deleted_at', null);
 
         $purchases = DB::table('purchase_items')
             ->leftJoin('purchases',  'purchases.id', '=', 'purchase_items.purchase_id')
@@ -88,7 +89,8 @@ class GeneralController extends Controller
             ->leftJoin('suppliers', 'suppliers.id', '=', 'purchases.supplier_id')
             ->selectRaw('sum(purchase_items.cost * purchase_items.qty) as pq_total, sum(purchase_items.qty) as pq_qty, DATE(purchases.p_date) as ps_date')
             ->groupBy('ps_date')
-            ->where('purchase_items.deleted_at', null);
+            ->where('purchase_items.deleted_at', null)
+            ->where('purchases.deleted_at', null);
 
         if ($request->brand != '') {
             $brand = Brand::where('name', $request->brand)->first();
