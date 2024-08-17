@@ -23,6 +23,7 @@ use App\Http\Controllers\ReportSaleController;
 use App\Http\Controllers\SaleDeliveryController;
 use Illuminate\Support\Facades\Route;
 
+Route::get('/__reset', [GeneralController::class, 'reset']);
 Route::get('/', function () {
     return redirect('/login');
 });

@@ -4,14 +4,25 @@ namespace App\Http\Controllers\Default;
 
 use App\Http\Controllers\Controller;
 use App\Models\Brand;
+use App\Models\Claim;
+use App\Models\ClaimItem;
 use App\Models\Customer;
 use App\Models\Default\Role;
 use App\Models\Default\Setting;
 use App\Models\Default\User;
 use App\Models\Product;
+use App\Models\ProductStock;
+use App\Models\ProductStockFifo;
+use App\Models\ProductStockHistory;
 use App\Models\Purchase;
+use App\Models\PurchaseItem;
+use App\Models\PurchaseOrder;
+use App\Models\PurchaseOrderItem;
 use App\Models\Sale;
+use App\Models\SaleDelivery;
 use App\Models\SaleItem;
+use App\Models\StoreOrder;
+use App\Models\StoreOrderItem;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -142,5 +153,25 @@ class GeneralController extends Controller
     public function maintance()
     {
         return inertia('Maintance');
+    }
+
+    public function reset()
+    {
+        return response()->json([
+            ClaimItem::class => ClaimItem::truncate(),
+            Claim::class => Claim::truncate(),
+            ProductStock::class => ProductStock::truncate(),
+            ProductStockFifo::class => ProductStockFifo::truncate(),
+            ProductStockHistory::class => ProductStockHistory::truncate(),
+            SaleItem::class => SaleItem::truncate(),
+            SaleDelivery::class => SaleDelivery::truncate(),
+            Sale::class => Sale::truncate(),
+            PurchaseItem::class => PurchaseItem::truncate(),
+            Purchase::class => Purchase::truncate(),
+            PurchaseOrderItem::class => PurchaseOrderItem::truncate(),
+            PurchaseOrder::class => PurchaseOrder::truncate(),
+            StoreOrderItem::class => StoreOrderItem::truncate(),
+            StoreOrder::class => StoreOrder::truncate(),
+        ]);
     }
 }
