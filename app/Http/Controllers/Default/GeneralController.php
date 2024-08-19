@@ -7,10 +7,8 @@ use App\Models\Brand;
 use App\Models\Claim;
 use App\Models\ClaimItem;
 use App\Models\Customer;
-use App\Models\Default\Role;
 use App\Models\Default\Setting;
 use App\Models\Default\User;
-use App\Models\Product;
 use App\Models\ProductStock;
 use App\Models\ProductStockFifo;
 use App\Models\ProductStockHistory;
@@ -27,27 +25,29 @@ use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Number;
 
 class GeneralController extends Controller
 {
     public function index(Request $request)
     {
-        $total_sale_month = Sale::whereMonth('s_date', now()->format('m'))->sum('amount_cost');
-        $total_sale_today = Sale::where(DB::raw('DATE(s_date)'), now()->format('Y-m-d'))->sum('amount_cost');
+        $total_sale_month = Sale::whereMonth('s_date', now()->format('m'))->where('status', Sale::STATUS_SUBMIT)->sum('amount_cost');
+        $total_sale_today = Sale::where(DB::raw('DATE(s_date)'), now()->format('Y-m-d'))->where('status', Sale::STATUS_SUBMIT)->sum('amount_cost');
         $items_sale_today = SaleItem::whereIn(
             'sale_id',
-            Sale::where(DB::raw('DATE(s_date)'), now()->format('Y-m-d'))->pluck('id')->toArray()
+            Sale::where(DB::raw('DATE(s_date)'), now()->format('Y-m-d'))->where('status', Sale::STATUS_SUBMIT)->pluck('id')->toArray()
         )->sum('qty');
 
         $top_products = SaleItem::join('products', 'products.id', '=', 'sale_items.product_id')
+            ->leftJoin('sales', 'sales.id', '=', 'sale_items.sale_id')
             ->select('sale_items.product_id', 'products.name',  'products.part_code', DB::raw('SUM(sale_items.qty) as most_qty'))
+            ->where('sales.status', Sale::STATUS_SUBMIT)
             ->groupBy('sale_items.product_id')
             ->orderBy('most_qty', 'DESC')
             ->limit(10)
             ->get();
 
         return inertia('Dashboard', [
-            'role_count' => Role::count(),
             'user_count' => User::count(),
             'customer_count' => Customer::count(),
             'supplier_count' => Supplier::count(),
@@ -56,6 +56,7 @@ class GeneralController extends Controller
             'total_sale_month' => $total_sale_month,
             'total_sale_today' => $total_sale_today,
             'items_sale_today' => $items_sale_today,
+            'target_percent_month' => Setting::getByKey('monthly_sales_target') > 0 ? Number::percentage($total_sale_month / Setting::getByKey('monthly_sales_target'), 2) : '0%',
             'top_products' => $top_products,
             'charts' => $this->charts($request),
             'brands' => Brand::all(),
@@ -92,7 +93,8 @@ class GeneralController extends Controller
             ->selectRaw('sum(sale_items.price * sale_items.qty) as pq_total, sum(sale_items.qty) as pq_qty, DATE(sales.s_date) as s_s_date')
             ->groupBy('s_s_date')
             ->where('sale_items.deleted_at', null)
-            ->where('sales.deleted_at', null);
+            ->where('sales.deleted_at', null)
+            ->where('sales.status', Sale::STATUS_SUBMIT);
 
         $purchases = DB::table('purchase_items')
             ->leftJoin('purchases',  'purchases.id', '=', 'purchase_items.purchase_id')
@@ -101,7 +103,8 @@ class GeneralController extends Controller
             ->selectRaw('sum(purchase_items.cost * purchase_items.qty) as pq_total, sum(purchase_items.qty) as pq_qty, DATE(purchases.p_date) as ps_date')
             ->groupBy('ps_date')
             ->where('purchase_items.deleted_at', null)
-            ->where('purchases.deleted_at', null);
+            ->where('purchases.deleted_at', null)
+            ->where('purchases.status', Purchase::STATUS_SUBMIT);
 
         if ($request->brand != '') {
             $brand = Brand::where('name', $request->brand)->first();

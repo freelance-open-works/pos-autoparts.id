@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Purchase;
 use App\Models\PurchaseItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -12,7 +13,9 @@ class ReportPurchaseController extends Controller
 {
     public function index(Request $request)
     {
-        $query = PurchaseItem::query()->with(['purchase.supplier', 'purchase.creator', 'purchase.purchaseOrder', 'product']);
+        $query = PurchaseItem::query()->with(['purchase.supplier', 'purchase.creator', 'purchase.purchaseOrder', 'product'])
+            ->leftJoin('purchases', 'purchases.id', '=', 'purchase_items.purchase_id')
+            ->where('purchases.status', Purchase::STATUS_SUBMIT);
 
         if ($request->q) {
             $query->whereHas('purchase', function ($query) use ($request) {
@@ -45,7 +48,9 @@ class ReportPurchaseController extends Controller
 
     public function export(Request $request)
     {
-        $query = PurchaseItem::query()->with(['purchase.supplier', 'purchase.creator', 'product']);
+        $query = PurchaseItem::query()->with(['purchase.supplier', 'purchase.creator', 'product'])
+            ->leftJoin('purchases', 'purchases.id', '=', 'purchase_items.purchase_id')
+            ->where('purchases.status', Purchase::STATUS_SUBMIT);
 
         if ($request->q) {
             $query->whereHas('purchase', function ($query) use ($request) {

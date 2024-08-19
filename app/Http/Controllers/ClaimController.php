@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Actions\ClaimAction;
 use App\Models\Claim;
 use App\Models\ClaimItem;
+use App\Models\Default\Setting;
+use Barryvdh\DomPDF\Facade\Pdf;
 use Exception;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
@@ -148,5 +150,16 @@ class ClaimController extends Controller
 
         return redirect()->route('claims.index')
             ->with('message', ['type' => 'success', 'message' => 'Item has beed updated']);
+    }
+
+    public function print_invoice(Claim $claim)
+    {
+        $pdf = Pdf::loadView('print.claim', [
+            'claim' => $claim->load(['customer', 'sale']),
+            'items' => $claim->items()->with(['product.brand'])->get(),
+            'setting' => new Setting(),
+        ])->setPaper('a4');
+
+        return $pdf->stream();
     }
 }

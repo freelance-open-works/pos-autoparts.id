@@ -42,9 +42,9 @@ export default function Dashboard(props) {
                 <div className="w-full grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 py-2 gap-2">
                     <div className="stats shadow flex-1">
                         <div className="stat">
-                            <div className="stat-title">Roles</div>
+                            <div className="stat-title">Persentase Capaian</div>
                             <div className="stat-value text-primary">
-                                {formatIDR(props.role_count)}{' '}
+                                {props.target_percent_month}{' '}
                             </div>
                         </div>
                     </div>

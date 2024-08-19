@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Sale;
 use App\Models\SaleItem;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -13,7 +14,9 @@ class ReportSaleController extends Controller
 {
     public function index(Request $request): Response
     {
-        $query = SaleItem::query()->with(['sale.customer', 'sale.creator', 'product']);
+        $query = SaleItem::query()->with(['sale.customer', 'sale.creator', 'product'])
+            ->leftJoin('sales', 'sales.id', '=', 'sale_items.sale_id')
+            ->where('sales.status', Sale::STATUS_SUBMIT);
 
         if ($request->q) {
             $query->whereHas('sale', function ($query) use ($request) {
@@ -46,7 +49,9 @@ class ReportSaleController extends Controller
 
     public function export(Request $request)
     {
-        $query = SaleItem::query()->with(['sale.customer', 'sale.creator', 'product']);
+        $query = SaleItem::query()->with(['sale.customer', 'sale.creator', 'product'])
+            ->leftJoin('sales', 'sales.id', '=', 'sale_items.sale_id')
+            ->where('sales.status', Sale::STATUS_SUBMIT);
 
         if ($request->q) {
             $query->whereHas('sale', function ($query) use ($request) {

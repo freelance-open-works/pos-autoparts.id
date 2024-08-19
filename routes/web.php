@@ -69,6 +69,7 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/report/sales/export', [ReportSaleController::class, 'export'])->name('report.sales.export');
     Route::get('/report/sales', [ReportSaleController::class, 'index'])->name('report.sales');
 
+    Route::get('claims/{claim}/print', [ClaimController::class, 'print_invoice'])->name('claims.print');
     Route::patch('claims/{claim}/patch', [ClaimController::class, 'patch'])->name('claims.patch');
     Route::resource('claims', ClaimController::class);
 
