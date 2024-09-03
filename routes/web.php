@@ -26,6 +26,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/__reset', [GeneralController::class, 'reset']);
 Route::get('/__sync_permissions', [GeneralController::class, 'syncPermissions']);
+Route::get('/__command', [GeneralController::class, 'command']);
 
 Route::get('/', function () {
     return redirect('/login');

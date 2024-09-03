@@ -32,6 +32,7 @@ export default function Show(props) {
     const [status, set_status] = useState(sale_status_draft)
     const [address, set_address] = useState('')
     const [note, set_note] = useState('')
+    const [type, set_type] = useState('')
     const [customer, set_customer] = useState(null)
     const [items, set_items] = useState([])
 
@@ -54,6 +55,7 @@ export default function Show(props) {
             set_status(sale.status)
             set_address(sale.address ?? '')
             set_note(sale.note ?? '')
+            set_type(sale.type ?? '')
             set_customer(sale.customer)
             set_items(
                 sale.items.map((item) => {
@@ -85,6 +87,11 @@ export default function Show(props) {
                             <TextInput
                                 value={s_date}
                                 label={'Tanggal'}
+                                readOnly={true}
+                            />
+                            <TextInput
+                                value={type}
+                                label={'Tipe'}
                                 readOnly={true}
                             />
                             {/* <SelectOptionArray

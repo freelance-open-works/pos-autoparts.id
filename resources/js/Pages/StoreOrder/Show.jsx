@@ -67,12 +67,12 @@ export default function Form(props) {
                                 readOnly={true}
                                 error={errors.po_date}
                             />
-                            <TextInput
+                            {/* <TextInput
                                 value={type}
                                 label={'Tipe'}
                                 readOnly={true}
                                 error={errors.type}
-                            />
+                            /> */}
                             <TextInput
                                 label="Nama Customer"
                                 value={customer?.name}

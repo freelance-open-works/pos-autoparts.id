@@ -9,7 +9,12 @@ import Card from '@/Components/DaisyUI/Card'
 import FormInputDate from '@/Components/DaisyUI/FormInputDate'
 import { SelectOptionArray } from '@/Components/DaisyUI/SelectInput'
 import SelectModalInput from '@/Components/DaisyUI/SelectModalInput'
-import { sale_status, sale_status_draft, sale_status_submit } from '@/consts'
+import {
+    sale_status,
+    sale_status_draft,
+    sale_status_submit,
+    sale_types,
+} from '@/consts'
 import TextareaInput from '@/Components/DaisyUI/TextareaInput'
 import SelectModalProduct from '../Product/SelectModal'
 import { HiXMark } from 'react-icons/hi2'
@@ -32,6 +37,7 @@ export default function Form(props) {
     const [status, set_status] = useState(sale_status_draft)
     const [address, set_address] = useState('')
     const [note, set_note] = useState('')
+    const [type, set_type] = useState('')
     const [customer, set_customer] = useState(null)
     const [items, set_items] = useState([])
 
@@ -158,6 +164,7 @@ export default function Form(props) {
     const total_ppn = items.reduce((p, item) => p + item.subtotal_ppn, 0)
 
     const payload = {
+        type,
         purchase_id: purchase?.id,
         ppn_percent_applied: use_ppn_percent,
         s_date: s_date,
@@ -201,6 +208,7 @@ export default function Form(props) {
             set_status(sale.status)
             set_address(sale.address ?? '')
             set_note(sale.note ?? '')
+            set_type(sale.type ?? '')
             set_customer(sale.customer)
             set_items(
                 sale.items.map((item) => {
@@ -239,13 +247,13 @@ export default function Form(props) {
                                 onChange={(date) => set_s_date(date)}
                                 error={errors.s_date}
                             />
-                            {/* <SelectOptionArray
-                                value={status}
-                                label={'Status'}
-                                options={sale_status}
-                                onChange={(e) => set_status(e.target.value)}
-                                error={errors.status}
-                            /> */}
+                            <SelectOptionArray
+                                value={type}
+                                label={'Tipe'}
+                                options={sale_types}
+                                onChange={(e) => set_type(e.target.value)}
+                                error={errors.type}
+                            />
                             <SelectModalInput
                                 label="Nama Customer"
                                 value={customer}

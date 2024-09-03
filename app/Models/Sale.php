@@ -29,6 +29,7 @@ class Sale extends Model
         'ppn_percent_applied',
         'address',
         'note',
+        'type',
     ];
 
     protected static function booted(): void

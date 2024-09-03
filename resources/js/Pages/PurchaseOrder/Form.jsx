@@ -10,13 +10,8 @@ import FormInputDate from '@/Components/DaisyUI/FormInputDate'
 import SelectModalInput from '@/Components/DaisyUI/SelectModalInput'
 import SelectModalProduct from '../Product/SelectModal'
 import { HiXMark } from 'react-icons/hi2'
-import { formatIDR } from '@/utils'
 import { SelectOptionArray } from '@/Components/DaisyUI/SelectInput'
-import {
-    purchase_order_status,
-    purchase_order_status_draft,
-    purchase_order_types,
-} from '@/consts'
+import { purchase_order_status_draft, purchase_order_types } from '@/consts'
 import TextareaInput from '@/Components/DaisyUI/TextareaInput'
 import SelectModalStoreOrder from '../StoreOrder/SelectModal'
 

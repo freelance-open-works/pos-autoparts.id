@@ -52,6 +52,7 @@ class SaleController extends Controller
             ],
             'customer_id' => 'required|exists:customers,id',
             's_date' => 'required|date',
+            'type' => 'required|string',
             'status' => 'required|string',
             'address' => 'nullable|string',
             'note' => 'nullable|string',
@@ -87,6 +88,7 @@ class SaleController extends Controller
             'address' => $request->address,
             'note' => $request->note,
             'ppn_percent_applied' => $request->ppn_percent_applied,
+            'type' => $request->type
         ]);
 
         $sale->items()->saveMany($items->mapInto(SaleItem::class));
@@ -125,6 +127,7 @@ class SaleController extends Controller
             ],
             'customer_id' => 'required|exists:customers,id',
             's_date' => 'required|date',
+            'type' => 'required|string',
             'status' => 'required|string',
             'address' => 'nullable|string',
             'note' => 'nullable|string',
@@ -160,6 +163,7 @@ class SaleController extends Controller
             'address' => $request->address,
             'note' => $request->note,
             'ppn_percent_applied' => $request->ppn_percent_applied,
+            'type' => $request->type,
         ]);
 
         $sale->items()->delete();

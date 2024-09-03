@@ -10,13 +10,7 @@ import FormInputDate from '@/Components/DaisyUI/FormInputDate'
 import SelectModalInput from '@/Components/DaisyUI/SelectModalInput'
 import SelectModalProduct from '../Product/SelectModal'
 import { HiXMark } from 'react-icons/hi2'
-import { formatIDR } from '@/utils'
-import { SelectOptionArray } from '@/Components/DaisyUI/SelectInput'
-import {
-    store_order_status,
-    store_order_status_draft,
-    store_order_types,
-} from '@/consts'
+import { store_order_status_draft } from '@/consts'
 import TextareaInput from '@/Components/DaisyUI/TextareaInput'
 
 export default function Form(props) {
@@ -151,13 +145,6 @@ export default function Form(props) {
                                 label={'Tanggal'}
                                 onChange={(date) => set_so_date(date)}
                                 error={errors.po_date}
-                            />
-                            <SelectOptionArray
-                                value={type}
-                                label={'Tipe'}
-                                options={store_order_types}
-                                onChange={(e) => set_type(e.target.value)}
-                                error={errors.type}
                             />
                             <SelectModalInput
                                 label="Nama Customer"

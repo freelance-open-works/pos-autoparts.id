@@ -25,6 +25,7 @@ use App\Models\StoreOrderItem;
 use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Number;
 
@@ -184,5 +185,10 @@ class GeneralController extends Controller
         [$to_add, $to_delete] = PermissionService::new()->sync();
 
         return response()->json(['message' => 'Permission synced : ' . count($to_add) . ' added, ' . count($to_delete) . ' deleted']);
+    }
+
+    public function command()
+    {
+        return response()->json(['message' => Artisan::command('migrate')]);
     }
 }

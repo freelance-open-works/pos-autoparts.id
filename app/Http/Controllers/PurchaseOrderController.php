@@ -42,7 +42,7 @@ class PurchaseOrderController extends Controller
     {
         $request->validate([
             'store_order_id' => [
-                'required',
+                'nullable',
                 'exists:store_orders,id',
                 Rule::unique('purchase_orders', 'store_order_id')->where(fn($q) => $q->where('deleted_at', null))
             ],
@@ -97,7 +97,7 @@ class PurchaseOrderController extends Controller
     {
         $request->validate([
             'store_order_id' => [
-                'required',
+                'nullable',
                 'exists:store_orders,id',
                 Rule::unique('purchase_orders', 'store_order_id')
                     ->where(fn($q) => $q->where('deleted_at', null))
@@ -148,10 +148,6 @@ class PurchaseOrderController extends Controller
 
     public function patch(Request $request, PurchaseOrder $purchaseOrder)
     {
-        if ($request->key == 'status' && $request->value == PurchaseOrder::STATUS_SUBMIT) {
-            PurchaseOrderAction::update_stocks($purchaseOrder);
-        }
-
         $purchaseOrder->update([
             $request->key => $request->value
         ]);

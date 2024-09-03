@@ -26,6 +26,7 @@ return new class extends Migration
             $table->decimal('ppn_percent_applied', 20, 2)->nullable()->default(11);
             $table->text('address')->nullable();
             $table->text('note')->nullable();
+            $table->string('type')->nullable();
             //
             $table->timestamps();
             $table->softDeletes();

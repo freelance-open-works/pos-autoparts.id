@@ -42,24 +42,17 @@ export const claim_status = [
     claim_status_selesai,
 ]
 
-export const purchase_order_type_pemesanan_toko = 'pemesanan toko/partshop'
+export const purchase_order_type_pemesanan_toko = 'pemesanan toko'
 export const purchase_order_type_pemesanan_stock = 'pemesanan stok'
-export const purchase_order_type_penjualan_stock = 'penjualan stok'
 
 export const purchase_order_types = [
     purchase_order_type_pemesanan_toko,
     purchase_order_type_pemesanan_stock,
-    purchase_order_type_penjualan_stock,
 ]
 
-export const store_order_type_pemesanan_toko = 'pemesanan toko/partshop'
-export const store_order_type_pemesanan_stock = 'pemesanan stok'
-export const store_order_type_penjualan_stock = 'penjualan stok'
+export const sale_type_pemesanan_toko = 'pemesanan toko'
+export const sale_type_pemesanan_stock = 'pemesanan stok'
 
-export const store_order_types = [
-    store_order_type_pemesanan_toko,
-    store_order_type_pemesanan_stock,
-    store_order_type_penjualan_stock,
-]
+export const sale_types = [sale_type_pemesanan_toko, sale_type_pemesanan_stock]
 
 export const delivery_services = ['darat', 'udara', 'laut']

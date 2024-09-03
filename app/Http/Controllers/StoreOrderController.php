@@ -40,7 +40,7 @@ class StoreOrderController extends Controller
     {
         $request->validate([
             'so_date' => 'required|date',
-            'type' => 'required|string',
+            'type' => 'nullable|string',
             'status' => 'required|string',
             'address' => 'nullable|string',
             'note' => 'nullable|string',

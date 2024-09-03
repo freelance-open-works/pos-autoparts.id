@@ -94,7 +94,7 @@ export default function Index(props) {
                             <tbody>
                                 {data.map((item, index) => (
                                     <tr key={item.id}>
-                                        <td>{item.store_order.so_code}</td>
+                                        <td>{item.store_order?.so_code}</td>
                                         <td>{item.po_code}</td>
                                         <td>{item.po_date}</td>
                                         <td>{item.supplier.code}</td>
