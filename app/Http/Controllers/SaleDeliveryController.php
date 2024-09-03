@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Default\Setting;
 use App\Models\Sale;
+use App\Services\PdfMergerService;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
@@ -42,20 +43,29 @@ class SaleDeliveryController extends Controller
             ->with('message', ['type' => 'success', 'message' => 'Item has beed created']);
     }
 
-    public function print(Sale $sale)
+    public function print(Sale $sale, PdfMergerService $pdfMergerService)
     {
-        // return view('print.delivery', [
-        //     'sale' => $sale->load(['creator', 'purchase']),
-        //     'delivery' => $sale->delivery->load(['expedition']),
-        //     'setting' => new Setting(),
-        // ]);
-
-        $pdf = Pdf::loadView('print.delivery', [
+        $data = [
             'sale' => $sale->load(['creator', 'purchase']),
             'delivery' => $sale->delivery->load(['expedition']),
             'setting' => new Setting(),
-        ])->setPaper('a4');
+        ];
 
-        return $pdf->stream();
+        $pdf = Pdf::loadView('print.delivery', $data)->setPaper('a4');
+        $pdf->save($sale->id . '.pdf', 'public');
+        $pdf = Pdf::loadView('print.delivery-label', $data)->setPaper('a6');
+        $pdf->save($sale->id . '-label.pdf', 'public');
+
+
+        $pdfFiles = [
+            storage_path('app/public/' . $sale->id . '.pdf'),
+            storage_path('app/public/' . $sale->id . '-label.pdf'),
+        ];
+
+        $output = storage_path('app/public/' . $sale->id . '-merge.pdf');
+
+        $pdfMergerService->merge($pdfFiles, $output);
+
+        return response()->file($output);
     }
 }

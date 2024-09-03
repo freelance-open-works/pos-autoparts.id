@@ -17,7 +17,7 @@ class PurchaseOrderController extends Controller
 {
     public function index(Request $request): Response
     {
-        $query = PurchaseOrder::with(['supplier']);
+        $query = PurchaseOrder::with(['supplier', 'storeOrder']);
 
         if ($request->q) {
             $query->where(function ($query) use ($request) {

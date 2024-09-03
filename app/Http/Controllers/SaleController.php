@@ -18,7 +18,7 @@ class SaleController extends Controller
 {
     public function index(Request $request): Response
     {
-        $query = Sale::query()->with(['customer', 'delivery.expedition']);
+        $query = Sale::query()->with(['customer', 'delivery.expedition', 'purchase.purchaseOrder']);
 
         if ($request->q) {
             $query->where(function ($query) use ($request) {

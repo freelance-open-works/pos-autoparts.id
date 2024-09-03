@@ -85,7 +85,7 @@ class ReportSaleController extends Controller
                 "Customer Nama" => $item->sale->customer->name,
                 "Salesman Kode" => $item->sale->creator->fields?->code,
                 "Salesman Nama" => $item->sale->creator->name,
-                "Part No" => $item->product->code,
+                "Part No" => $item->product->part_code,
                 "Part Nama" => $item->product->name,
                 "Qty" => formatIDR($item->qty),
                 "Harga Jual" => formatIDR($item->price),

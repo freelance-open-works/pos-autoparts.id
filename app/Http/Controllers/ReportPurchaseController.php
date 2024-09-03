@@ -84,7 +84,7 @@ class ReportPurchaseController extends Controller
                 "Supplier Nama" => $item->purchase->supplier->name,
                 "Salesman Kode" => $item->purchase->creator->fields?->code,
                 "Salesman Nama" => $item->purchase->creator->name,
-                "Part No" => $item->product->code,
+                "Part No" => $item->product->part_code,
                 "Part Nama" => $item->product->name,
                 "Qty" => formatIDR($item->qty),
                 "Harga Jual" => formatIDR($item->cost),

@@ -56,7 +56,7 @@ class GeneralController extends Controller
             'total_sale_month' => $total_sale_month,
             'total_sale_today' => $total_sale_today,
             'items_sale_today' => $items_sale_today,
-            'target_percent_month' => Setting::getByKey('monthly_sales_target') > 0 ? Number::percentage($total_sale_month / Setting::getByKey('monthly_sales_target'), 2) : '0%',
+            'target_percent_month' => Setting::getByKey('monthly_sales_target') > 0 ? Number::percentage(($total_sale_month / Setting::getByKey('monthly_sales_target')) * 100, 2) : '0%',
             'top_products' => $top_products,
             'charts' => $this->charts($request),
             'brands' => Brand::all(),

@@ -80,6 +80,7 @@ export default function Index(props) {
                         <table className="table mt-12">
                             <thead>
                                 <tr>
+                                    <th>No Order</th>
                                     <th>No PO</th>
                                     <th>Tanggal</th>
                                     <th>Kode Supplier</th>
@@ -92,6 +93,7 @@ export default function Index(props) {
                             <tbody>
                                 {data.map((item, index) => (
                                     <tr key={item.id}>
+                                        <td>{item.store_order.so_code}</td>
                                         <td>{item.po_code}</td>
                                         <td>{item.po_date}</td>
                                         <td>{item.supplier.code}</td>

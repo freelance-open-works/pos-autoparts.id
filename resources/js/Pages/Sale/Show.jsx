@@ -157,7 +157,7 @@ export default function Show(props) {
                                                 </td>
                                                 <td className="text-right  p-[5px]">
                                                     {formatIDR(
-                                                        item.discount_percent_2
+                                                        item.discount_percent_1
                                                     )}
                                                 </td>
                                                 <td className="text-right">

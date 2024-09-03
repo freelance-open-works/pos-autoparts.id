@@ -61,12 +61,11 @@
             <tr class="border border-black">
                 <td class="border border-black" style="border: 1px solid black;vertical-align: top;">
                     <span class="font-bold">PENERIMA</span>
-                    <pre class="font-sans">Nama : {{ $sale->customer->name }}
-Alamat : {{ $sale->address }}
-                    </pre>
+                    <div class="font-sans">Nama : {{ $sale->customer->name }}</div>
+                    <div class="font-sans">Alamat : {{ $sale->address }}</div> <br />
                     <span class="font-bold">DIANGKUT OLEH</span>
-                    <pre class="font-sans">Ekspedisi : {{ $delivery->expedition->name }}
-Alamat : {{ $delivery->expedition->address }}</pre>
+                    <div class="font-sans">Ekspedisi : {{ $delivery->expedition->name }}</div>
+                    <div class="font-sans">Alamat : {{ $delivery->expedition->address }}</div>
                 </td>
                 <td class="border border-black" style="border: 1px solid black;vertical-align: top;">
                     <table style="width: 101%;table-layout: fixed;vertical-align: top;margin: -1px;">
@@ -123,38 +122,6 @@ Alamat : {{ $delivery->expedition->address }}</pre>
             </tr>
         </tbody>
     </table>
-    <div class="page-break"></div>
-    <div class="border border-collapse border-black " style="border: 1px solid black;">
-        <table class="" style="max-width: 200px;">
-            <tr class="">
-                <td class="px-4 text-center" style="width: 200px;"><img src="{{ $setting->getStoragePath('app_logo') }}" width="200px" />
-                </td>
-                <td class="font-bold">
-                    <pre class="font-sans">Pengirim: 
-<span class="font-bold text-lg">{{ $setting->getValueByKey('company_name') }}</span>
-<pre class="font-sans text-xs">{{ $setting->getValueByKey('company_address') }}</pre>
-                    </pre>
-                </td>
-            </tr>
-            <tr>
-                <td class="text-center p-4">
-                    <img src="{{ storage_path('/app/default/frigle1.png') }}" width="150px" class="mb-2" />
-                    <img src="{{ storage_path('/app/default/frigle2.png') }}" width="150px" class="mb-2" />
-                </td>
-                <td>
-                    <pre class="font-sans text-2xl">Penerima
-<span class="text-lg">{{ $sale->customer->name }}<span>
-<span class="mb-2 font-bo text-sm">{{ $sale->address }}</span>
-
-Nomor Invoice
-<span class="text-lg mb-2 w-full">{{ $sale->s_code }}<span>
-
-Nomor Surat Jalan
-<span class="text-lg mb-2">{{ $delivery->sd_code }}<span></pre>
-                </td>
-            </tr>
-        </table>
-    </div>
 </body>
 
 </html>
