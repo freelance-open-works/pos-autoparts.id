@@ -320,7 +320,7 @@ export default function Form(props) {
                                                 <td>{item.name}</td>
                                                 <td>{item?.brand?.name}</td>
                                                 <td className="text-right p-[5px]">
-                                                    {sale.status !==
+                                                    {sale?.status !==
                                                     sale_status_submit ? (
                                                         <div className="w-full">
                                                             <TextInput

@@ -189,6 +189,6 @@ class GeneralController extends Controller
 
     public function command()
     {
-        return response()->json(['message' => Artisan::command('migrate')]);
+        return response()->json(['message' => Artisan::call('migrate')]);
     }
 }
