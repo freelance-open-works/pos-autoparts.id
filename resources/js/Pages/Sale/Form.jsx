@@ -9,7 +9,7 @@ import Card from '@/Components/DaisyUI/Card'
 import FormInputDate from '@/Components/DaisyUI/FormInputDate'
 import { SelectOptionArray } from '@/Components/DaisyUI/SelectInput'
 import SelectModalInput from '@/Components/DaisyUI/SelectModalInput'
-import { sale_status, sale_status_draft } from '@/consts'
+import { sale_status, sale_status_draft, sale_status_submit } from '@/consts'
 import TextareaInput from '@/Components/DaisyUI/TextareaInput'
 import SelectModalProduct from '../Product/SelectModal'
 import { HiXMark } from 'react-icons/hi2'
@@ -312,23 +312,28 @@ export default function Form(props) {
                                                 <td>{item.name}</td>
                                                 <td>{item?.brand?.name}</td>
                                                 <td className="text-right p-[5px]">
-                                                    <div className="w-full">
-                                                        <TextInput
-                                                            type="number"
-                                                            value={item.qty}
-                                                            onChange={({
-                                                                target: {
-                                                                    value,
-                                                                },
-                                                            }) =>
-                                                                handleChangeItem(
-                                                                    item,
-                                                                    'qty',
-                                                                    value
-                                                                )
-                                                            }
-                                                        />
-                                                    </div>
+                                                    {sale.status !==
+                                                    sale_status_submit ? (
+                                                        <div className="w-full">
+                                                            <TextInput
+                                                                type="number"
+                                                                value={item.qty}
+                                                                onChange={({
+                                                                    target: {
+                                                                        value,
+                                                                    },
+                                                                }) =>
+                                                                    handleChangeItem(
+                                                                        item,
+                                                                        'qty',
+                                                                        value
+                                                                    )
+                                                                }
+                                                            />
+                                                        </div>
+                                                    ) : (
+                                                        <span>{item.qty}</span>
+                                                    )}
                                                 </td>
                                                 <td className="text-right justify-end p-[5px]">
                                                     <div className="w-full min-w-[100px]">

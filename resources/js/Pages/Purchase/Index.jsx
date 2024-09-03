@@ -14,8 +14,9 @@ import HasPermission from '@/Components/Common/HasPermission'
 import Dropdown from '@/Components/DaisyUI/Dropdown'
 import Button from '@/Components/DaisyUI/Button'
 import Card from '@/Components/DaisyUI/Card'
-import { formatIDR } from '@/utils'
+import { formatIDR, hasPermissionAuth } from '@/utils'
 import { purchase_order_status_submit } from '@/consts'
+import Visible from '@/Components/Common/Visible'
 
 export default function Index(props) {
     const {
@@ -118,68 +119,80 @@ export default function Index(props) {
                                                             <div>View</div>
                                                         </Link>
                                                     </Dropdown.Item>
-                                                    {item.allow_change ===
-                                                        true && (
-                                                        <>
-                                                            <HasPermission p="update-purchase">
-                                                                <>
-                                                                    <Dropdown.Item>
-                                                                        <Link
-                                                                            href={route(
-                                                                                'purchases.patch',
-                                                                                item
-                                                                            )}
-                                                                            method="patch"
-                                                                            data={{
-                                                                                key: 'status',
-                                                                                value: purchase_order_status_submit,
-                                                                            }}
-                                                                            className="flex space-x-1 items-center"
-                                                                            as="button"
-                                                                        >
-                                                                            <HiPaperAirplane />
-                                                                            <div>
-                                                                                Submit
-                                                                            </div>
-                                                                        </Link>
-                                                                    </Dropdown.Item>
-                                                                    <Dropdown.Item
-                                                                        onClick={() =>
-                                                                            router.visit(
-                                                                                route(
-                                                                                    'purchases.edit',
-                                                                                    item
-                                                                                )
-                                                                            )
-                                                                        }
-                                                                    >
-                                                                        <div className="flex space-x-1 items-center">
-                                                                            <HiPencil />
-                                                                            <div>
-                                                                                Ubah
-                                                                            </div>
-                                                                        </div>
-                                                                    </Dropdown.Item>
-                                                                </>
-                                                            </HasPermission>
-                                                            <HasPermission p="delete-purchase">
-                                                                <Dropdown.Item
-                                                                    onClick={() =>
-                                                                        handleDeleteClick(
+                                                    <HasPermission p="update-purchase">
+                                                        <Visible
+                                                            v={
+                                                                item.allow_change
+                                                            }
+                                                        >
+                                                            <Dropdown.Item>
+                                                                <Link
+                                                                    href={route(
+                                                                        'purchases.patch',
+                                                                        item
+                                                                    )}
+                                                                    method="patch"
+                                                                    data={{
+                                                                        key: 'status',
+                                                                        value: purchase_order_status_submit,
+                                                                    }}
+                                                                    className="flex space-x-1 items-center"
+                                                                    as="button"
+                                                                >
+                                                                    <HiPaperAirplane />
+                                                                    <div>
+                                                                        Submit
+                                                                    </div>
+                                                                </Link>
+                                                            </Dropdown.Item>
+                                                        </Visible>
+                                                        <Visible
+                                                            v={
+                                                                item.allow_change ||
+                                                                hasPermissionAuth(
+                                                                    'force-update-purchase'
+                                                                )
+                                                            }
+                                                        >
+                                                            <Dropdown.Item
+                                                                onClick={() =>
+                                                                    router.visit(
+                                                                        route(
+                                                                            'purchases.edit',
                                                                             item
                                                                         )
-                                                                    }
-                                                                >
-                                                                    <div className="flex space-x-1 items-center">
-                                                                        <HiTrash />
-                                                                        <div>
-                                                                            Hapus
-                                                                        </div>
+                                                                    )
+                                                                }
+                                                            >
+                                                                <div className="flex space-x-1 items-center">
+                                                                    <HiPencil />
+                                                                    <div>
+                                                                        Ubah
                                                                     </div>
-                                                                </Dropdown.Item>
-                                                            </HasPermission>
-                                                        </>
-                                                    )}
+                                                                </div>
+                                                            </Dropdown.Item>
+                                                        </Visible>
+                                                    </HasPermission>
+                                                    <Visible
+                                                        v={item.allow_change}
+                                                    >
+                                                        <HasPermission p="delete-purchase">
+                                                            <Dropdown.Item
+                                                                onClick={() =>
+                                                                    handleDeleteClick(
+                                                                        item
+                                                                    )
+                                                                }
+                                                            >
+                                                                <div className="flex space-x-1 items-center">
+                                                                    <HiTrash />
+                                                                    <div>
+                                                                        Hapus
+                                                                    </div>
+                                                                </div>
+                                                            </Dropdown.Item>
+                                                        </HasPermission>
+                                                    </Visible>
                                                 </Dropdown>
                                             </div>
                                         </td>

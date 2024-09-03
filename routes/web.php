@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\StoreOrderController;
 use App\Http\Controllers\ClaimController;
 use App\Http\Controllers\SaleController;
@@ -24,6 +25,8 @@ use App\Http\Controllers\SaleDeliveryController;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/__reset', [GeneralController::class, 'reset']);
+Route::get('/__sync_permissions', [GeneralController::class, 'syncPermissions']);
+
 Route::get('/', function () {
     return redirect('/login');
 });
@@ -59,6 +62,11 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
     // #Admin
+    Route::delete('brands/{brand}', [BrandController::class, 'destroy'])->name('brands.destroy');
+    Route::put('brands/{brand}', [BrandController::class, 'update'])->name('brands.update');
+    Route::post('brands', [BrandController::class, 'store'])->name('brands.store');
+    Route::get('brands', [BrandController::class, 'index'])->name('brands.index');
+
     Route::get('store-orders/{storeOrder}/print', [StoreOrderController::class, 'print'])->name('store-orders.print');
     Route::patch('store-orders/{storeOrder}/patch', [StoreOrderController::class, 'patch'])->name('store-orders.patch');
     Route::resource('store-orders', StoreOrderController::class);

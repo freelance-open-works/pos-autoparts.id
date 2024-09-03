@@ -90,6 +90,13 @@ export default [
                 active: 'products.index',
                 permission: 'view-product',
             },
+            {
+                name: 'Merk',
+                show: true,
+                route: route('brands.index'),
+                active: 'brands.index',
+                permission: 'view-brand',
+            },
         ],
     },
     {

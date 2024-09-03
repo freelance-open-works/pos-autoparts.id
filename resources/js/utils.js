@@ -1,6 +1,7 @@
 import moment from 'moment'
 import { toast } from 'sonner'
 import { isEmpty } from 'lodash'
+import { usePage } from '@inertiajs/react'
 
 export const formatDate = (date) => {
     if (isEmpty(date)) {
@@ -54,6 +55,14 @@ export const formatIDDate = (date) => {
     date = new Date(date)
 
     return `${date.getDate()} ${month[date.getMonth()]} ${date.getFullYear()}`
+}
+
+export const hasPermissionAuth = (permission) => {
+    const {
+        props: { auth },
+    } = usePage()
+
+    return hasPermission(auth, permission)
 }
 
 export const hasPermission = (auth, permission) => {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Default;
 
 use App\Http\Controllers\Controller;
+use App\Internal\Services\PermissionService;
 use App\Models\Brand;
 use App\Models\Claim;
 use App\Models\ClaimItem;
@@ -176,5 +177,12 @@ class GeneralController extends Controller
             StoreOrderItem::class => StoreOrderItem::truncate(),
             StoreOrder::class => StoreOrder::truncate(),
         ]);
+    }
+
+    public function syncPermissions()
+    {
+        [$to_add, $to_delete] = PermissionService::new()->sync();
+
+        return response()->json(['message' => 'Permission synced : ' . count($to_add) . ' added, ' . count($to_delete) . ' deleted']);
     }
 }

@@ -11,7 +11,11 @@ import FormInputDate from '@/Components/DaisyUI/FormInputDate'
 import { SelectOptionArray } from '@/Components/DaisyUI/SelectInput'
 import SelectModalInput from '@/Components/DaisyUI/SelectModalInput'
 import SelectModalProduct from '../Product/SelectModal'
-import { purchase_order_status, purchase_order_status_draft } from '@/consts'
+import {
+    purchase_order_status,
+    purchase_order_status_draft,
+    purchase_order_status_submit,
+} from '@/consts'
 import { formatIDR } from '@/utils'
 import SelectModalPurchaseOrder from '../PurchaseOrder/SelectModal'
 import { HiXMark } from 'react-icons/hi2'
@@ -302,23 +306,28 @@ export default function Form(props) {
                                                 <td>{item.name}</td>
                                                 <td>{item?.brand?.name}</td>
                                                 <td className="text-right p-[5px]">
-                                                    <div className="w-full min-w-[100px]">
-                                                        <TextInput
-                                                            type="number"
-                                                            value={item.qty}
-                                                            onChange={({
-                                                                target: {
-                                                                    value,
-                                                                },
-                                                            }) =>
-                                                                handleChangeItem(
-                                                                    item,
-                                                                    'qty',
-                                                                    value
-                                                                )
-                                                            }
-                                                        />
-                                                    </div>
+                                                    {purchase.status !==
+                                                    purchase_order_status_submit ? (
+                                                        <div className="w-full min-w-[100px]">
+                                                            <TextInput
+                                                                type="number"
+                                                                value={item.qty}
+                                                                onChange={({
+                                                                    target: {
+                                                                        value,
+                                                                    },
+                                                                }) =>
+                                                                    handleChangeItem(
+                                                                        item,
+                                                                        'qty',
+                                                                        value
+                                                                    )
+                                                                }
+                                                            />
+                                                        </div>
+                                                    ) : (
+                                                        <span>{item.qty}</span>
+                                                    )}
                                                 </td>
                                                 <td className="text-right justify-end p-[5px]">
                                                     <div className="w-full min-w-[100px]">
