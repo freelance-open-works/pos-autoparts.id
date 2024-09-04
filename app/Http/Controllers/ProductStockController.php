@@ -20,7 +20,6 @@ class ProductStockController extends Controller
             });
         }
 
-        $query->orderBy('products.updated_at', 'desc');
         $query->orderBy('product_stocks.stock', 'desc');
 
         return inertia('ProductStock/Index', [
