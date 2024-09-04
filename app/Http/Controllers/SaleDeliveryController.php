@@ -53,7 +53,7 @@ class SaleDeliveryController extends Controller
 
         $pdf = Pdf::loadView('print.delivery', $data)->setPaper('a4');
         $pdf->save($sale->id . '.pdf', 'public');
-        $pdf = Pdf::loadView('print.delivery-label', $data)->setPaper('a6');
+        $pdf = Pdf::loadView('print.delivery-label', $data)->setPaper('a6', 'landscape');
         $pdf->save($sale->id . '-label.pdf', 'public');
 
 

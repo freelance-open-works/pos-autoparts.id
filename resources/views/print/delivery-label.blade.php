@@ -18,15 +18,15 @@
     </style>
 </head>
 
-<body style="border: 1px solid black;" class="p-2">
+<body>
     <div class="font-bold">Pengirim : </div>
-    <img src="{{ $setting->getStoragePath('app_logo') }}" width="200px" />
-    <hr class="my-2" style="border: 1px solid black;" />
+    <img src="{{ $setting->getStoragePath('app_logo') }}" width="180px" />
+    <hr style="border: 1px solid black;" class="my-0.5" />
     <table class="">
         <tr>
-            <td class="text-center p-4">
-                <img src="{{ storage_path('/app/default/frigle1.png') }}" class="mb-2 object-fill" />
-                <img src="{{ storage_path('/app/default/frigle2.png') }}" class="mb-2 object-fill" />
+            <td class="text-center p-1">
+                <img src="{{ storage_path('/app/default/frigle1.png') }}" class="mb-2 object-fill" width="100px" />
+                <img src="{{ storage_path('/app/default/frigle2.png') }}" class="mb-2 object-fill" width="100px" />
             </td>
             <td>
                 <div class="font-sans">
