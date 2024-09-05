@@ -10,7 +10,7 @@ class ProductStockController extends Controller
 {
     public function index(Request $request)
     {
-        $query = Product::query()->with(['brand', 'stock'])
+        $query = Product::query()->with(['brand'])
             ->leftJoin('product_stocks', 'products.id', '=', 'product_stocks.product_id');
 
         if ($request->q) {

@@ -65,9 +65,7 @@ export default function Index(props) {
                                         <td>{product.type}</td>
                                         <td>{product.brand.name}</td>
                                         <td>{formatIDR(product.price)}</td>
-                                        <td>
-                                            {formatIDR(product.stock.stock)}
-                                        </td>
+                                        <td>{formatIDR(product.stock)}</td>
                                     </tr>
                                 ))}
                             </tbody>
