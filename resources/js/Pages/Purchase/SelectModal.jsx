@@ -1,48 +1,48 @@
-import { useEffect, useState } from 'react'
-import { usePage } from '@inertiajs/react'
+import { useEffect, useState } from 'react';
+import { usePage } from '@inertiajs/react';
 
-import Modal from '@/Components/DaisyUI/Modal'
-import PaginationApi from '@/Components/DaisyUI/PaginationApi'
-import Spinner from '@/Components/DaisyUI/Spinner'
-import SearchInput from '@/Components/DaisyUI/SearchInput'
-import { useDebounce, usePagination } from '@/hooks'
-import { formatIDR } from '@/utils'
+import Modal from '@/Components/DaisyUI/Modal';
+import PaginationApi from '@/Components/DaisyUI/PaginationApi';
+import Spinner from '@/Components/DaisyUI/Spinner';
+import SearchInput from '@/Components/DaisyUI/SearchInput';
+import { useDebounce, usePagination } from '@/hooks';
+import { formatIDR } from '@/utils';
 
 export default function SelectModalPurchase(props) {
     const {
         props: { auth },
-    } = usePage()
+    } = usePage();
 
-    const { label, value, error, onChange, placeholder = '' } = props
+    const { label, value, error, onChange, placeholder = '' } = props;
 
-    const [search, setSearch] = useState('')
-    const q = useDebounce(search, 750)
+    const [search, setSearch] = useState('');
+    const q = useDebounce(search, 750);
 
-    const [isOpen, setOpen] = useState()
+    const [isOpen, setOpen] = useState();
 
     const toggle = () => {
-        setSearch('')
-        setOpen(!isOpen)
-    }
+        setSearch('');
+        setOpen(!isOpen);
+    };
 
-    const [data, fetch, loading] = usePagination(auth, `api.purchases.index`)
+    const [data, fetch, loading] = usePagination(auth, `api.purchases.index`);
 
     const handleItemSelected = (item) => {
-        onChange(item)
-        toggle()
-    }
+        onChange(item);
+        toggle();
+    };
 
     // in state isOpen change
     useEffect(() => {
         if (isOpen === true) {
-            fetch(1)
+            fetch(1);
         }
-    }, [isOpen])
+    }, [isOpen]);
 
     // in searching
     useEffect(() => {
-        fetch(1, { q })
-    }, [q])
+        fetch(1, { q });
+    }, [q]);
 
     return (
         <>
@@ -92,7 +92,7 @@ export default function SelectModalPurchase(props) {
                                         key={item.id}
                                         className="hover"
                                     >
-                                        <td>{item.purchase_order.po_code}</td>
+                                        <td>{item.purchase_order?.po_code}</td>
                                         <td>{item.p_date}</td>
                                         <td>{item.supplier.code}</td>
                                         <td>{item.supplier.name}</td>
@@ -114,5 +114,5 @@ export default function SelectModalPurchase(props) {
                 )}
             </Modal>
         </>
-    )
+    );
 }

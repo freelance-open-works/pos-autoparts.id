@@ -49,7 +49,7 @@
         <tr>
             <td class="font-bold capitalize">Kode Customer</td>
             <td class="px-2">:</td>
-            <td> {{ $purchase_order->storeOrder->customer->code }}</td>
+            <td> {{ $purchase_order->storeOrder?->customer?->code }}</td>
         </tr>
     </table>
     <table class="w-full solid-table" border="1" style="border: 1px solid black">
