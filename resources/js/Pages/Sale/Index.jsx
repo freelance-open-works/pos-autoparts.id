@@ -107,7 +107,7 @@ export default function Index(props) {
                                         <td>
                                             {
                                                 item.purchase?.purchase_order
-                                                    .po_code
+                                                    ?.po_code
                                             }
                                         </td>
                                         <td>{item.s_code}</td>
