@@ -22,7 +22,9 @@ class SaleController extends Controller
 
         if ($request->q) {
             $query->where(function ($query) use ($request) {
-                $query->where('s_code', 'like', "%{$request->q}%")
+                $code = explode('/', $request->q);
+                $code = $code[0] ?? $request->q;
+                $query->where('s_code', 'like', "%{$code}%")
                     ->orWhere('status', 'like', "%{$request->q}%");
             })->orWhereHas('customer', function ($query) use ($request) {
                 $query->where('name', 'like', "%{$request->q}%");
@@ -79,7 +81,8 @@ class SaleController extends Controller
 
         DB::beginTransaction();
         $items = collect($request->items);
-        $sale = Sale::create([
+
+        $sale = Sale::query()->create([
             'purchase_id' => $request->purchase_id,
             'customer_id' => $request->customer_id,
             's_date' => $request->s_date,

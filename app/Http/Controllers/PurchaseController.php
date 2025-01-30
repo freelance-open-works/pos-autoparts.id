@@ -22,7 +22,9 @@ class PurchaseController extends Controller
 
         if ($request->q) {
             $query->where(function ($query) use ($request) {
-                $query->where('p_code', 'like', "%{$request->q}%")
+                $code = explode('/', $request->q);
+                $code = $code[0] ?? $request->q;
+                $query->where('p_code', 'like', "%{$code}%")
                     ->orWhere('status', 'like', "%{$request->q}%");
             })->orWhereHas('supplier', function ($query) use ($request) {
                 $query->where('name', 'like', "%{$request->q}%");

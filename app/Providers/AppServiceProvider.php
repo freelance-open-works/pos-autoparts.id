@@ -22,18 +22,18 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // for optimize in development log every query
-        // if (app()->isProduction() == false) {
-        //     DB::listen(function ($query) {
-        //         Log::info(
-        //             $query->sql,
-        //             [
-        //                 'raw' => $query->toRawSql(),
-        //                 'bindings' => $query->bindings,
-        //                 'time' => $query->time,
-        //                 'connectionName' => $query->connectionName,
-        //             ]
-        //         );
-        //     });
-        // }
+        if (app()->isProduction() == false) {
+            DB::listen(function ($query) {
+                Log::info(
+                    $query->sql,
+                    [
+                        'raw' => $query->toRawSql(),
+                        'bindings' => $query->bindings,
+                        'time' => $query->time,
+                        'connectionName' => $query->connectionName,
+                    ]
+                );
+            });
+        }
     }
 }
