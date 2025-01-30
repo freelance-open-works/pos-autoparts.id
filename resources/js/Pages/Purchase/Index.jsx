@@ -21,9 +21,10 @@ import Visible from '@/Components/Common/Visible'
 export default function Index(props) {
     const {
         data: { links, data },
+        _q,
     } = props
 
-    const [search, setSearch] = useState('')
+    const [search, setSearch] = useState(_q)
     const preValue = usePrevious(search)
 
     const confirmModal = useModalState()
@@ -92,7 +93,15 @@ export default function Index(props) {
                                     <tr key={item.id}>
                                         <td>{item.purchase_order?.po_code}</td>
                                         <td>{item.p_date}</td>
-                                        <td>{item.supplier.name}</td>
+                                        <td>
+                                            <Link
+                                                href={route('purchases.index', {
+                                                    q: item.supplier.name,
+                                                })}
+                                            >
+                                                {item.supplier.name}
+                                            </Link>
+                                        </td>
                                         <td>{formatIDR(item.amount_cost)}</td>
                                         <td>{item.status}</td>
                                         <td className="text-right">

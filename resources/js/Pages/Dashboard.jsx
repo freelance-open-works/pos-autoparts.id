@@ -110,6 +110,16 @@ export default function Dashboard(props) {
                             </div>
                         </div>
                     </div>
+                    <div className="stats shadow flex-1">
+                        <div className="stat">
+                            <div className="stat-title">
+                                Total margin {props.month}
+                            </div>
+                            <div className="stat-value text-primary text-3xl">
+                                {formatIDR(props.total_margin_month)}
+                            </div>
+                        </div>
+                    </div>
                 </div>
 
                 <div className="card bg-base-100 w-full p-4 my-2">

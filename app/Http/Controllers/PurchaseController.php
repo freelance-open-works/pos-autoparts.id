@@ -24,6 +24,8 @@ class PurchaseController extends Controller
             $query->where(function ($query) use ($request) {
                 $query->where('p_code', 'like', "%{$request->q}%")
                     ->orWhere('status', 'like', "%{$request->q}%");
+            })->orWhereHas('supplier', function ($query) use ($request) {
+                $query->where('name', 'like', "%{$request->q}%");
             });
         }
 
@@ -31,6 +33,7 @@ class PurchaseController extends Controller
 
         return inertia('Purchase/Index', [
             'data' => $query->paginate(),
+            '_q' => $request->q ?? ''
         ]);
     }
 
@@ -75,7 +78,7 @@ class PurchaseController extends Controller
 
         DB::beginTransaction();
         $items = collect($request->items);
-        $purchase = Purchase::create([
+        $purchase = Purchase::query()->create([
             'purchase_order_id' => $request->purchase_order_id,
             'supplier_id' => $request->supplier_id,
             'p_date' => $request->p_date,

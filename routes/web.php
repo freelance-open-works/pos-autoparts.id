@@ -97,9 +97,10 @@ Route::middleware(['auth'])->group(function () {
     Route::resource('purchase-orders', PurchaseOrderController::class);
 
     Route::get('product-stocks', [ProductStockController::class, 'index'])->name('product-stocks.index');
+    Route::put('product-stocks/{product}', [ProductStockController::class, 'update'])->name('product-stocks.update');
 
     Route::post('product-imports', [ProductImportController::class, 'store'])->name('product-imports.store');
-
+    Route::get('products/export', [ProductController::class, 'export'])->name('products.export');
     Route::delete('products/{product}', [ProductController::class, 'destroy'])->name('products.destroy');
     Route::put('products/{product}', [ProductController::class, 'update'])->name('products.update');
     Route::post('products', [ProductController::class, 'store'])->name('products.store');

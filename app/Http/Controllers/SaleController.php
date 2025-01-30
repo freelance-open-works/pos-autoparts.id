@@ -24,6 +24,8 @@ class SaleController extends Controller
             $query->where(function ($query) use ($request) {
                 $query->where('s_code', 'like', "%{$request->q}%")
                     ->orWhere('status', 'like', "%{$request->q}%");
+            })->orWhereHas('customer', function ($query) use ($request) {
+                $query->where('name', 'like', "%{$request->q}%");
             });
         }
 
@@ -31,6 +33,7 @@ class SaleController extends Controller
 
         return inertia('Sale/Index', [
             'data' => $query->paginate(),
+            '_q' => $request->q ?? ''
         ]);
     }
 

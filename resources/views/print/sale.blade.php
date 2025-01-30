@@ -122,6 +122,12 @@
             ] as $key => $value)
             <tr class="border border-black">
                 <td class="border border-black p-1 max-w-sm" colspan="7">
+                    @if ($key == 'DPP')
+                        <span class="font-bold">Keterangan :</spam>
+                    @endif
+                    @if ($key == 'PPN')
+                        {{ $sale->note }}
+                    @endif
                 </td>
                 <td class="border border-black p-1 text-right font-bold" colspan="2">
                     {{ $key }}

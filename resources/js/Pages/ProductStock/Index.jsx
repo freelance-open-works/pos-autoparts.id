@@ -7,11 +7,23 @@ import Pagination from '@/Components/DaisyUI/Pagination'
 import SearchInput from '@/Components/DaisyUI/SearchInput'
 import Card from '@/Components/DaisyUI/Card'
 import { formatIDR } from '@/utils'
+import { useModalState } from '@/hooks'
+import Button from '@/Components/DaisyUI/Button'
+import HasPermission from '@/Components/Common/HasPermission'
+import { HiPencil } from 'react-icons/hi2'
+import FormModal from './FormModal'
 
 export default function Index(props) {
     const {
         data: { links, data },
     } = props
+
+    const formModal = useModalState()
+
+    const toggleFormModal = (product = null) => {
+        formModal.setData(product)
+        formModal.toggle()
+    }
 
     const [search, setSearch] = useState('')
     const preValue = usePrevious(search)
@@ -66,6 +78,20 @@ export default function Index(props) {
                                         <td>{product.brand.name}</td>
                                         <td>{formatIDR(product.price)}</td>
                                         <td>{formatIDR(product.stock)}</td>
+                                        <td>
+                                            <HasPermission p="edit-product-stock">
+                                                <Button
+                                                    onClick={() =>
+                                                        toggleFormModal(product)
+                                                    }
+                                                >
+                                                    <div className="flex space-x-1 items-center">
+                                                        <HiPencil />
+                                                        <div>Ubah</div>
+                                                    </div>
+                                                </Button>
+                                            </HasPermission>
+                                        </td>
                                     </tr>
                                 ))}
                             </tbody>
@@ -76,6 +102,7 @@ export default function Index(props) {
                     </div>
                 </Card>
             </div>
+            <FormModal modalState={formModal} />
         </AuthenticatedLayout>
     )
 }

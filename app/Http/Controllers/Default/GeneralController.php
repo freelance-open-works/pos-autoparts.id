@@ -10,6 +10,7 @@ use App\Models\ClaimItem;
 use App\Models\Customer;
 use App\Models\Default\Setting;
 use App\Models\Default\User;
+use App\Models\Product;
 use App\Models\ProductStock;
 use App\Models\ProductStockFifo;
 use App\Models\ProductStockHistory;
@@ -34,6 +35,7 @@ class GeneralController extends Controller
     public function index(Request $request)
     {
         $total_sale_month = Sale::whereMonth('s_date', now()->format('m'))->where('status', Sale::STATUS_SUBMIT)->sum('amount_cost');
+        $total_purchase_month = Purchase::whereMonth('p_date', now()->format('m'))->where('status', Purchase::STATUS_SUBMIT)->sum('amount_cost');
         $total_sale_today = Sale::where(DB::raw('DATE(s_date)'), now()->format('Y-m-d'))->where('status', Sale::STATUS_SUBMIT)->sum('amount_cost');
         $items_sale_today = SaleItem::whereIn(
             'sale_id',
@@ -58,12 +60,14 @@ class GeneralController extends Controller
             'total_sale_month' => $total_sale_month,
             'total_sale_today' => $total_sale_today,
             'items_sale_today' => $items_sale_today,
+            'total_margin_month' => $total_purchase_month - $total_sale_month,
             'target_percent_month' => Setting::getByKey('monthly_sales_target') > 0 ? Number::percentage(($total_sale_month / Setting::getByKey('monthly_sales_target')) * 100, 2) : '0%',
             'top_products' => $top_products,
             'charts' => $this->charts($request),
             'brands' => Brand::all(),
             'users' => User::all(),
-            'types' => [Customer::INCITY, Customer::OUTCITY]
+            'types' => [Customer::INCITY, Customer::OUTCITY],
+            'product_count' => Product::count(),
         ]);
     }
 

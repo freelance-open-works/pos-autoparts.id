@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react'
-import { router, Head } from '@inertiajs/react'
+import { router, Head, Link } from '@inertiajs/react'
 import { usePrevious } from 'react-use'
 import { HiPencil, HiTrash } from 'react-icons/hi'
 import { useModalState } from '@/hooks'
@@ -66,7 +66,7 @@ export default function Index(props) {
                 <Card>
                     <div className="flex justify-between mb-4">
                         <HasPermission p="create-product">
-                            <div className="grid grid-cols-2 gap-2">
+                            <div className="grid grid-cols-3 gap-2">
                                 <Button
                                     size="sm"
                                     onClick={() => toggleFormModal()}
@@ -81,6 +81,14 @@ export default function Index(props) {
                                 >
                                     Import
                                 </Button>
+                                <a
+                                    href={route('products.export', params)}
+                                    target="_blank"
+                                >
+                                    <Button size="sm" type="secondary">
+                                        Export
+                                    </Button>
+                                </a>
                             </div>
                         </HasPermission>
                         <div className="flex items-center">

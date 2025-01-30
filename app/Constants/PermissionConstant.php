@@ -75,5 +75,7 @@ class PermissionConstant
         ['label' => 'View Setting', 'name' => 'view-setting'],
         ['label' => 'View Report', 'name' => 'view-report'],
         ['label' => 'View Product Stock', 'name' => 'view-product-stock'],
+
+        ['label' => 'Edit Product Stock', 'name' => 'edit-product-stock']
     ];
 }

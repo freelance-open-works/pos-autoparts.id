@@ -6,6 +6,7 @@ use App\Models\Product;
 use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Inertia\Response;
+use Rap2hpoutre\FastExcel\FastExcel;
 
 class ProductController extends Controller
 {
@@ -39,7 +40,7 @@ class ProductController extends Controller
             'brand_id' => 'required|exists:brands,id',
         ]);
 
-        Product::create([
+        Product::query()->create([
             'name' => $request->name,
             'part_code' => $request->part_code,
             'type' => $request->type,
@@ -87,5 +88,34 @@ class ProductController extends Controller
 
         return redirect()->route('products.index')
             ->with('message', ['type' => 'success', 'message' => 'Item has beed deleted']);
+    }
+
+    public function export(Request $request)
+    {
+        $query = Product::with(['brand']);
+
+        if ($request->q) {
+            $query->where(function ($query) use ($request) {
+                $query->where('name', 'like', "%{$request->q}%")
+                    ->orWhere('part_code', 'like', "%{$request->q}%");
+            });
+        }
+
+        $query->orderBy('created_at', 'desc');
+
+        $date = now()->format('d-m-Y');
+
+        return (new FastExcel($query->get()))->download("export-{$date}.xlsx", function ($p) {
+            return [
+                'No .' => '',
+                'Part No' => $p->part_code,
+                'Nama Barang' => $p->name,
+                'Type Barang' => $p->type,
+                'Merk' => $p->brand?->name,
+                'Discount' => $p->discount,
+                'Harga Jual' => $p->cost,
+                'Harga Beli' => $p->price,
+            ];
+        });
     }
 }
