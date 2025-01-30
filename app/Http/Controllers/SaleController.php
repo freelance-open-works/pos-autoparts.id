@@ -185,7 +185,7 @@ class SaleController extends Controller
 
     public function patch(Request $request, Sale $sale)
     {
-        if ($request->key == 'status' && $request->value == Sale::STATUS_SUBMIT) {
+        if ($request->key == 'status' && $request->value == Sale::STATUS_SUBMIT  && $sale->status != Sale::STATUS_SUBMIT) {
             try {
                 SaleCodeAction::update_stocks($sale);
             } catch (Exception $e) {

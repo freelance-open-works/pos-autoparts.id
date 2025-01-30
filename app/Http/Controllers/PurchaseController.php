@@ -184,7 +184,7 @@ class PurchaseController extends Controller
     {
         DB::beginTransaction();
         // if key is status and it submit update stock to up
-        if ($request->key == 'status' && $request->value == Purchase::STATUS_SUBMIT) {
+        if ($request->key == 'status' && $request->value == Purchase::STATUS_SUBMIT && $purchase->status != Purchase::STATUS_SUBMIT) {
             PurchaseAction::update_stocks($purchase);
         }
 
