@@ -18,7 +18,10 @@ class ProductController extends Controller
             $query->where(function ($query) use ($request) {
                 $query->where('name', 'like', "%{$request->q}%")
                     ->orWhere('part_code', 'like', "%{$request->q}%");
-            });
+            })
+                ->orWhereHas('brand', function ($query) use ($request) {
+                    $query->where('name', 'like', "%{$request->q}%");
+                });
         }
 
         $query->orderBy('created_at', 'desc');
@@ -98,7 +101,10 @@ class ProductController extends Controller
             $query->where(function ($query) use ($request) {
                 $query->where('name', 'like', "%{$request->q}%")
                     ->orWhere('part_code', 'like', "%{$request->q}%");
-            });
+            })
+                ->orWhereHas('brand', function ($query) use ($request) {
+                    $query->where('name', 'like', "%{$request->q}%");
+                });
         }
 
         $query->orderBy('created_at', 'desc');
