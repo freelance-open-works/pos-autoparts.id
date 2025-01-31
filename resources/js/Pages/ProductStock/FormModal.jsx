@@ -39,7 +39,7 @@ export default function FormModal(props) {
     const handleSubmit = () => {
         const product = modalState.data
         if (product !== null) {
-            put(route('product-stocks.update', product), {
+            put(route('product-stocks.update', product?.product_id), {
                 onSuccess: () => handleClose(),
             })
             return
