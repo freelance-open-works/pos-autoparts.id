@@ -35,7 +35,7 @@ class GeneralController extends Controller
     public function index(Request $request)
     {
         $total_sale_month = Sale::whereMonth('s_date', now()->format('m'))->where('status', Sale::STATUS_SUBMIT)->sum('amount_cost');
-        $total_purchase_month = Purchase::whereMonth('p_date', now()->format('m'))->where('status', Purchase::STATUS_SUBMIT)->sum('amount_cost');
+
         $total_sale_today = Sale::where(DB::raw('DATE(s_date)'), now()->format('Y-m-d'))->where('status', Sale::STATUS_SUBMIT)->sum('amount_cost');
         $items_sale_today = SaleItem::whereIn(
             'sale_id',
@@ -60,7 +60,7 @@ class GeneralController extends Controller
             'total_sale_month' => $total_sale_month,
             'total_sale_today' => $total_sale_today,
             'items_sale_today' => $items_sale_today,
-            'total_margin_month' => $total_sale_month - $total_purchase_month,
+            'total_margin_month' => $this->total_margin_month(),
             'target_percent_month' => Setting::getByKey('monthly_sales_target') > 0 ? Number::percentage(($total_sale_month / Setting::getByKey('monthly_sales_target')) * 100, 2) : '0%',
             'top_products' => $top_products,
             'charts' => $this->charts($request),
@@ -69,6 +69,25 @@ class GeneralController extends Controller
             'types' => [Customer::INCITY, Customer::OUTCITY],
             'product_count' => Product::count(),
         ]);
+    }
+
+    private function total_margin_month()
+    {
+        $total_sale_month = SaleItem::query()
+            ->whereHas('sale', function ($q) {
+                $q->whereMonth('s_date', now()->format('m'))
+                    ->where('status', Sale::STATUS_SUBMIT);
+            })
+            ->sum('subtotal_discount');
+
+        $total_purchase_month = PurchaseItem::query()
+            ->whereHas('purchase', function ($q) {
+                $q->whereMonth('p_date', now()->format('m'))
+                    ->where('status', Purchase::STATUS_SUBMIT);
+            })
+            ->sum('subtotal_discount');
+
+        return $total_sale_month - $total_purchase_month;
     }
 
     private function charts(Request $request)
