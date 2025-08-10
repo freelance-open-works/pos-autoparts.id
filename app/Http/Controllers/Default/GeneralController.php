@@ -34,7 +34,7 @@ class GeneralController extends Controller
 {
     public function index(Request $request)
     {
-        $total_sale_month = Sale::whereMonth('s_date', now()->format('m'))->where('status', Sale::STATUS_SUBMIT)->sum('amount_cost');
+        $total_sale_month = Sale::whereBetween('s_date', [now()->startOfMonth(), now()->endOfMonth()])->where('status', Sale::STATUS_SUBMIT)->sum('amount_cost');
 
         $total_sale_today = Sale::where(DB::raw('DATE(s_date)'), now()->format('Y-m-d'))->where('status', Sale::STATUS_SUBMIT)->sum('amount_cost');
         $items_sale_today = SaleItem::whereIn(
@@ -44,7 +44,7 @@ class GeneralController extends Controller
 
         $top_products = SaleItem::join('products', 'products.id', '=', 'sale_items.product_id')
             ->leftJoin('sales', 'sales.id', '=', 'sale_items.sale_id')
-            ->select('sale_items.product_id', 'products.name',  'products.part_code', DB::raw('SUM(sale_items.qty) as most_qty'))
+            ->select('sale_items.product_id', 'products.name', 'products.part_code', DB::raw('SUM(sale_items.qty) as most_qty'))
             ->where('sales.status', Sale::STATUS_SUBMIT)
             ->groupBy('sale_items.product_id')
             ->orderBy('most_qty', 'DESC')
@@ -75,14 +75,14 @@ class GeneralController extends Controller
     {
         $total_sale_month = SaleItem::query()
             ->whereHas('sale', function ($q) {
-                $q->whereMonth('s_date', now()->format('m'))
+                $q->whereBetween('s_date', [now()->startOfMonth(), now()->endOfMonth()])
                     ->where('status', Sale::STATUS_SUBMIT);
             })
             ->sum('subtotal_discount');
 
         $total_purchase_month = PurchaseItem::query()
             ->whereHas('purchase', function ($q) {
-                $q->whereMonth('p_date', now()->format('m'))
+                $q->whereBetween('p_date', [now()->startOfMonth(), now()->endOfMonth()])
                     ->where('status', Purchase::STATUS_SUBMIT);
             })
             ->sum('subtotal_discount');
@@ -112,7 +112,7 @@ class GeneralController extends Controller
         // filter customer
 
         $sales = DB::table('sale_items')
-            ->leftJoin('sales',  'sales.id', '=', 'sale_items.sale_id')
+            ->leftJoin('sales', 'sales.id', '=', 'sale_items.sale_id')
             ->leftJoin('products', 'products.id', '=', 'sale_items.product_id')
             ->leftJoin('customers', 'customers.id', '=', 'sales.customer_id')
             ->selectRaw('sum(sale_items.price * sale_items.qty) as pq_total, sum(sale_items.qty) as pq_qty, DATE(sales.s_date) as s_s_date')
@@ -122,7 +122,7 @@ class GeneralController extends Controller
             ->where('sales.status', Sale::STATUS_SUBMIT);
 
         $purchases = DB::table('purchase_items')
-            ->leftJoin('purchases',  'purchases.id', '=', 'purchase_items.purchase_id')
+            ->leftJoin('purchases', 'purchases.id', '=', 'purchase_items.purchase_id')
             ->leftJoin('products', 'products.id', '=', 'purchase_items.product_id')
             ->leftJoin('suppliers', 'suppliers.id', '=', 'purchases.supplier_id')
             ->selectRaw('sum(purchase_items.cost * purchase_items.qty) as pq_total, sum(purchase_items.qty) as pq_qty, DATE(purchases.p_date) as ps_date')
@@ -166,7 +166,7 @@ class GeneralController extends Controller
         while ($std <= $endDate) {
             $charts['sales'][] = [
                 'date' => $std->format('d-m-Y'),
-                'data' =>  $sales[$std->format('Y-m-d')] ?? ['total' => 0, 'qty' => 0],
+                'data' => $sales[$std->format('Y-m-d')] ?? ['total' => 0, 'qty' => 0],
             ];
             $charts['purchases'][] = [
                 'date' => $std->format('d-m-Y'),
@@ -207,7 +207,7 @@ class GeneralController extends Controller
     {
         [$to_add, $to_delete] = PermissionService::new()->sync();
 
-        return response()->json(['message' => 'Permission synced : ' . count($to_add) . ' added, ' . count($to_delete) . ' deleted']);
+        return response()->json(['message' => 'Permission synced : '.count($to_add).' added, '.count($to_delete).' deleted']);
     }
 
     public function command()
